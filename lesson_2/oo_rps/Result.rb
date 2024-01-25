@@ -4,16 +4,15 @@ require_relative 'ClassConverter'
 class Result
   include ClassConverter
 
-  attr_reader :winner, :loser, :value
+  attr_reader :winner, :loser, :winning_value, :outcome
 
   @@history = []
 
   def initialize(move1, move2)
     @move1, @move2 = move1, move2
-    # winner or winning move? -> Try winning move
-    @winner = find_winner
-    @loser = find_loser
-    @value = calculate_value
+    @loser, @winner = calculate_winner_and_loser
+    @winning_value = winner&.move&.value
+    @outcome = calculate_outcome
 
     @@history << self
   end
@@ -28,31 +27,26 @@ class Result
 
   def announcement
     if tie?
-      "You both picked #{move1} - #{value}!"
+      "You both picked #{move1} - #{outcome}!"
     else
-      "#{winner.move} #{winning_action} #{loser.move} - #{value}!" 
+      "#{winner.move} #{winning_action} #{loser.move} - #{outcome}!" 
     end
   end
 
   def to_s
-    "#{moves} (#{value}.)"
+    "#{moves} (#{outcome}.)"
   end
 
   private
 
   attr_reader :move1, :move2
 
-  def find_winner
+  def calculate_winner_and_loser
     return nil if tie?
-    [move1, move2].max.owner
+    [move1, move2].minmax.map(&:owner)
   end
 
-  def find_loser
-    return nil if tie?
-    [move1, move2].min.owner
-  end
-
-  def calculate_value
+  def calculate_outcome
     tie? ? "Tie" : "#{winner} wins"
   end
 

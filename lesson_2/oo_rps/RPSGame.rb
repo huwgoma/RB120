@@ -14,7 +14,7 @@ require_relative 'Displayable'
 
 
 
-
+# Rename Move value to 'hand' (and all refs)
 
 
 
