@@ -112,9 +112,13 @@ class Computer < Player
 end
 
 # # CPU Subclasses
-# class RandomBot < Computer
-#   MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
-# end
+class RandomBot < Computer
+  MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
+
+  def personality
+
+  end
+end
 
 # class R2D2 < Computer
 #   MOVE_RATES = [1.0, 0, 0, 0, 0]
@@ -147,12 +151,12 @@ class Mahoraga < Computer
   # if they won, they will tend to stay with the same hand.
   def adapt_next_move
     first_adaptation = find_winning_hands(last_result.winning_value)
-    binding.pry
+
     move = if last_result.winner == self
-      find_winning_hands(*first_adaptation).sample
-    else
-      first_adaptation.sample      
-    end
+             find_winning_hands(*first_adaptation).sample
+           else
+             first_adaptation.sample      
+           end
 
     move || Move::VALUES.sample # Failsafe
   end

@@ -13,6 +13,18 @@ crushes Scissors.
     line_break
   end
 
+  def introduce_computer
+    puts "Your opponent this round is #{computer}."
+    # computer.describe
+    #   => name + personality
+
+    # RandomBot will pick moves at complete random.
+    # R2D2 will only pick Rock.
+    # Hal will probably pick Scissors.
+    # Mahoraga will adapt to your moves. If the game drags out, you might 
+    #   have a bit of trouble..
+  end
+
   def display_game_state
     clear_screen
     display_history

@@ -45,11 +45,14 @@ class RPSGame
     display_rules
     @human = Human.new
     # Maybe change computer each round?
-    @computer = Computer.random_new
+    
   end
 
   def play
     loop do
+      @computer = Computer.random_new
+      introduce_computer
+
       set_point_limit
       
       result = nil
