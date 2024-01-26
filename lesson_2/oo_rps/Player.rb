@@ -69,6 +69,7 @@ end
 class Computer < Player
   def initialize
     super
+    # Refactor this so MOVE_RATES aren't necessary?
     @move_weights = calculate_weighted_ranges
   end
 
@@ -124,75 +125,43 @@ end
 # end
 
 class Mahoraga < Computer
-  #include ClassConverter
-  
+  include ClassConverter
+
   MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
 
   def choose_move
-    last_result = Result.history.last
+    @last_result = Result.history.last
 
     if last_result.nil? || last_result.tie?
       super
     else
-      self.move = Move.new(calculate_adaptation(last_result), self)
+      self.move = Move.new(adapt_next_move, self)
     end
   end
 
-  private 
+  private
 
-  # Psychologically, players tend to repeat their hand if they win; if they lose, 
-  # they tend to play a hand that would beat the hand they lost to.
-  # To adapt:
-  # - If Mahoraga wins, the other player is likely to pick a hand that beats the 
-  #   previous winning hand.
-  #   => Pick the hand that beats both options.
-  #     eg. Rock (Win) -> Paper or Spock -> Lizard eats Paper and poisons Spock.
-  #     => Pick Lizard
-  # - If Mahoraga loses, the other player is likely to repeat the same hand.
-  #   => Pick a hand that beats the previous hand.
+  attr_reader :last_result
 
-  # After 4 rounds, simply pick a move that beats the other person's move (late throw)
-
-  def calculate_adaptation(last_result)
-    last_winning_value = last_result.winning_value
-    first_adaptations = calculate_first_adaptations(last_winning_value)
-
-    if result.winner == self
-      calculate_second_adaptation(first_adaptations)
+  # Psychologically: Players tend to change their hand to what would have won (if they lose);
+  # if they won, they will tend to stay with the same hand.
+  def adapt_next_move
+    first_adaptation = find_winning_hands(last_result.winning_value)
+    binding.pry
+    move = if last_result.winner == self
+      find_winning_hands(*first_adaptation).sample
     else
-      # possible_moves = Move.subclasses.select do |subclass|
-      #   subclass::WINS_AGAINST.key?(result.winning_value)
-      # end
-      # possible_moves.sample.to_s
-      # binding.pry
+      first_adaptation.sample      
     end
-    # Input: Result object of the last game to be played
-    # Output: A String representing the value of the next move to be played
 
-    # Algorithm:
-    # Calculate the last winning value (eg. Rock)
-    # Calculate the hands that win against the last winning value. (eg. Paper, Spock)
-    # If the winner of the last round was Mahoraga:
-    #   Calculate the hand that wins against both adapted options (eg. Lizard)
-    # Otherwise, randomly select one of the adapted options.
-
-
-
+    move || Move::VALUES.sample # Failsafe
   end
 
-  def calculate_first_adaptations(last_winning_value)
-    # Given a String representing the value of the last winning hand,
-    # Find the possible move values that win against that last winning value
-    # Return in an array.
-    Move.subclasses.select do |hand|
-      hand::WINS_AGAINST.key?(last_winning_value)
+  def find_winning_hands(*values_to_beat)
+    Move::VALUES.select do |hand|
+      # Select all hands that are capable of winning against all given values.
+      values_to_beat.all? { |value| class_of(hand)::WINS_AGAINST.keys.include?(value) }
+      # (values_to_beat - class_of(hand)::WINS_AGAINST.keys).empty?
     end
   end
-
-  def calculate_second_adaptation(hands)
-    # Given an Array of Constants (Strings?) representing the hands that win against
-    #   the last winning value,
-    # Find the move value that wins against both of those first adapted hands
-  end
-
 end
