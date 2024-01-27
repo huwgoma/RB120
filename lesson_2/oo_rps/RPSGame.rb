@@ -48,11 +48,11 @@ class RPSGame
 
   def play
     loop do
-      @computer = Computer.random_new
+      @computer = Computer.random_new(human)
       introduce_computer
-
       set_point_limit
       
+      # Result.history.last?
       result = nil
       loop do
         display_game_state

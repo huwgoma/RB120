@@ -67,14 +67,15 @@ end
 
 # CPU Player
 class Computer < Player
-  def initialize
-    super
+  def initialize(opponent)
+    super()
+    @opponent = opponent
     # Refactor this so MOVE_RATES aren't necessary?
     @move_weights = calculate_weighted_ranges
   end
 
-  def self.random_new
-    self.subclasses.sample.new
+  def self.random_new(opponent)
+    self.subclasses.sample.new(opponent)
   end
 
   def set_name
@@ -93,7 +94,7 @@ class Computer < Player
 
   private
 
-  attr_reader :move_weights
+  attr_reader :opponent, :move_weights
 
   def calculate_weighted_ranges
     move_rates = self.class::MOVE_RATES
@@ -115,44 +116,45 @@ class Computer < Player
   end
 end
 
-# # CPU Subclasses
-class RandomBot < Computer
-  MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
+# CPU Subclasses
+# class RandomBot < Computer
+#   MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
 
-  def personality
-    "will pick moves at complete random."
-  end
-end
+#   def personality
+#     "will pick moves at complete random."
+#   end
+# end
 
-class R2D2 < Computer
-  MOVE_RATES = [1.0, 0, 0, 0, 0]
+# class R2D2 < Computer
+#   MOVE_RATES = [1.0, 0, 0, 0, 0]
 
-  def personality
-    "will only pick Rock."
-  end
-end
+#   def personality
+#     "will only pick Rock."
+#   end
+# end
 
-class Hal < Computer
-  MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
+# class Hal < Computer
+#   MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
 
-  def personality
-    "will most likely pick Scissors, and will never pick Paper."
-  end
-end
+#   def personality
+#     "will most likely pick Scissors, and will never pick Paper."
+#   end
+# end
 
+# Mahoraga
 class Mahoraga < Computer
   include ClassConverter
 
   MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
 
-  def choose_move
-    @last_result = Result.history.last
+  def initialize(opponent)
+    super(opponent)
+    @adaptation_counter = 0
+  end
 
-    if last_result.nil? || last_result.tie?
-      super
-    else
-      self.move = Move.new(adapt_next_move, self)
-    end
+  def choose_move
+    self.move = Move.new(calculate_move, self)
+    @adaptation_counter += 1
   end
 
   def personality
@@ -161,7 +163,30 @@ class Mahoraga < Computer
 
   private
 
-  attr_reader :last_result
+  # Return a String value representing the next move
+  def calculate_move
+    return late_throw if fully_adapted?
+    Move::VALUES.sample
+    # If 8 turns have passed (fully adapted?), return late_throw 
+    #   => 'Value' that will always win
+
+    # If first_game? or last_game_tied?, choose a random value (Move::VALUES.sample)
+
+    # Else (Not first game, and not tied last time):
+    #   adapt_move
+  end
+
+
+
+  # attr_reader :last_result
+
+  def fully_adapted?
+    @adaptation_counter >= 8
+  end
+
+  def late_throw
+    find_winning_hands(opponent.move.value).sample
+  end
 
   # Psychologically: Players tend to change their hand to what would have won (if they lose);
   # if they won, they will tend to stay with the same hand.
@@ -186,9 +211,7 @@ class Mahoraga < Computer
 end
 
 # Bug with Result.history and last_result.nil?
-# - If we play one round, then do another round and the CPU switches to Maho, 
-#   last_result will not be nil, and Maho will adapt to the result of the last game of the
-#   last round (but we want it to be random)
+
 
 # Implement new data structure in Result, keeping track of games specifically within a round.
 
