@@ -6,9 +6,9 @@ module Displayable
     puts 'Welcome to Rock Paper Scissors Lizard Spock!'
     puts 'The rules are as follows:'
     puts <<-HEREDOC
-Scissors cuts Paper covers Rock crushes Lizard poisons Spock smashes
-Scissors decapitates Lizard eats Paper disproves Spock vaporizes Rock
-crushes Scissors.
+  Scissors cuts Paper covers Rock crushes Lizard poisons Spock smashes
+  Scissors decapitates Lizard eats Paper disproves Spock vaporizes Rock
+  crushes Scissors.
     HEREDOC
     line_break
   end
@@ -27,8 +27,16 @@ crushes Scissors.
   def display_history
     history = Result.history
     puts "Games played in this round: #{history.size}"
-    puts history
+    display_truncated_history(history)
     line_break
+  end
+
+  def display_truncated_history(history)
+    truncated_history = history.last(5)
+    unless truncated_history.empty?
+      puts "Last #{truncated_history.size} games:"
+      puts truncated_history
+    end
   end
 
   def display_scores

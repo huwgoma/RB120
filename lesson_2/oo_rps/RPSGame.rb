@@ -6,36 +6,6 @@ require_relative 'Move'
 require_relative 'Result'
 require_relative 'Displayable'
 
-# To do:
-
-# You will be playing against # ROBOT NAME this round.
-#   Hint: This robot loves to #{personality.}
-
-
-
-
-# Rename Move value to 'hand' (and all refs)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Game Engine:
 class RPSGame
   include Displayable
@@ -51,9 +21,7 @@ class RPSGame
       @computer = Computer.random_new(human)
       introduce_computer
       set_point_limit
-      
-      # Result.history.last?
-      result = nil
+
       loop do
         display_game_state
         
@@ -68,7 +36,7 @@ class RPSGame
         continue_next_game
       end
       
-      display_round_winner(result)
+      display_round_winner(Result.history.last)
       break unless play_again?
       reset_scores
       Result.reset_history
