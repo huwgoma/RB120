@@ -87,6 +87,10 @@ class Computer < Player
     self.move = Move.new(move_value, self)
   end
 
+  def describe_personality
+    puts "This CPU #{personality}"
+  end
+
   private
 
   attr_reader :move_weights
@@ -116,17 +120,25 @@ class RandomBot < Computer
   MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
 
   def personality
-
+    "will pick moves at complete random."
   end
 end
 
-# class R2D2 < Computer
-#   MOVE_RATES = [1.0, 0, 0, 0, 0]
-# end
+class R2D2 < Computer
+  MOVE_RATES = [1.0, 0, 0, 0, 0]
 
-# class Hal < Computer
-#   MOVE_RATES = [0.2, 0, 0.8, 0, 0]
-# end
+  def personality
+    "will only pick Rock."
+  end
+end
+
+class Hal < Computer
+  MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
+
+  def personality
+    "will most likely pick Scissors, and will never pick Paper."
+  end
+end
 
 class Mahoraga < Computer
   include ClassConverter
@@ -143,6 +155,10 @@ class Mahoraga < Computer
     end
   end
 
+  def personality
+    "will adapt"
+  end
+
   private
 
   attr_reader :last_result
@@ -157,7 +173,6 @@ class Mahoraga < Computer
            else
              first_adaptation.sample      
            end
-
     move || Move::VALUES.sample # Failsafe
   end
 
@@ -169,3 +184,7 @@ class Mahoraga < Computer
     end
   end
 end
+
+# 8-turn limit
+# Need a data structure (maybe Result@@round_history?) to track games in a round
+# - Clear between rounds.

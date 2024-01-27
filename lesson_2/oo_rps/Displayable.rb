@@ -15,6 +15,8 @@ crushes Scissors.
 
   def introduce_computer
     puts "Your opponent this round is #{computer}."
+    computer.describe_personality
+    #puts "This CPU #{computer.personality}"
     # computer.describe
     #   => name + personality
 
