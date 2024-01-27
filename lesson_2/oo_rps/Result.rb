@@ -17,22 +17,23 @@ class Result
     @@history << self
   end
 
-  # full history
   def self.history(n = 5)
     @@history.last(n)
   end
 
-  # round history
+  def self.reset_history
+    @@history.clear
+  end
 
   def tie?
     move1 == move2
   end
 
-  def announcement
+  def announce
     if tie?
-      "You both picked #{move1} - #{outcome}!"
+      puts "You both picked #{move1} - #{outcome}!"
     else
-      "#{winner.move} #{winning_action} #{loser.move} - #{outcome}!" 
+      puts "#{winner.move} #{winning_action} #{loser.move} - #{outcome}!" 
     end
   end
 

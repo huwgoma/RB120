@@ -44,8 +44,6 @@ class RPSGame
     system('clear')
     display_rules
     @human = Human.new
-    # Maybe change computer each round?
-    
   end
 
   def play
@@ -64,7 +62,7 @@ class RPSGame
         result.winner.increment_score unless result.tie?
 
         display_game_state
-        puts result.announcement
+        result.announce
         
         break if point_limit_met?
         continue_next_game
@@ -73,6 +71,7 @@ class RPSGame
       display_round_winner(result)
       break unless play_again?
       reset_scores
+      Result.reset_history
     end
     display_goodbye
   end
