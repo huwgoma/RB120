@@ -17,8 +17,8 @@ class Result
     @@history << self
   end
 
-  def self.history(n = 5)
-    @@history.last(n)
+  def self.history
+    @@history
   end
 
   def self.reset_history

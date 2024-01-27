@@ -70,7 +70,8 @@ class Computer < Player
   def initialize(opponent)
     super()
     @opponent = opponent
-    # Refactor this so MOVE_RATES aren't necessary?
+    # Refactor this so MOVE_RATES aren't necessary for CPU subclasses to define 
+    #   (Optionally may provide MOVE_RATES)
     @move_weights = calculate_weighted_ranges
   end
 
@@ -117,29 +118,29 @@ class Computer < Player
 end
 
 # CPU Subclasses
-# class RandomBot < Computer
-#   MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
+class RandomBot < Computer
+  MOVE_RATES = [0.2, 0.2, 0.2, 0.2, 0.2]
 
-#   def personality
-#     "will pick moves at complete random."
-#   end
-# end
+  def personality
+    "will pick moves at complete random."
+  end
+end
 
-# class R2D2 < Computer
-#   MOVE_RATES = [1.0, 0, 0, 0, 0]
+class R2D2 < Computer
+  MOVE_RATES = [1.0, 0, 0, 0, 0]
 
-#   def personality
-#     "will only pick Rock."
-#   end
-# end
+  def personality
+    "will only pick Rock."
+  end
+end
 
-# class Hal < Computer
-#   MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
+class Hal < Computer
+  MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
 
-#   def personality
-#     "will most likely pick Scissors, and will never pick Paper."
-#   end
-# end
+  def personality
+    "will most likely pick Scissors, and will never pick Paper."
+  end
+end
 
 # Mahoraga
 class Mahoraga < Computer
@@ -163,65 +164,53 @@ class Mahoraga < Computer
 
   private
 
-  # Return a String value representing the next move
   def calculate_move
-    return late_throw if fully_adapted?
-    Move::VALUES.sample
-    # If 8 turns have passed (fully adapted?), return late_throw 
-    #   => 'Value' that will always win
+    last_result = Result.history.last
 
-    # If first_game? or last_game_tied?, choose a random value (Move::VALUES.sample)
-
-    # Else (Not first game, and not tied last time):
-    #   adapt_move
+    moves = case 
+            when fully_adapted?
+              late_throw
+            when first_game?(last_result) || last_result.tie?
+              Move::VALUES
+            else
+              adapt_move(last_result)
+            end
+    moves.sample
   end
-
-
-
-  # attr_reader :last_result
 
   def fully_adapted?
     @adaptation_counter >= 8
   end
 
-  def late_throw
-    find_winning_hands(opponent.move.value).sample
+  def first_game?(last_result)
+    last_result.nil?
   end
 
-  # Psychologically: Players tend to change their hand to what would have won (if they lose);
-  # if they won, they will tend to stay with the same hand.
-  def adapt_next_move
+  def won_last_game?(last_result)
+    last_result.winner == self
+  end
+
+  def late_throw
+    find_winning_hands(opponent.move.value)
+  end
+
+  # Psychologically:
+  # - If someone wins, they are likely to stay with the same hand.
+  # - If they lose, they are likely to switch to a hand that would have beaten the
+  #   previous winning hand.
+  def adapt_move(last_result)
     first_adaptation = find_winning_hands(last_result.winning_value)
 
-    move = if last_result.winner == self
-             find_winning_hands(*first_adaptation).sample
-           else
-             first_adaptation.sample      
-           end
-    move || Move::VALUES.sample # Failsafe
+    if won_last_game?(last_result)
+      find_winning_hands(*first_adaptation)
+    else
+      first_adaptation
+    end
   end
 
   def find_winning_hands(*values_to_beat)
     Move::VALUES.select do |hand|
-      # Select all hands that are capable of winning against all given values.
-      values_to_beat.all? { |value| class_of(hand)::WINS_AGAINST.keys.include?(value) }
-      # (values_to_beat - class_of(hand)::WINS_AGAINST.keys).empty?
+      (values_to_beat - class_of(hand)::WINS_AGAINST.keys).empty?
     end
   end
 end
-
-# Bug with Result.history and last_result.nil?
-
-
-# Implement new data structure in Result, keeping track of games specifically within a round.
-
-# 8-turn limit
-# Need a data structure (maybe Result@@round_history?) to track games in a round
-# - Reset between rounds.
-
-
-# If Result.round_history.size >= 8, late_throw (cheat)
-
-# Else: If last_game tied? or first_game? (last_game.nil), super (random)
-
-# Else: 

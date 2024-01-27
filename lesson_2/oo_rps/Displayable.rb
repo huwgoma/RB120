@@ -26,11 +26,8 @@ crushes Scissors.
   
   def display_history
     history = Result.history
-    return if history.size.zero?
-    puts "Last #{history.size} games:"
-    # pluralize
+    puts "Games played in this round: #{history.size}"
     puts history
-
     line_break
   end
 
