@@ -17,9 +17,12 @@ class Result
     @@history << self
   end
 
+  # full history
   def self.history(n = 5)
     @@history.last(n)
   end
+
+  # round history
 
   def tie?
     move1 == move2

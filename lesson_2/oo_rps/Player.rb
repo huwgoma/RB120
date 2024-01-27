@@ -156,7 +156,7 @@ class Mahoraga < Computer
   end
 
   def personality
-    "will adapt"
+    "will adapt to your moves. If you don't end the game quickly, you might have a bit of trouble..."
   end
 
   private
@@ -185,6 +185,20 @@ class Mahoraga < Computer
   end
 end
 
+# Bug with Result.history and last_result.nil?
+# - If we play one round, then do another round and the CPU switches to Maho, 
+#   last_result will not be nil, and Maho will adapt to the result of the last game of the
+#   last round (but we want it to be random)
+
+# Implement new data structure in Result, keeping track of games specifically within a round.
+
 # 8-turn limit
 # Need a data structure (maybe Result@@round_history?) to track games in a round
-# - Clear between rounds.
+# - Reset between rounds.
+
+
+# If Result.round_history.size >= 8, late_throw (cheat)
+
+# Else: If last_game tied? or first_game? (last_game.nil), super (random)
+
+# Else: 
