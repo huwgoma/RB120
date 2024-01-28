@@ -21,7 +21,7 @@ module Displayable
     display_history
     display_scores
   end
-  
+
   def display_history
     history = Result.history
     puts "Games played in this round: #{history.size}"
@@ -31,18 +31,18 @@ module Displayable
 
   def display_truncated_history(history)
     truncated_history = history.last(5)
-    unless truncated_history.empty?
-      puts "Last #{truncated_history.size} games:"
-      puts truncated_history
-    end
+    return if truncated_history.empty?
+    puts "Last #{truncated_history.size} games:"
+    puts truncated_history
   end
 
   def display_scores
-    puts "Current score: #{human}: #{human.score}, #{computer}: #{computer.score}"
+    puts "Score: #{human}: #{human.score}, #{computer}: #{computer.score}"
   end
 
   def display_round_winner(result)
-    winner, loser = result.winner, result.loser
+    winner = result.winner
+    loser = result.loser
     puts "#{winner} wins the round, #{winner.score}-#{loser.score}!"
   end
 

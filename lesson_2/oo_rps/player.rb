@@ -1,5 +1,5 @@
-require_relative 'Move'
-require_relative 'ClassConverter'
+require_relative 'move'
+require_relative 'class_converter'
 
 # Player Superclass
 class Player
@@ -40,12 +40,12 @@ class Human < Player
         break
       elsif choices.empty?
         puts "Invalid input! Please enter one of the following choices:"
-        puts "#{Move.choices}"
+        puts Move.choices
       else
         puts "Did you mean one of these?"
         puts choices
       end
-    end    
+    end
   end
 
   private
@@ -54,7 +54,7 @@ class Human < Player
     loop do
       puts "Please enter your name:"
       name = gets.chomp
-      next puts "Your name can't be blank!" if name.strip.empty? 
+      next puts "Your name can't be blank!" if name.strip.empty?
       self.name = name
       break
     end
@@ -73,7 +73,7 @@ class Computer < Player
   end
 
   def self.random_new(opponent)
-    self.subclasses.sample.new(opponent)
+    subclasses.sample.new(opponent)
   end
 
   def choose_move
@@ -89,7 +89,7 @@ class Computer < Player
   attr_reader :weighted_moves
 
   def set_name
-    self.name = self.class.to_s 
+    self.name = self.class.to_s
   end
 
   def generate_random_move
@@ -170,10 +170,9 @@ class Mahoraga < Computer
   def calculate_move
     last_result = Result.history.last
 
-    moves = case 
-            when fully_adapted?
+    moves = if fully_adapted?
               late_throw
-            when first_game?(last_result) || last_result.tie?
+            elsif first_game?(last_result) || last_result.tie?
               Move::VALUES
             else
               adapt_move(last_result)

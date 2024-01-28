@@ -1,4 +1,4 @@
-require_relative 'ClassConverter'
+require_relative 'class_converter'
 
 # Result of 2 Moves
 class Result
@@ -9,7 +9,8 @@ class Result
   @@history = []
 
   def initialize(move1, move2)
-    @move1, @move2 = move1, move2
+    @move1 = move1
+    @move2 = move2
     @loser, @winner = calculate_winner_and_loser
     @winning_value = winner&.move&.value
     @outcome = calculate_outcome
@@ -33,7 +34,7 @@ class Result
     if tie?
       puts "You both picked #{move1} - #{outcome}!"
     else
-      puts "#{winner.move} #{winning_action} #{loser.move} - #{outcome}!" 
+      puts "#{winner.move} #{winning_action} #{loser.move} - #{outcome}!"
     end
   end
 

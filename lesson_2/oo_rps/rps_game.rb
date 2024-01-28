@@ -1,15 +1,15 @@
 require 'io/console'
 require 'pry'
 
-require_relative 'Player'
-require_relative 'Move'
-require_relative 'Result'
-require_relative 'Displayable'
+require_relative 'player'
+require_relative 'move'
+require_relative 'result'
+require_relative 'displayable'
 
 # Game Engine:
 class RPSGame
   include Displayable
-  
+
   def initialize
     system('clear')
     display_rules
@@ -28,7 +28,7 @@ class RPSGame
         break if point_limit_met?
         continue_next_game
       end
-      
+
       display_round_winner(Result.history.last)
       break unless play_again?
       reset_round_state
@@ -42,7 +42,7 @@ class RPSGame
 
   def play_game
     display_game_state
-        
+
     choose_moves
     result = Result.new(human.move, computer.move)
     result.winner.increment_score unless result.tie?
@@ -60,7 +60,7 @@ class RPSGame
       puts "How many points would you like to play up to? (1-10)"
       limit = gets.chomp
       if ('1'..'10').include?(limit)
-        @point_limit = limit.to_i 
+        @point_limit = limit.to_i
         break
       else
         puts "Please enter a point limit between 1 and 10!"
@@ -74,7 +74,7 @@ class RPSGame
 
   def continue_next_game
     puts "Press any key to continue:"
-    STDIN.getch 
+    $stdin.getch
   end
 
   def play_again?
