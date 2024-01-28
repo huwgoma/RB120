@@ -23,23 +23,15 @@ class RPSGame
       set_point_limit
 
       loop do
-        display_game_state
-        
-        choose_moves
-        result = Result.new(human.move, computer.move)
-        result.winner.increment_score unless result.tie?
+        play_game
 
-        display_game_state
-        result.announce
-        
         break if point_limit_met?
         continue_next_game
       end
       
       display_round_winner(Result.history.last)
       break unless play_again?
-      reset_scores
-      Result.reset_history
+      reset_round_state
     end
     display_goodbye
   end
@@ -47,6 +39,17 @@ class RPSGame
   private
 
   attr_reader :human, :computer, :point_limit
+
+  def play_game
+    display_game_state
+        
+    choose_moves
+    result = Result.new(human.move, computer.move)
+    result.winner.increment_score unless result.tie?
+
+    display_game_state
+    result.announce
+  end
 
   def choose_moves
     [human, computer].each(&:choose_move)
@@ -83,8 +86,9 @@ class RPSGame
     end
   end
 
-  def reset_scores
+  def reset_round_state
     [human, computer].each(&:reset_score)
+    Result.clear_history
   end
 end
 

@@ -30,16 +30,6 @@ end
 
 # Human Player
 class Human < Player
-  def set_name
-    loop do
-      puts "Please enter your name:"
-      name = gets.chomp
-      next puts "Your name can't be blank!" if name.strip.empty? 
-      self.name = name
-      break
-    end
-  end
-
   def choose_move
     puts "Please choose #{Move.choices}:"
     loop do
@@ -60,6 +50,16 @@ class Human < Player
 
   private
 
+  def set_name
+    loop do
+      puts "Please enter your name:"
+      name = gets.chomp
+      next puts "Your name can't be blank!" if name.strip.empty? 
+      self.name = name
+      break
+    end
+  end
+
   def match_choices(choice)
     Move::VALUES.select { |value| value.start_with?(choice.capitalize) }
   end
@@ -76,10 +76,6 @@ class Computer < Player
     self.subclasses.sample.new(opponent)
   end
 
-  def set_name
-    self.name = self.class.to_s 
-  end
-
   def choose_move
     self.move = Move.new(generate_random_move, self)
   end
@@ -91,6 +87,10 @@ class Computer < Player
   private
 
   attr_reader :weighted_moves
+
+  def set_name
+    self.name = self.class.to_s 
+  end
 
   def generate_random_move
     if weighted_moves

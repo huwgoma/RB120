@@ -21,7 +21,7 @@ class Result
     @@history
   end
 
-  def self.reset_history
+  def self.clear_history
     @@history.clear
   end
 

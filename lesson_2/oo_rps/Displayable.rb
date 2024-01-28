@@ -1,7 +1,5 @@
 # Namespace for Display methods
 module Displayable
-  private
-  
   def display_rules
     puts 'Welcome to Rock Paper Scissors Lizard Spock!'
     puts 'The rules are as follows:'

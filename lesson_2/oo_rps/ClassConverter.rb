@@ -1,6 +1,5 @@
-# Module for #class_of method
-# - Converts a string or symbol to a constant (Class) name.
-
+# Convert a String or Symbol to the corresponding constant,
+# or nil if that constant is undefined.
 module ClassConverter
   def class_of(value)
     begin

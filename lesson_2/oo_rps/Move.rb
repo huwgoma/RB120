@@ -67,6 +67,6 @@ end
 #   eg. Rock objects, since every Rock object will be exactly the same, with no
 #   variance in states.
 # Semantically, it seems to make more sense to just use the 5 subclasses as name-
-#   spaces for either class methods or constants. For example, the information 
+#   spaces for class methods or constants; for example, the information 
 #   about what a 'Rock' wins against is a class-level detail that pertains to all
-#   Rocks as a whole.
+#   Rocks as a whole, rather than any one individual Rock.
