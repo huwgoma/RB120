@@ -31,19 +31,15 @@ end
 # Human Player
 class Human < Player
   def choose_move
-    puts "Please choose #{Move.choices}:"
+    puts "Please choose one of #{Move.choices}:"
     loop do
       choices = match_choices(gets.chomp)
 
-      if choices.one?
+      if valid_choice?(choices)
         self.move = Move.new(choices.first, self)
         break
-      elsif choices.empty?
-        puts "Invalid input! Please enter one of the following choices:"
-        puts Move.choices
       else
-        puts "Did you mean one of these?"
-        puts choices
+        puts move_choice_error(choices)
       end
     end
   end
@@ -60,6 +56,20 @@ class Human < Player
     end
   end
 
+  def valid_choice?(choices)
+    choices.one?
+  end
+
+  def move_choice_error(choices)
+    if choices.empty?
+      "Invalid input! Please enter one of the following choices:
+#{Move.choices}"
+    else
+      "Did you mean one of these?
+#{choices.join(', ')}"
+    end
+  end
+
   def match_choices(choice)
     Move::VALUES.select { |value| value.start_with?(choice.capitalize) }
   end
@@ -69,7 +79,8 @@ end
 class Computer < Player
   def initialize(_opponent)
     super()
-    @weighted_moves = calculate_move_weights if self.class.const_defined?('MOVE_RATES')
+    introduce
+    @weighted_moves = calculate_move_weights
   end
 
   def self.random_new(opponent)
@@ -80,16 +91,17 @@ class Computer < Player
     self.move = Move.new(generate_random_move, self)
   end
 
-  def describe_personality
-    puts "This CPU #{personality}"
-  end
-
   private
 
   attr_reader :weighted_moves
 
   def set_name
     self.name = self.class.to_s
+  end
+
+  def introduce
+    puts "You will be playing against #{name} this round."
+    puts "This CPU #{personality}"
   end
 
   def generate_random_move
@@ -102,6 +114,8 @@ class Computer < Player
   end
 
   def calculate_move_weights
+    return unless self.class.const_defined?('MOVE_RATES')
+
     move_rates = self.class::MOVE_RATES
     range_start = 0
 
@@ -109,7 +123,7 @@ class Computer < Player
       move_rate = move_rates[index]
       next if move_rate.zero?
 
-      range = calculate_range(range_start, move_rate) #=> eg. 1..20
+      range = calculate_range(range_start, move_rate)
       ranges[move] = range
       range_start = range.end
     end
@@ -160,7 +174,8 @@ class Mahoraga < Computer
   end
 
   def personality
-    "will adapt to your moves. If you don't end the game quickly, you might have a bit of trouble..."
+    "will adapt to your moves.
+If you don't end the game quickly, you might have a bit of trouble..."
   end
 
   private
@@ -198,8 +213,8 @@ class Mahoraga < Computer
 
   # Psychologically:
   # - If someone wins, they are likely to stay with the same hand.
-  # - If they lose, they are likely to switch to a hand that would have beaten the
-  #   previous winning hand.
+  # - If they lose, they are likely to switch to a hand that would
+  #   have beaten the previous winning hand.
   def adapt_move(last_result)
     first_adaptation = find_winning_values(last_result.winning_value)
 

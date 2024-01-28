@@ -13,7 +13,7 @@ module Displayable
 
   def introduce_computer
     puts "Your opponent this round is #{computer}."
-    computer.describe_personality
+    computer.introduce
   end
 
   def display_game_state
@@ -24,7 +24,7 @@ module Displayable
 
   def display_history
     history = Result.history
-    puts "Games played in this round: #{history.size}"
+    puts "Games played this round: #{history.size}"
     display_truncated_history(history)
     line_break
   end

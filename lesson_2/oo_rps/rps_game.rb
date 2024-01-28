@@ -16,25 +16,25 @@ class RPSGame
     @human = Human.new
   end
 
+  # rubocop:disable Metrics/MethodLength
   def play
     loop do
       @computer = Computer.random_new(human)
-      introduce_computer
       set_point_limit
 
       loop do
         play_game
-
         break if point_limit_met?
         continue_next_game
       end
 
       display_round_winner(Result.history.last)
       break unless play_again?
-      reset_round_state
+      reset_round
     end
     display_goodbye
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
@@ -86,7 +86,7 @@ class RPSGame
     end
   end
 
-  def reset_round_state
+  def reset_round
     [human, computer].each(&:reset_score)
     Result.clear_history
   end

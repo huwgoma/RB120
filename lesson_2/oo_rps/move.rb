@@ -61,12 +61,3 @@ class Spock < Move
     'Rock' => 'vaporizes', 'Scissors' => 'smashes'
   }
 end
-
-# I did not like the design decision to create 5 separate classes for each type
-#   of Move. It does not feel like there is really any point to instantiating
-#   eg. Rock objects, since every Rock object will be exactly the same, with no
-#   variance in states.
-# Semantically, it seems to make more sense to just use the 5 subclasses as name-
-#   spaces for class methods or constants; for example, the information
-#   about what a 'Rock' wins against is a class-level detail that pertains to all
-#   Rocks as a whole, rather than any one individual Rock.
