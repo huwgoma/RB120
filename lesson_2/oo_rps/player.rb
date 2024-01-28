@@ -136,27 +136,27 @@ class Computer < Player
 end
 
 # CPU Subclasses
-class RandomBot < Computer
-  def personality
-    "will pick moves at complete random."
-  end
-end
+# class RandomBot < Computer
+#   def personality
+#     "will pick moves at complete random."
+#   end
+# end
 
-class R2D2 < Computer
-  MOVE_RATES = [1.0, 0, 0, 0, 0]
+# class R2D2 < Computer
+#   MOVE_RATES = [1.0, 0, 0, 0, 0]
 
-  def personality
-    "will only pick Rock."
-  end
-end
+#   def personality
+#     "will only pick Rock."
+#   end
+# end
 
-class Hal < Computer
-  MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
+# class Hal < Computer
+#   MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
 
-  def personality
-    "will most likely pick Scissors, and will never pick Paper."
-  end
-end
+#   def personality
+#     "will most likely pick Scissors, and will never pick Paper."
+#   end
+# end
 
 # Mahoraga
 class Mahoraga < Computer
@@ -165,12 +165,13 @@ class Mahoraga < Computer
   def initialize(opponent)
     super(opponent)
     @opponent = opponent
-    @adaptation_counter = 0
+    
+    @adaptations = initialize_adaptations
   end
 
   def choose_move
+    increment_adaptation
     self.move = Move.new(calculate_move, self)
-    @adaptation_counter += 1
   end
 
   def personality
@@ -180,12 +181,20 @@ If you don't end the game quickly, you might have a bit of trouble..."
 
   private
 
-  attr_reader :opponent
+  attr_reader :opponent, :adaptations
+
+  def initialize_adaptations
+    Move::VALUES.map { |value| [value, 0] }.to_h
+  end
+
+  def increment_adaptation
+    adaptations[opponent.move.value] += 1
+  end
 
   def calculate_move
     last_result = Result.history.last
 
-    moves = if fully_adapted?
+    moves = if fully_adapted?(opponent.move.value)
               late_throw
             elsif first_game?(last_result) || last_result.tie?
               Move::VALUES
@@ -195,8 +204,8 @@ If you don't end the game quickly, you might have a bit of trouble..."
     moves.sample
   end
 
-  def fully_adapted?
-    @adaptation_counter >= 8
+  def fully_adapted?(value)
+    adaptations[value] >= 4
   end
 
   def first_game?(last_result)
