@@ -135,7 +135,7 @@ class Computer < Player
   end
 end
 
-CPU Subclasses
+# CPU Subclasses
 class RandomBot < Computer
   def personality
     "will pick moves at complete random."
@@ -158,7 +158,6 @@ class Hal < Computer
   end
 end
 
-# Mahoraga
 class Mahoraga < Computer
   include ClassConverter
 
