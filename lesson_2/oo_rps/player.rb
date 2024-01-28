@@ -200,7 +200,6 @@ If you don't end the game quickly, you might have a bit of trouble..."
             else
               adapt_move(last_result)
             end
-            #binding.pry
     moves.sample
   end
 
