@@ -135,28 +135,28 @@ class Computer < Player
   end
 end
 
-# CPU Subclasses
-# class RandomBot < Computer
-#   def personality
-#     "will pick moves at complete random."
-#   end
-# end
+CPU Subclasses
+class RandomBot < Computer
+  def personality
+    "will pick moves at complete random."
+  end
+end
 
-# class R2D2 < Computer
-#   MOVE_RATES = [1.0, 0, 0, 0, 0]
+class R2D2 < Computer
+  MOVE_RATES = [1.0, 0, 0, 0, 0]
 
-#   def personality
-#     "will only pick Rock."
-#   end
-# end
+  def personality
+    "will only pick Rock."
+  end
+end
 
-# class Hal < Computer
-#   MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
+class Hal < Computer
+  MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
 
-#   def personality
-#     "will most likely pick Scissors, and will never pick Paper."
-#   end
-# end
+  def personality
+    "will most likely pick Scissors, and will never pick Paper."
+  end
+end
 
 # Mahoraga
 class Mahoraga < Computer
@@ -165,13 +165,12 @@ class Mahoraga < Computer
   def initialize(opponent)
     super(opponent)
     @opponent = opponent
-    
     @adaptations = initialize_adaptations
   end
 
   def choose_move
-    increment_adaptation
     self.move = Move.new(calculate_move, self)
+    increment_adaptation
   end
 
   def personality
@@ -201,6 +200,7 @@ If you don't end the game quickly, you might have a bit of trouble..."
             else
               adapt_move(last_result)
             end
+            #binding.pry
     moves.sample
   end
 
