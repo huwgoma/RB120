@@ -36,7 +36,7 @@ class Human < Player
       choices = match_choices(gets.chomp)
 
       if valid_choice?(choices)
-        self.move = Move.new(choices.first, self)
+        self.move = MoveFactory.create_move(choices.first, self)
         break
       else
         puts move_choice_error(choices)
@@ -88,7 +88,8 @@ class Computer < Player
   end
 
   def choose_move
-    self.move = Move.new(generate_random_move, self)
+    self.move = MoveFactory.create_move(generate_random_move, self)
+    # Move.new(generate_random_move, self)
   end
 
   private
@@ -168,7 +169,7 @@ class Mahoraga < Computer
   end
 
   def choose_move
-    self.move = Move.new(calculate_move, self)
+    self.move = MoveFactory.create_move(calculate_move, self) 
     increment_adaptation
   end
 

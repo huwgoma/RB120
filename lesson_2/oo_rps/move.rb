@@ -22,6 +22,9 @@ require_relative 'class_converter'
 #   => 0 if @type == other_move.type
 #   => 1 if self.WINS_AGAINST contains a key matching the other_move.type 
 
+# Choosing Moves:
+# - Generate string, validate if player
+# - pass String to MoveFactory along with self (player owner)
 
 
 # Move Superclass
@@ -29,13 +32,13 @@ class Move
   include ClassConverter
   include Comparable
 
-  attr_reader :owner, :value
+  attr_reader :owner, :type
 
   VALUES = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock']
 
-  def initialize(value, owner)
-    @value = value
+  def initialize(owner)
     @owner = owner
+    @type = self.class.to_s
   end
 
   def self.choices
@@ -51,7 +54,7 @@ class Move
   end
 
   def to_s
-    value
+    type
   end
 end
 
@@ -84,4 +87,15 @@ class Spock < Move
   WINS_AGAINST = {
     'Rock' => 'vaporizes', 'Scissors' => 'smashes'
   }
+end
+
+# MoveFactory Class for creating Move subclass objects
+class MoveFactory
+  MOVE_TYPES = Move::VALUES.map do |value|
+    [value, Object.const_get(value)]
+  end.to_h
+
+  def self.create_move(type, owner)
+    MOVE_TYPES.fetch(type).new(owner)
+  end
 end
