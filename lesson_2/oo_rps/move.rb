@@ -49,9 +49,8 @@ class Move
   end
 
   def <=>(other_move)
-    return 0 if value == other_move.value
-
-    class_of(value)::WINS_AGAINST.key?(other_move.value) ? 1 : -1
+    return 0 if type == other_move.type
+    self.class::WINS_AGAINST.key?(other_move.type) ? 1 : -1
   end
 
   def to_s
