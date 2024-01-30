@@ -1,5 +1,3 @@
-require_relative 'class_converter'
-
 # Get rid of class converter
 # Create a new class: MoveFactory
 # - Takes an input string and creates/returns the corresponding move subclass object
@@ -29,7 +27,6 @@ require_relative 'class_converter'
 
 # Move Superclass
 class Move
-  include ClassConverter
   include Comparable
 
   attr_reader :owner, :type
@@ -40,6 +37,10 @@ class Move
     @owner = owner
     @type = self.class.to_s
     # change all instances of move.value to move.type (and VALUES => TYPES?)
+  end
+
+  def self.types
+    VALUES.map { |type| [type, Object.const_get(type)] }.to_h
   end
 
   def self.choices
@@ -91,11 +92,7 @@ end
 
 # MoveFactory Class for creating Move subclass objects
 class MoveFactory
-  MOVE_TYPES = Move::VALUES.map do |value|
-    [value, Object.const_get(value)]
-  end.to_h
-
   def self.create_move(type, owner)
-    MOVE_TYPES.fetch(type).new(owner)
+    Move.types[type].new(owner)
   end
 end

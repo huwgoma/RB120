@@ -1,5 +1,4 @@
 require_relative 'move'
-require_relative 'class_converter'
 
 # Player Superclass
 class Player
@@ -89,7 +88,6 @@ class Computer < Player
 
   def choose_move
     self.move = MoveFactory.create_move(generate_random_move, self)
-    # Move.new(generate_random_move, self)
   end
 
   private
@@ -137,31 +135,29 @@ class Computer < Player
 end
 
 # CPU Subclasses
-class RandomBot < Computer
-  def personality
-    "will pick moves at complete random."
-  end
-end
+# class RandomBot < Computer
+#   def personality
+#     "will pick moves at complete random."
+#   end
+# end
 
-class R2D2 < Computer
-  MOVE_RATES = [1.0, 0, 0, 0, 0]
+# class R2D2 < Computer
+#   MOVE_RATES = [1.0, 0, 0, 0, 0]
 
-  def personality
-    "will only pick Rock."
-  end
-end
+#   def personality
+#     "will only pick Rock."
+#   end
+# end
 
-class Hal < Computer
-  MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
+# class Hal < Computer
+#   MOVE_RATES = [0.1, 0, 0.7, 0.1, 0.1]
 
-  def personality
-    "will most likely pick Scissors, and will never pick Paper."
-  end
-end
+#   def personality
+#     "will most likely pick Scissors, and will never pick Paper."
+#   end
+# end
 
 class Mahoraga < Computer
-  include ClassConverter
-
   def initialize(opponent)
     super(opponent)
     @opponent = opponent
@@ -235,7 +231,7 @@ If you don't end the game quickly, you might have a bit of trouble..."
 
   def find_winning_values(*values_to_beat)
     Move::VALUES.select do |value|
-      (values_to_beat - class_of(value)::WINS_AGAINST.keys).empty?
+      (values_to_beat - Move.types[value]::WINS_AGAINST.keys).empty?
     end
   end
 end

@@ -1,9 +1,5 @@
-require_relative 'class_converter'
-
 # Result of 2 Moves
 class Result
-  include ClassConverter
-
   attr_reader :winner, :loser, :winning_value, :outcome
 
   @@history = []
@@ -60,6 +56,6 @@ class Result
   end
 
   def winning_action
-    class_of(winner.move.type)::WINS_AGAINST[loser.move.type]
+    winner.move.class::WINS_AGAINST[loser.move.type]
   end
 end
