@@ -187,13 +187,13 @@ If you don't end the game quickly, you might have a bit of trouble..."
   end
 
   def increment_adaptation
-    adaptations[opponent.move.value] += 1
+    adaptations[opponent.move.type] += 1
   end
 
   def calculate_move
     last_result = Result.history.last
 
-    moves = if fully_adapted?(opponent.move.value)
+    moves = if fully_adapted?(opponent.move.type)
               late_throw
             elsif first_game?(last_result) || last_result.tie?
               Move::VALUES
@@ -216,7 +216,7 @@ If you don't end the game quickly, you might have a bit of trouble..."
   end
 
   def late_throw
-    find_winning_values(opponent.move.value)
+    find_winning_values(opponent.move.type)
   end
 
   # Psychologically:

@@ -12,7 +12,7 @@ class Result
     @move1 = move1
     @move2 = move2
     @loser, @winner = calculate_winner_and_loser
-    @winning_value = winner&.move&.value
+    @winning_value = winner&.move&.type
     @outcome = calculate_outcome
 
     @@history << self
@@ -60,6 +60,6 @@ class Result
   end
 
   def winning_action
-    class_of(winner.move.value)::WINS_AGAINST[loser.move.value]
+    class_of(winner.move.type)::WINS_AGAINST[loser.move.type]
   end
 end

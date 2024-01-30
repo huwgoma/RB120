@@ -39,6 +39,7 @@ class Move
   def initialize(owner)
     @owner = owner
     @type = self.class.to_s
+    # change all instances of move.value to move.type (and VALUES => TYPES?)
   end
 
   def self.choices
