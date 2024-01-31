@@ -1,30 +1,3 @@
-# Get rid of class converter
-# Create a new class: MoveFactory
-# - Takes an input string and creates/returns the corresponding move subclass object
-# eg. MoveFactory.create_move(type, owner)
-# Given a string (type) and a player object (owner):
-#   Verify that type is a key in MOVE_TYPES - if not, raise error (? necessary? we are already verifying input )
-#   If type is indeed a key:
-#     Create and return the object of the corresponding type (eg. 'Rock' => new Rock object )
-
-# Data:
-# Hash containing the String-Constant conversions, MOVE_TYPES
-#   { 'Rock' => Rock, 'Paper' => Paper, ... }
-# 
-
-# Comparing Moves
-# Each class should maintain WINS_AGAINST hash
-#   { 'Scissors' => 'crushes' }
-# Move#<=>
-# - Compare using @type (self.class.to_s) - string representation of the move's type
-#   => 0 if @type == other_move.type
-#   => 1 if self.WINS_AGAINST contains a key matching the other_move.type 
-
-# Choosing Moves:
-# - Generate string, validate if player
-# - pass String to MoveFactory along with self (player owner)
-
-
 # Move Superclass
 class Move
   include Comparable
@@ -92,7 +65,9 @@ end
 
 # MoveFactory Class for creating Move subclass objects
 class MoveFactory
+  MOVE_TYPES = Move.types
+
   def self.create_move(type, owner)
-    Move.types[type].new(owner)
+    MOVE_TYPES[type].new(owner)
   end
 end
