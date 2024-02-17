@@ -50,11 +50,11 @@ class Board
   end
 
   def has_winner?(current_marker)
-    !!detect_winner(current_marker)
+    !!winning_marker(current_marker)
   end
 
   # Return the marker of the winner, or nil if no winner
-  def detect_winner(current_marker)
+  def winning_marker(current_marker)
     WIN_CONS.each do |line|
       return current_marker if winning_line?(line, current_marker)
     end

@@ -11,13 +11,14 @@ class TTTGame
   attr_reader :board, :human, :computer
 
   def initialize
+    display_welcome
     @board = Board.new
     @human = Human.new('X', board)
     @computer = Computer.new('O', board)
   end
 
   def play
-    display_welcome
+    # Display Rules
     
     set_current_player
     # Program Loop
@@ -26,9 +27,9 @@ class TTTGame
 
       # Game Loop
       loop do
-        # display game state
+        display_gamestate
         board.mark_at(current_player.choose_move, current_player.marker)
-        board.clear_and_draw
+        display_gamestate
         break if board.full? || board.has_winner?(current_player.marker)
 
         switch_current_player
@@ -64,7 +65,7 @@ class TTTGame
       return answer == 'y' if %w(y n).include?(answer)
       puts "Sorry - please enter y or n."
     end
-  end  
+  end
 end
 
 TTTGame.new.play

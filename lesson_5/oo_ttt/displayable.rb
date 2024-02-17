@@ -10,12 +10,15 @@ module Displayable
   end
 
   def display_gamestate
-    # Display Header (Hugo (X): 0, Computer(O): 0)
+    clear
+    puts "#{human} (#{human.marker}): <Score>"
+    puts "#{computer} (#{computer.marker}): <CPUScore>"
+    puts " "
     board.draw
   end
 
   def display_result
-    case board.detect_winner(current_player.marker)
+    case board.winning_marker(current_player.marker)
     when human.marker    then puts 'You won!'
     when computer.marker then puts 'Computer won!'
     else                      puts "It's a tie!"
