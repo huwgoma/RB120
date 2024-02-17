@@ -8,13 +8,15 @@ require_relative 'square'
 class TTTGame
   include Displayable
   
+  MARKERS = ['X', 'O'] # ?
+
   attr_reader :board, :human, :computer
 
   def initialize
     display_welcome
     @board = Board.new
-    @human = Human.new('X', board)
-    @computer = Computer.new('O', board)
+    @human = Human.new(MARKERS.first, board)
+    @computer = Computer.new(MARKERS.last, board)
   end
 
   def play
@@ -30,7 +32,7 @@ class TTTGame
         display_gamestate
         board.mark_at(current_player.choose_move, current_player.marker)
         display_gamestate
-        break if board.full? || board.has_winner?(current_player.marker)
+        break if board.full? || board.has_winner?
 
         switch_current_player
       end

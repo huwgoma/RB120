@@ -18,7 +18,7 @@ module Displayable
   end
 
   def display_result
-    case board.winning_marker(current_player.marker)
+    case board.winning_marker
     when human.marker    then puts 'You won!'
     when computer.marker then puts 'Computer won!'
     else                      puts "It's a tie!"

@@ -1,4 +1,5 @@
 require_relative 'displayable'
+# require_relative 'square'
 
 class Board
   include Displayable
@@ -49,20 +50,23 @@ class Board
     unmarked_keys.empty?
   end
 
-  def has_winner?(current_marker)
-    !!winning_marker(current_marker)
+  def has_winner?
+    !!winning_marker
   end
 
   # Return the marker of the winner, or nil if no winner
-  def winning_marker(current_marker)
+  def winning_marker
     WIN_CONS.each do |line|
-      return current_marker if winning_line?(line, current_marker)
+      first_square = squares[line.first]
+      next if first_square.empty?
+
+      return first_square.value if all_in_a_row?(line)
     end
     nil
   end
 
-  def winning_line?(line, marker)
-    squares.values_at(*line).all? { |square| square.value == marker }
+  def all_in_a_row?(line)
+    squares.values_at(*line).map(&:value).uniq.one?
   end
 
   def reset
