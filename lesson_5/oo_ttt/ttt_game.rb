@@ -22,13 +22,13 @@ class TTTGame
     set_current_player
     # Program Loop
     loop do
-      board.clear_and_display
+      board.clear_and_draw
 
       # Game Loop
       loop do
         # display game state
         board.mark_at(current_player.choose_move, current_player.marker)
-        board.clear_and_display
+        board.clear_and_draw
         break if board.full? || board.has_winner?(current_player.marker)
 
         switch_current_player
@@ -42,6 +42,13 @@ class TTTGame
     display_goodbye
   end
 
+
+  
+
+  private
+
+  attr_accessor :current_player, :next_player
+
   def set_current_player
     @current_player, @next_player = human, computer
   end
@@ -49,10 +56,6 @@ class TTTGame
   def switch_current_player
     self.current_player, self.next_player = next_player, current_player
   end
-
-  private
-
-  attr_accessor :current_player, :next_player
 
   def play_again?
     loop do
@@ -65,3 +68,30 @@ class TTTGame
 end
 
 TTTGame.new.play
+# Program flow:
+# Start
+# - Welcome to TTT! 
+# - (Rules) You and the computer opponent take turns marking a (GRIDSIZE x GRIDSIZE)
+#   board. If you successfully mark (GRIDSIZE) squares in a row, you win!
+# - What's your name? (cant be empty)
+# - Initialize the @board, @human (name), and @computer
+# Let's get started! => (Program loop)
+#   => Round Loop
+#     - How many wins would you like to play up to? (1-10)
+#     => (Game Loop)
+#       - Randomly set current player
+#       - Clear screen
+#       - Display game state (Header + Board)
+
+#       - Current player chooses move
+#       - Clear screen
+#       - Display game state (Header + Board)
+#       - Check for winner / full
+#         - If neither, switch current player and re-loop game loop
+#         - If game ends, increment current player's score
+#           - Hugo wins!/Computer wins!
+#       (End Game Loop)
+#   - Check if current player's score is == or > than win limit
+#    - If true, end round loop, otherwise re-loop round loop
+#   (exit round loop)
+#   - Play again? (y -> re-loop program loop; n -> exit)

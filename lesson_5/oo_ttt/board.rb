@@ -14,7 +14,7 @@ class Board
     @squares = create_squares
   end
 
-  def display
+  def draw
     puts " #{value_at(1)} | #{value_at(2)} | #{value_at(3)} "
     puts "---+---+---"
     puts " #{value_at(4)} | #{value_at(5)} | #{value_at(6)} "
@@ -22,9 +22,9 @@ class Board
     puts " #{value_at(7)} | #{value_at(8)} | #{value_at(9)} "
   end
 
-  def clear_and_display
+  def clear_and_draw
     clear
-    display
+    draw
   end
 
   def create_squares

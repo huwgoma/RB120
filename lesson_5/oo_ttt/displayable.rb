@@ -1,4 +1,4 @@
-# Container for display-related methods of TTTGame
+# Namespace for display-related methods of TTTGame
 module Displayable
   def clear
     system('clear')
@@ -7,6 +7,11 @@ module Displayable
   def display_welcome
     clear
     puts "Welcome to Tic Tac Toe!"
+  end
+
+  def display_gamestate
+    # Display Header (Hugo (X): 0, Computer(O): 0)
+    board.draw
   end
 
   def display_result
