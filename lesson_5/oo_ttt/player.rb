@@ -17,7 +17,9 @@ end
 # Human Player
 class Human < Player
   def choose_move(valid_choices)
-    puts "Choose an empty square (#{valid_choices.join(', ')}):"
+    #puts "Choose an empty square (#{valid_choices.join(', ')}):"
+    puts "Choose an empty square (#{valid_choices.joinor(', ')}):"
+    # joinor?
     loop do
       num = gets.chomp.to_i
       return num if valid_choices.include?(num)

@@ -41,3 +41,16 @@ module Displayable
     puts 'Thanks for playing - goodbye!'
   end
 end
+
+# Add #joinor method to Array
+class Array
+  def joinor(separator = '', last_separator = 'or ')
+    array = self.dup # Avoid caller mutation
+    case array.size
+    when 0..2 then array.join(last_separator)
+    when (3..)
+      last_item = array.pop
+      "#{array.join(separator)}#{separator}#{last_separator}#{last_item}"
+    end
+  end
+end
