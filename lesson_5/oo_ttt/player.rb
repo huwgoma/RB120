@@ -2,16 +2,25 @@
 
 # Player superclass
 class Player
-  attr_reader :marker, :name
+  attr_reader :marker, :name, :score
 
   def initialize(marker)
     @marker = marker
     @name = choose_name
+    @score = 0
   end
 
   def to_s
     name
   end
+
+  def increment_score
+    self.score += 1
+  end
+
+  private 
+
+  attr_writer :score
 end
 
 # Human Player

@@ -22,9 +22,9 @@ module Displayable
   end
 
   def display_gamestate
-    clear
-    puts "#{human} (#{human.marker}): <Score>"
-    puts "#{computer} (#{computer.marker}): <CPUScore>"
+    clear # ?
+    puts "#{human} (#{human.marker}): #{human.score}"
+    puts "#{computer} (#{computer.marker}): #{computer.score}"
     puts ' '
     board.draw
   end
