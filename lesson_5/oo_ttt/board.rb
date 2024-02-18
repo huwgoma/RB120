@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 require_relative 'displayable'
 
+# Represents TTT Board
 class Board
   include Displayable
-  
+
   GRID_LENGTH = 3
-  GRID_AREA = GRID_LENGTH ** 2
+  GRID_AREA = GRID_LENGTH**2
 
   def initialize
     @squares = create_squares
@@ -29,7 +32,7 @@ class Board
     clear
     draw
   end
-  
+
   def []=(key, value)
     squares[key].mark(value)
   end
@@ -42,7 +45,7 @@ class Board
     unmarked_keys.empty?
   end
 
-  def has_winner?
+  def winner?
     !!winning_marker
   end
 
@@ -57,7 +60,7 @@ class Board
   end
 
   def reset
-    squares.values.each(&:unmark)
+    squares.each_value(&:unmark)
   end
 
   private

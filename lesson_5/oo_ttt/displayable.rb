@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Namespace for display-related methods of TTTGame
 module Displayable
   def clear
@@ -6,14 +8,24 @@ module Displayable
 
   def display_welcome
     clear
-    puts "Welcome to Tic Tac Toe!"
+    puts 'Welcome to Tic Tac Toe!'
+  end
+
+  def display_rules
+    grid_length = Board::GRID_LENGTH
+
+    puts <<~RULES
+      The rules of this game are as follows:
+      You and the computer will take turns marking a #{grid_length}x#{grid_length} board.
+      If you mark #{grid_length} consecutive squares, you win!\n
+    RULES
   end
 
   def display_gamestate
     clear
     puts "#{human} (#{human.marker}): <Score>"
     puts "#{computer} (#{computer.marker}): <CPUScore>"
-    puts " "
+    puts ' '
     board.draw
   end
 
@@ -26,6 +38,6 @@ module Displayable
   end
 
   def display_goodbye
-    puts "Thanks for playing - goodbye!"
+    puts 'Thanks for playing - goodbye!'
   end
 end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Represents individual squares on a TTT Board
 class Square
   attr_reader :value
 

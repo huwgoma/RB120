@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Player superclass
 class Player
   attr_reader :marker, :name
 
@@ -11,12 +14,14 @@ class Player
   end
 end
 
+# Human Player
 class Human < Player
   def choose_move(valid_choices)
     puts "Choose an empty square (#{valid_choices.join(', ')}):"
     loop do
       num = gets.chomp.to_i
       return num if valid_choices.include?(num)
+
       puts "Sorry, that's not a valid choice."
     end
   end
@@ -26,11 +31,13 @@ class Human < Player
     loop do
       name = gets.chomp.strip
       return name unless name.empty?
+
       puts "You can't have an empty name!"
     end
   end
 end
 
+# CPU Player
 class Computer < Player
   def choose_move(valid_choices)
     valid_choices.sample

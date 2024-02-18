@@ -1,44 +1,37 @@
-require 'pry'
+# frozen_string_literal: true
 
+require 'pry'
 require_relative 'board'
 require_relative 'displayable'
 require_relative 'player'
 require_relative 'square'
 
+# Orchestration Engine for TTT Game
 class TTTGame
   include Displayable
-  
-  MARKERS = ['X', 'O'] # ?
+
+  MARKERS = %w[X O].freeze
 
   attr_reader :board, :human, :computer
 
   def initialize
     display_welcome
+    display_rules
     @board = Board.new
     @human = Human.new(MARKERS.first)
     @computer = Computer.new(MARKERS.last)
   end
 
   def play
-    # Display Rules
-    
     # Program Loop
     loop do
       set_current_player
-
-      board.clear_and_draw
       # Game Loop
-      loop do
-        display_gamestate
-        mark_board
-        display_gamestate
-
-        break if board.full? || board.has_winner?
-        switch_current_player
-      end
-
+      game_loop
       display_result
+
       break unless play_again?
+
       board.reset
     end
     display_goodbye
@@ -48,8 +41,21 @@ class TTTGame
 
   attr_accessor :current_player, :next_player
 
+  def game_loop
+    loop do
+      display_gamestate
+      mark_board
+      display_gamestate
+
+      break if board.full? || board.winner?
+
+      switch_current_player
+    end
+  end
+
   def set_current_player
-    @current_player, @next_player = human, computer
+    @current_player = human
+    @next_player = computer
   end
 
   def switch_current_player
@@ -63,10 +69,11 @@ class TTTGame
 
   def play_again?
     loop do
-      puts "Would you like to play again? (y/n)"
+      puts 'Would you like to play again? (y/n)'
       answer = gets.chomp.downcase
-      return answer == 'y' if %w(y n).include?(answer)
-      puts "Sorry - please enter y or n."
+      return answer == 'y' if %w[y n].include?(answer)
+
+      puts 'Sorry - please enter y or n.'
     end
   end
 end
@@ -74,7 +81,7 @@ end
 TTTGame.new.play
 # Program flow:
 # Start
-# - Welcome to TTT! 
+# - Welcome to TTT!
 # - (Rules) You and the computer opponent take turns marking a (GRIDSIZE x GRIDSIZE)
 #   board. If you successfully mark (GRIDSIZE) squares in a row, you win!
 # - What's your name? (cant be empty)
