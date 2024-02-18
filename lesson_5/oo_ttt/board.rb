@@ -1,5 +1,4 @@
 require_relative 'displayable'
-# require_relative 'square'
 
 class Board
   include Displayable
@@ -7,14 +6,71 @@ class Board
   GRID_LENGTH = 3
   GRID_AREA = GRID_LENGTH ** 2
 
-  attr_reader :squares, :win_conditions
-
   def initialize
     @squares = create_squares
     @win_conditions = calculate_win_conditions
   end
 
-  # Calculating win conditions of the board
+  def draw
+    cell_size = calculate_cell_size
+    row_partition = create_row_partition
+    column_partition = '|'
+
+    squares.each do |key, square|
+      partition = (key % GRID_LENGTH).zero? ? row_partition : column_partition
+      cell_value = square.empty? ? key.to_s : square.value
+      print cell_value.center(cell_size, ' ')
+      print partition unless key >= GRID_AREA
+    end
+    puts "\n"
+  end
+
+  def clear_and_draw
+    clear
+    draw
+  end
+  
+  def mark_at(key, value)
+    squares[key].mark(value)
+  end
+
+  def unmarked_keys
+    squares.keys.select { |key| squares[key].empty? }
+  end
+
+  def full?
+    unmarked_keys.empty?
+  end
+
+  def has_winner?
+    !!winning_marker
+  end
+
+  def winning_marker
+    win_conditions.each do |line|
+      first_square = squares[line.first]
+      next if first_square.empty?
+
+      return first_square.value if all_in_a_row?(line)
+    end
+    nil
+  end
+
+  def reset
+    squares.values.each(&:unmark)
+  end
+
+  private
+
+  attr_reader :squares, :win_conditions
+
+  def create_squares
+    (1..GRID_AREA).each_with_object({}) do |key, squares|
+      squares[key] = Square.new
+    end
+  end
+
+  # Calculating win conditions
   def calculate_win_conditions
     winning_rows = calculate_winning_rows
     winning_cols = calculate_winning_cols
@@ -44,21 +100,7 @@ class Board
     end
   end
 
-  # Board Drawing Methods
-  def draw
-    cell_size = calculate_cell_size
-    row_partition = create_row_partition
-    column_partition = '|'
-
-    squares.each do |key, square|
-      partition = (key % GRID_LENGTH).zero? ? row_partition : column_partition
-      cell_value = square.empty? ? key.to_s : square.value
-      print cell_value.center(cell_size, ' ')
-      print partition unless key >= GRID_AREA
-    end
-    puts "\n"
-  end
-
+  # Accessory Methods for #draw
   def calculate_cell_size
     [3, squares.keys.max.to_s.size].max
   end
@@ -67,52 +109,7 @@ class Board
     "\n#{('---+' * GRID_LENGTH).chop}\n"
   end
 
-  def clear_and_draw
-    clear
-    draw
-  end
-
-
-
-
-  def create_squares
-    (1..GRID_AREA).each_with_object({}) do |key, squares|
-      squares[key] = Square.new
-    end
-  end
-
-  def mark_at(key, value)
-    squares[key].mark(value)
-  end
-
-  def unmarked_keys
-    squares.keys.select { |key| squares[key].empty? }
-  end
-
-  def full?
-    unmarked_keys.empty?
-  end
-
-  def has_winner?
-    !!winning_marker
-  end
-
-  # Return the marker of the winner, or nil if no winner
-  def winning_marker
-    win_conditions.each do |line|
-      first_square = squares[line.first]
-      next if first_square.empty?
-
-      return first_square.value if all_in_a_row?(line)
-    end
-    nil
-  end
-
   def all_in_a_row?(line)
     squares.values_at(*line).map(&:value).uniq.one?
-  end
-
-  def reset
-    squares.values.each(&:unmark)
   end
 end

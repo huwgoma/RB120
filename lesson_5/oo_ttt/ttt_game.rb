@@ -45,9 +45,6 @@ class TTTGame
     display_goodbye
   end
 
-
-  
-
   private
 
   attr_accessor :current_player, :next_player
