@@ -15,8 +15,8 @@ class TTTGame
   def initialize
     display_welcome
     @board = Board.new
-    @human = Human.new(MARKERS.first, board)
-    @computer = Computer.new(MARKERS.last, board)
+    @human = Human.new(MARKERS.first)
+    @computer = Computer.new(MARKERS.last)
   end
 
   def play
@@ -27,11 +27,10 @@ class TTTGame
       set_current_player
 
       board.clear_and_draw
-
       # Game Loop
       loop do
         display_gamestate
-        board[current_player.choose_move] = current_player.marker
+        mark_board
         display_gamestate
 
         break if board.full? || board.has_winner?
@@ -42,7 +41,6 @@ class TTTGame
       break unless play_again?
       board.reset
     end
-
     display_goodbye
   end
 
@@ -56,6 +54,11 @@ class TTTGame
 
   def switch_current_player
     self.current_player, self.next_player = next_player, current_player
+  end
+
+  def mark_board
+    square_key = current_player.choose_move(board.unmarked_keys)
+    board[square_key] = current_player.marker
   end
 
   def play_again?

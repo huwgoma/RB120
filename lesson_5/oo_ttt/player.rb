@@ -1,9 +1,8 @@
 class Player
-  attr_reader :marker, :board, :name
+  attr_reader :marker, :name
 
-  def initialize(marker, board)
+  def initialize(marker)
     @marker = marker
-    @board = board
     @name = choose_name
   end
 
@@ -13,11 +12,11 @@ class Player
 end
 
 class Human < Player
-  def choose_move
-    puts "Choose an empty square (#{board.unmarked_keys.join(', ')}):"
+  def choose_move(valid_choices)
+    puts "Choose an empty square (#{valid_choices.join(', ')}):"
     loop do
       num = gets.chomp.to_i
-      return num if board.unmarked_keys.include?(num)
+      return num if valid_choices.include?(num)
       puts "Sorry, that's not a valid choice."
     end
   end
@@ -33,8 +32,8 @@ class Human < Player
 end
 
 class Computer < Player
-  def choose_move
-    board.unmarked_keys.sample
+  def choose_move(valid_choices)
+    valid_choices.sample
   end
 
   def choose_name
