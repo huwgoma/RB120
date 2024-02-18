@@ -25,23 +25,37 @@ class TTTGame
   def play
     # Program Loop
     loop do
-      set_current_player
-      # Game Loop
-      game_loop
-      display_result
+      # Round Loop
+      loop do
+        set_score_limit
+
+        # Let's get started! #{Current player} will be moving first this game.
+        #   (shuffle player order at the start of every game)
+        
+        # Round Loop
+          # Game Loop
+          game_loop
+          display_result
+          board.reset
+        # break if current player's score >= score limit
+
+        # current player wins, with a score of 5-0!
+        # play again?
+      end
 
       break unless play_again?
-
-      board.reset
+      # reset scores (board was already reset at the end of the last game)
+      
     end
     display_goodbye
   end
 
   private
 
-  attr_accessor :current_player, :next_player
+  attr_accessor :current_player, :next_player, :limit
 
   def game_loop
+    set_current_player
     loop do
       display_gamestate
       mark_board
@@ -50,6 +64,17 @@ class TTTGame
       break if board.full? || board.winner?
 
       switch_current_player
+    end
+  end
+
+  def set_score_limit
+    puts 'How many wins would you like to play up to? (1-10)'
+    
+    loop do
+      self.limit = gets.chomp.to_i
+      break if (1..10).include?(limit)
+
+      puts 'Invalid input - please enter a number between 1 and 10.'
     end
   end
 
