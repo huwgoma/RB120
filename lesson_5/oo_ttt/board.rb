@@ -30,7 +30,7 @@ class Board
     draw
   end
   
-  def mark_at(key, value)
+  def []=(key, value)
     squares[key].mark(value)
   end
 

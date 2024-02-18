@@ -22,18 +22,19 @@ class TTTGame
   def play
     # Display Rules
     
-    set_current_player
     # Program Loop
     loop do
+      set_current_player
+
       board.clear_and_draw
 
       # Game Loop
       loop do
         display_gamestate
-        board.mark_at(current_player.choose_move, current_player.marker)
+        board[current_player.choose_move] = current_player.marker
         display_gamestate
-        break if board.full? || board.has_winner?
 
+        break if board.full? || board.has_winner?
         switch_current_player
       end
 
