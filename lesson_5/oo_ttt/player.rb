@@ -29,6 +29,10 @@ class Player
     self.score += 1
   end
 
+  def reset_score
+    self.score = 0
+  end
+
   private 
 
   attr_writer :score

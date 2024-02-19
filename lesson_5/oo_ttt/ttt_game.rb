@@ -29,12 +29,6 @@ class TTTGame
       set_score_limit
       # Round Loop
       loop do
-        
-        
-        # #{Current player} will be moving first this game.
-        #   (shuffle player order at the start of every game)
-        
-        # Round Loop
         # Game Loop
         game_loop
 
@@ -43,20 +37,16 @@ class TTTGame
         display_gamestate
         display_game_result(winner)
 
-        
-
         break if round_over?
+        
         board.reset
-        # Do not reset the board if the round is over
         continue
       end
 
       display_round_result
       break unless play_again?
       
-      # TO DO:
-      # reset scores (board was already reset at the end of the last game)
-      
+      reset_round      
     end
     display_goodbye
   end
@@ -112,7 +102,12 @@ class TTTGame
   end 
 
   def round_over?
-    Player.list.any? { |player| player.score >= score_limit }
+    [human, computer].any? { |player| player.score >= score_limit }
+  end
+
+  def reset_round
+    board.reset
+    [human, computer].each(&:reset_score)
   end
 
   def continue
