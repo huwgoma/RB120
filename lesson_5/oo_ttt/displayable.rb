@@ -29,12 +29,17 @@ module Displayable
     board.draw
   end
 
-  def display_result
-    case board.winning_marker
-    when human.marker    then puts 'You won!'
-    when computer.marker then puts 'Computer won!'
+  def display_game_result(winner)
+    case winner
+    when human    then puts 'You won!'
+    when computer then puts 'Computer won!'
     else                      puts "It's a tie!"
     end
+  end
+
+  def display_round_result
+    loser, winner = Player.list.minmax_by(&:score)
+    puts "#{winner} wins, #{winner.score}-#{loser.score}"
   end
 
   def display_goodbye

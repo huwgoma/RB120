@@ -37,21 +37,23 @@ class TTTGame
         # Round Loop
         # Game Loop
         game_loop
-        current_player.increment_score unless tie?
+
+        winner = find_winner
+        winner.increment_score unless tie?
         display_gamestate
-        display_result
+        display_game_result(winner)
 
         
 
         break if round_won?
 
-        # break if current player's score >= score limit
-        # Press any key to continue:
         continue
       end
-        # current player wins, with a score of 5-0!
-        # play again?
+
+      display_round_result
       break unless play_again?
+      
+      # TO DO:
       # reset scores (board was already reset at the end of the last game)
       
     end
@@ -61,6 +63,17 @@ class TTTGame
   private
 
   attr_accessor :current_player, :next_player, :score_limit
+
+  def set_score_limit
+    puts 'How many wins would you like to play up to? (1-10)'
+    
+    loop do
+      self.score_limit = gets.chomp.to_i
+      break if (1..10).include?(score_limit)
+
+      puts 'Invalid input - please enter a number between 1 and 10.'
+    end
+  end
 
   def game_loop
     set_current_player # display who will be moving first - need pause?
@@ -72,17 +85,6 @@ class TTTGame
       break if board.full? || board.winner?
 
       switch_current_player
-    end
-  end
-
-  def set_score_limit
-    puts 'How many wins would you like to play up to? (1-10)'
-    
-    loop do
-      self.score_limit = gets.chomp.to_i
-      break if (1..10).include?(score_limit)
-
-      puts 'Invalid input - please enter a number between 1 and 10.'
     end
   end
 
@@ -100,15 +102,13 @@ class TTTGame
     board[square_key] = current_player.marker
   end
 
-  def tie?
-    board.full? && !board.winner?
+  def find_winner
+    Player.find_by_marker(board.winning_marker)
   end
 
-  def game_winner
-    # Returns the player object of the game winner, or nil if tied.
-    # Board#winning_marker returns a string representing the marker of the winner
-    # - Given the marker string, find and return the corresponding Player object
-  end
+  def tie?
+    board.full? && !board.winner?
+  end 
 
   def round_won?
     current_player.score >= score_limit

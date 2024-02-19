@@ -4,10 +4,21 @@
 class Player
   attr_reader :marker, :name, :score
 
+  @@list = []
+
+  def self.list
+    @@list
+  end
+
+  def self.find_by_marker(marker)
+    list.find { |player| player.marker == marker }
+  end
+
   def initialize(marker)
     @marker = marker
     @name = choose_name
     @score = 0
+    @@list << self
   end
 
   def to_s
