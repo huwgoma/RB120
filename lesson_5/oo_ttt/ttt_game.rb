@@ -7,6 +7,8 @@ require_relative 'displayable'
 require_relative 'player'
 require_relative 'square'
 
+# Reconsider coupling Player with Board
+
 # Orchestration Engine for TTT Game
 class TTTGame
   include Displayable
@@ -20,7 +22,7 @@ class TTTGame
     display_rules
     @board = Board.new
     @human = Human.new(MARKERS.first)
-    @computer = Computer.new(MARKERS.last)
+    @computer = Computer.new(MARKERS.last, board)
   end
 
   def play
@@ -70,6 +72,8 @@ class TTTGame
     set_current_player # display who will be moving first - need pause?
     loop do
       display_gamestate
+      # choose square key 
+      # mark board (key)
       mark_board
       display_gamestate
 
@@ -89,6 +93,7 @@ class TTTGame
   end
 
   def mark_board
+    # (key)
     square_key = current_player.choose_move(board.unmarked_keys)
     board[square_key] = current_player.marker
   end
