@@ -102,6 +102,105 @@ class Board
       diagonal
     end
   end
+  
+  # Calculating Priority Keys
+  def calculate_priority_keys(marker)
+    priorities = { offense: [], defense: [] }
+
+    win_conditions.each_with_object(priorities) do |line, priorities|
+      empty, marked = squares_at(line).partition(&:empty?)
+
+      # Row is priority
+      if empty.one? && marked.map(&:values).uniq.one?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      row_squares = squares.values_at(*line)
+      empty, marked = row_squares.partition(&:empty?)
+
+      next unless priority_row?(empty, marked)
+
+      # Row is a priority if one empty square and marked square values uniq is one
+      binding.pry
+      if priority_row?(row)
+        empty_key = squares.key(empty.first)
+        row_marker = marked.first.value
+        if row_marker == marker
+          priorities[:offense] << empty_key
+        else
+          priorities[:defense] << empty_key
+        end
+      end
+    end
+
+
+      # [1, 2, 3], [4, 5, 6], [7, 8, 9]
+      # [1, 4, 7], [2, 5, 8], [3, 6, 9],
+      # [1, 5, 9], [3, 5, 7]
+
+      # Iterate through winning condiitons. For each row:
+      # Retrieve the squares at the current row.
+      # Check if the row of squares is priority
+      #   - exactly 2 squares that are marked, and
+      #   - exactly 2 unique values
+      # If the row is a priority row, add the key of the empty square in that row
+      #   to priorities hash under the appropriate key
+      # 
+      # Partition the row squares into empty/not empty.
+
+
+      #   1) Determine the key of the empty square
+      #   - Find the square with the value equal to Initial
+      #   2) Determine the type of priority (offensive/defensive)
+      #   - From the two unique values of that row eg [' ', 'X'], retrieve the
+      #     string that is NOT equal to Initial Value of Square
+      #     - If row_marker == marker, priorities[offense] << 
+
+
+      # What if we: 
+      # Iterate through winning conditions just once? For each row:
+      #   Is that row a priority? If it is - which square?
+      #   - Row has exactly 2 marked squares # 1 empty
+      #   - Row has exactly 2 unique values # 1 empty, 2 of the same.
+      #   If priority? is true:
+      #   1) Find the key of the empty square
+      #   2) Determine if the priority is offensive or defensive
+      #     - Find the non-empty (initial) value - is that value identical to marker?
+      #       - If it is => Add to offensive
+      #       - Otherwise => Add to defensive
+
+    
+  end
+
+  def squares_at(line)
+    squares.values_at(*line)
+  end
+
+  def priority_line?(line)
+    empty_squares, marked_squares = squares_at(line).partition(&:empty?)
+
+    empty_squares.one? && marked_squares.map(&:value).uniq.one?
+  end
 
   # Accessory Methods for #draw
   def calculate_cell_size
@@ -113,6 +212,6 @@ class Board
   end
 
   def all_in_a_row?(line)
-    squares.values_at(*line).map(&:value).uniq.one?
+    squares_at(line).map(&:value).uniq.one?
   end
 end
