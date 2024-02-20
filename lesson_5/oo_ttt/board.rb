@@ -6,7 +6,7 @@ require_relative 'displayable'
 class Board
   include Displayable
 
-  GRID_LENGTH = 3
+  GRID_LENGTH = 4
   GRID_AREA = GRID_LENGTH**2
 
   def initialize
@@ -41,6 +41,10 @@ class Board
     squares.keys.select { |key| squares[key].empty? }
   end
 
+  def marked_keys
+    squares.keys.select { |key| squares[key].marked? }
+  end
+
   def full?
     unmarked_keys.empty?
   end
@@ -65,6 +69,11 @@ class Board
 
   def priority_keys(marker)
     calculate_priority_keys(marker)
+  end
+
+  # Return the key(s) representing the middle of the board
+  def unmarked_middle_keys
+    calculate_middle_keys - marked_keys
   end
 
   private
@@ -121,6 +130,16 @@ class Board
       priority_type = row_marker == marker ? :offense : :defense
 
       priorities[priority_type] << empty_key
+    end
+  end
+
+  def calculate_middle_keys
+    if GRID_LENGTH.odd?
+      [(GRID_AREA / 2) + 1]
+    else
+      calculate_winning_diagonals.map do |diagonal|
+        diagonal[(GRID_LENGTH / 2 - 1), 2]
+      end.flatten
     end
   end
 
