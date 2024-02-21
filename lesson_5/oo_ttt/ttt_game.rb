@@ -71,8 +71,6 @@ class TTTGame
     end
   end
 
-  
-
   def game_loop
     loop do
       display_gamestate
@@ -83,6 +81,11 @@ class TTTGame
       
       switch_current_player
     end
+  end
+
+  def set_score_limit
+    puts 'How many wins would you like to play up to? (1-10)'
+    self.score_limit = choose_score_limit
   end
 
   def increment_score

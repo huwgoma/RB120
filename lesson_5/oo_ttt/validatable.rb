@@ -1,11 +1,15 @@
 # Module for all input loop/validation methods.
 module Validatable
-  def set_score_limit
-    puts 'How many wins would you like to play up to? (1-10)'
+  def validate_input(criteria, error_message)
     
+  end
+
+
+  def choose_score_limit
+    puts 'How many wins would you like to play up to? (1-10)'
     loop do
-      self.score_limit = gets.chomp.to_i
-      break if (1..10).include?(score_limit)
+      limit = gets.chomp.to_i
+      return limit if (1..10).include?(limit)
 
       puts 'Invalid input - please enter a number between 1 and 10.'
     end
