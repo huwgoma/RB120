@@ -21,8 +21,8 @@ module Displayable
     RULES
   end
 
-  def player_order_prompt
-    <<~HEREDOC 
+  def display_player_order_prompt
+    puts <<~HEREDOC 
       Who should move first?
       [1]: You
       [2]: CPU

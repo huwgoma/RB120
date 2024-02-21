@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'validatable'
+
 # Player Superclass
 class Player
   attr_reader :marker, :name, :score
@@ -40,25 +42,12 @@ end
 
 # Human Player
 class Human < Player
-  def choose_name
-    puts "What's your name?"
-    loop do
-      name = gets.chomp.strip
-      return name unless name.empty?
-
-      puts "You can't have an empty name!"
-    end
-  end
-
-  def choose_move(valid_choices)
-    puts "Choose an empty square (#{valid_choices.joinor(', ')}):"
-    loop do
-      num = gets.chomp.to_i
-      return num if valid_choices.include?(num)
-
-      puts "Sorry, that's not a valid choice."
-    end
-  end
+  include Validatable
+  
+  # def choose_move
+  #   # puts choose an empty square (valid_choices...)
+  #   validate_input(valid_choices, "Sorry, that square isn't empty")
+  # end
 end
 
 # CPU Player

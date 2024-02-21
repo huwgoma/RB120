@@ -4,14 +4,20 @@ require 'pry'
 require 'io/console'
 require_relative 'board'
 require_relative 'displayable'
+require_relative 'validatable'
 require_relative 'player'
 require_relative 'square'
 
 # To do:
 
-# Flesh out set-current-player 
-#  - After each game, set the current player to the loser of last game.
+# Reorganize methods
+# - Experiment with Validatable
+# Refactor Displayable -> Promptable? (Game Messages -> Strings)
+# - All displayable methods should puts (prompt)
 #        
+
+# Allow player to pick any marker; what should the computer use?
+# 
 
 
 
@@ -19,6 +25,7 @@ require_relative 'square'
 # Orchestration Engine for TTT Game
 class TTTGame
   include Displayable
+  include Validatable
 
   MARKERS = %w[X O].freeze
 
@@ -64,16 +71,7 @@ class TTTGame
     end
   end
 
-  def set_score_limit
-    puts 'How many wins would you like to play up to? (1-10)'
-    
-    loop do
-      self.score_limit = gets.chomp.to_i
-      break if (1..10).include?(score_limit)
-
-      puts 'Invalid input - please enter a number between 1 and 10.'
-    end
-  end
+  
 
   def game_loop
     loop do
@@ -91,11 +89,6 @@ class TTTGame
     find_winner.increment_score unless tie?
   end
 
-  def display_post_game
-    display_gamestate
-    display_game_result(find_winner)
-  end
-
   def set_player_order
     @current_player = case choose_first_player
                       when 1 then human
@@ -108,16 +101,7 @@ class TTTGame
     player == human ? computer : human
   end
 
-  def choose_first_player
-    puts player_order_prompt
-    valid_options = [1, 2, 3]
-    
-    loop do
-      input = gets.chomp.to_i
-      return input if valid_options.include?(input)
-      puts "Invalid input! - Please enter #{valid_options.joinor(', ')}."
-    end
-  end
+  
 
   def switch_current_player
     self.current_player = other_player(current_player)
@@ -153,15 +137,7 @@ class TTTGame
     STDIN.getch
   end
 
-  def play_again?
-    loop do
-      puts 'Would you like to play again? (y/n)'
-      answer = gets.chomp.downcase
-      return answer == 'y' if %w[y n].include?(answer)
-
-      puts 'Sorry - please enter y or n.'
-    end
-  end
+  
 end
 
 TTTGame.new.play
