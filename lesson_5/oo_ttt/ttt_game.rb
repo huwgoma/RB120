@@ -105,11 +105,17 @@ class TTTGame
                       end
   end
 
+  def choose_first_player
+    display_player_order_prompt
+    valid_options = %w(1 2 3)
+    error_message = "Please enter #{valid_options.joinor(', ')}!"
+
+    validate_input(valid_options, error_message).to_i
+  end
+
   def other_player(player)
     player == human ? computer : human
   end
-
-  
 
   def switch_current_player
     self.current_player = other_player(current_player)
@@ -145,6 +151,10 @@ class TTTGame
     STDIN.getch
   end
 
+  def play_again?
+    puts 'Would you like to play again? (y/n)'
+    validate_input(%w(y n), 'Please enter y or n!') == 'y'
+  end
   
 end
 

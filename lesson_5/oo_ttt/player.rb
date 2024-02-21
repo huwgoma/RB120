@@ -44,14 +44,12 @@ end
 class Human < Player
   include Validatable
   
-  # def choose_move(valid_choices)
-  #   #validate_input(valid_choices, "sorry")
-  # end
+  def choose_move(valid_choices)
+    puts "Choose an empty square (#{valid_choices.joinor(', ')}):"
+    error_message = "That isn't an empty square!"
 
-  # def choose_move
-  #   # puts choose an empty square (valid_choices...)
-  #   validate_input(valid_choices, "Sorry, that square isn't empty")
-  # end
+    validate_input(valid_choices.map(&:to_s), error_message).to_i
+  end
 end
 
 # CPU Player

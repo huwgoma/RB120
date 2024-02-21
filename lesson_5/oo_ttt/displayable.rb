@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Namespace for display-related methods of TTTGame
+# TTTGame Prompts / Display
 module Displayable
   def clear
     system('clear')
