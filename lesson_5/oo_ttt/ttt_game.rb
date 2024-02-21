@@ -10,14 +10,13 @@ require_relative 'square'
 
 # To do:
 
-# Reorganize methods
-# - Experiment with Validatable
-# Refactor Displayable -> Promptable? (Game Messages -> Strings)
-# - All displayable methods should puts (prompt)
-#        
-
 # Allow player to pick any marker; what should the computer use?
 # 
+# Reorganize methods
+# - Promptable? For any methods that require user input
+# 'Set' vs. 'Choose'
+
+# Re-examine TTTGame initialize
 
 
 
@@ -27,7 +26,7 @@ class TTTGame
   include Displayable
   include Validatable
 
-  MARKERS = %w[X O].freeze
+  #MARKERS = %w[X O].freeze
 
   attr_reader :board, :human, :computer
 
@@ -35,9 +34,14 @@ class TTTGame
     display_welcome
     display_rules
     @board = Board.new
-    @human = Human.new(MARKERS.first)
-    @computer = Computer.new(MARKERS.last, board)
+    @computer = Computer.new(board)
+    @human = Human.new
+    
   end
+
+  # What marker would you like to use? (Single-character, non-blank, and cannot
+  #   be 'R' (computer's marker))
+
 
   def play
     # Program Loop

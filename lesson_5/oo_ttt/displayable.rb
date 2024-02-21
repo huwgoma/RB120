@@ -32,7 +32,7 @@ module Displayable
   end
 
   def display_gamestate
-    clear # ?
+    clear
     puts "#{human} (#{human.marker}): #{human.score}"
     puts "#{computer} (#{computer.marker}): #{computer.score}"
     puts ' '

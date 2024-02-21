@@ -16,9 +16,9 @@ class Player
     list.find { |player| player.marker == marker }
   end
 
-  def initialize(marker)
-    @marker = marker
+  def initialize
     @name = choose_name
+    @marker = choose_marker
     @score = 0
     @@list << self
   end
@@ -37,7 +37,7 @@ class Player
 
   private 
 
-  attr_writer :score
+  attr_writer :marker, :score 
 end
 
 # Human Player
@@ -50,17 +50,35 @@ class Human < Player
 
     validate_input(valid_choices.map(&:to_s), error_message).to_i
   end
+
+  def choose_marker
+    'X'
+    # What marker would you like to use? (You cannot use <>, since that's the
+    #   computer's marker)
+    # gets.chomp
+    # Cannot be empty
+  end
+
+  # Choose marker
+  # Allow any single character (non-empty)
+  # How to determine the CPU marker?
+  # - Maybe the first letter of name?
+
 end
 
 # CPU Player
 class Computer < Player
-  def initialize(marker, board)
-    super(marker)
+  def initialize(board)
+    super()
     @board = board
   end
 
+  def choose_marker
+    self.marker = name[0]
+  end
+
   def choose_name
-    ['R2D2', 'Hal', 'Mahoraga'].sample
+    ['R2D2', 'Hal', 'Wall-E'].sample
   end
 
   def choose_move(valid_choices)
