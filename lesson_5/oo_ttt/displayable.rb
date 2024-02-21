@@ -38,11 +38,16 @@ module Displayable
     board.draw
   end
 
+  def display_post_game
+    display_gamestate
+    display_game_result(find_winner)
+  end
+
   def display_game_result(winner)
-    case winner
-    when human    then puts 'You won!'
-    when computer then puts 'Computer won!' # CPU name
-    else                      puts "It's a tie!"
+    if winner
+      puts "#{winner} won!"
+    else
+      puts "It's a tie!"
     end
   end
 
