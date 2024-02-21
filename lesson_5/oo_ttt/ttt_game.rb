@@ -8,8 +8,6 @@ require_relative 'player'
 require_relative 'square'
 
 # To do:
-# Refactor the game loop - separate logic of choosing move from marking board.
-# Player -> TTT Player ; reimplement @board
 
 # Flesh out set-current-player 
 #   - Implement ability to choose (1: You; 2: CPU; 3: idc)
