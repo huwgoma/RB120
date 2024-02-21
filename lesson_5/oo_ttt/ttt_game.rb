@@ -84,8 +84,13 @@ class TTTGame
   end
 
   def set_score_limit
-    puts 'How many wins would you like to play up to? (1-10)'
     self.score_limit = choose_score_limit
+  end
+
+  def choose_score_limit
+    puts 'How many wins would you like to play up to? (1-10)'
+
+    validate_input(('1'..'10'), 'Please enter a number between 1 and 10!').to_i
   end
 
   def increment_score

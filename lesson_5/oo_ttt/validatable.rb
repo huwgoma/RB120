@@ -1,19 +1,30 @@
 # Module for all input loop/validation methods.
 module Validatable
   def validate_input(criteria, error_message)
-    
-  end
-
-
-  def choose_score_limit
-    puts 'How many wins would you like to play up to? (1-10)'
     loop do
-      limit = gets.chomp.to_i
-      return limit if (1..10).include?(limit)
+      input = gets.chomp
+      # Ideally, I would like to be able to allow the criteria (eg. criteria.include?)
+      # to be specified by the caller. That way, I could also use this loop for the
+      # player name validation, where the criteria is simply `unless name.empty?`.
+      # (But I'm not sure how to do this)
+      return input if criteria.include?(input)
 
-      puts 'Invalid input - please enter a number between 1 and 10.'
+      puts error_message
     end
   end
+
+
+  # def choose_score_limit
+  #   puts 'How many wins would you like to play up to? (1-10)'
+
+  #   validate_input(('1'..'10'), 'Please enter a number between 1 and 10!')
+  #   loop do
+  #     limit = gets.chomp.to_i
+  #     return limit if (1..10).include?(limit)
+
+  #     puts 'Invalid input - please enter a number between 1 and 10.'
+  #   end
+  # end
 
   def choose_first_player
     display_player_order_prompt

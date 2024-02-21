@@ -44,9 +44,9 @@ end
 class Human < Player
   include Validatable
   
-  def choose_move(valid_choices)
-    validate_input(valid_choices, "sorry")
-  end
+  # def choose_move(valid_choices)
+  #   #validate_input(valid_choices, "sorry")
+  # end
 
   # def choose_move
   #   # puts choose an empty square (valid_choices...)
