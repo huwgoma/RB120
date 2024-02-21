@@ -21,6 +21,15 @@ module Displayable
     RULES
   end
 
+  def player_order_prompt
+    <<~HEREDOC 
+      Who should move first?
+      [1]: You
+      [2]: CPU
+      [3]: You don't care (random)
+    HEREDOC
+  end
+
   def display_gamestate
     clear # ?
     puts "#{human} (#{human.marker}): #{human.score}"

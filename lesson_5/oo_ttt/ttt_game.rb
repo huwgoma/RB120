@@ -10,9 +10,7 @@ require_relative 'square'
 # To do:
 
 # Flesh out set-current-player 
-#   - Implement ability to choose (1: You; 2: CPU; 3: idc)
-#   - Set current player at the start of each round;
-#     - After each game, set the current player to the loser of last game.
+#  - After each game, set the current player to the loser of last game.
 #        
 
 
@@ -49,9 +47,10 @@ class TTTGame
 
   private
 
-  attr_accessor :current_player, :next_player, :score_limit
+  attr_accessor :current_player, :score_limit
 
   def match_loop
+    set_player_order
     loop do
       game_loop
       increment_score
@@ -60,6 +59,9 @@ class TTTGame
       break if round_over?
 
       board.reset
+
+      # switch_current_player - whoever moved 2nd last round should move first 
+      # this round
       continue
     end
   end
@@ -76,7 +78,6 @@ class TTTGame
   end
 
   def game_loop
-    set_current_player # display who will be moving first - need pause?
     loop do
       display_gamestate
       mark_board(choose_key)
@@ -97,13 +98,31 @@ class TTTGame
     display_game_result(find_winner)
   end
 
-  def set_current_player
-    @current_player = human
-    @next_player = computer
+  def set_player_order
+    @current_player = case choose_first_player
+                      when 1 then human
+                      when 2 then computer
+                      when 3 then [human, computer].sample
+                      end
+  end
+
+  def other_player(player)
+    player == human ? computer : human
+  end
+
+  def choose_first_player
+    puts player_order_prompt
+    valid_options = [1, 2, 3]
+    
+    loop do
+      input = gets.chomp.to_i
+      return input if valid_options.include?(input)
+      puts "Invalid input! - Please enter #{valid_options.joinor(', ')}."
+    end
   end
 
   def switch_current_player
-    self.current_player, self.next_player = next_player, current_player
+    self.current_player = other_player(current_player)
   end
 
   def choose_key
