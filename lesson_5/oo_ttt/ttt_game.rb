@@ -7,7 +7,18 @@ require_relative 'displayable'
 require_relative 'player'
 require_relative 'square'
 
-# Reconsider coupling Player with Board
+# To do:
+# Refactor the game loop - separate logic of choosing move from marking board.
+# Player -> TTT Player ; reimplement @board
+
+# Flesh out set-current-player 
+#   - Implement ability to choose (1: You; 2: CPU; 3: idc)
+#   - Set current player at the start of each round;
+#     - After each game, set the current player to the loser of last game.
+#        
+
+
+
 
 # Orchestration Engine for TTT Game
 class TTTGame
@@ -29,26 +40,11 @@ class TTTGame
     # Program Loop
     loop do
       set_score_limit
-      # Round Loop
-      loop do
-        # Game Loop
-        game_loop
-
-        winner = find_winner
-        winner.increment_score unless tie?
-        display_gamestate
-        display_game_result(winner)
-
-        break if round_over?
-        
-        board.reset
-        continue
-      end
-
+      match_loop
       display_round_result
       break unless play_again?
       
-      reset_round      
+      reset_round
     end
     display_goodbye
   end
@@ -56,6 +52,19 @@ class TTTGame
   private
 
   attr_accessor :current_player, :next_player, :score_limit
+
+  def match_loop
+    loop do
+      game_loop
+      increment_score
+      display_post_game
+
+      break if round_over?
+
+      board.reset
+      continue
+    end
+  end
 
   def set_score_limit
     puts 'How many wins would you like to play up to? (1-10)'
@@ -72,15 +81,22 @@ class TTTGame
     set_current_player # display who will be moving first - need pause?
     loop do
       display_gamestate
-      # choose square key 
-      # mark board (key)
-      mark_board
+      mark_board(choose_key)
       display_gamestate
 
       break if board.full? || board.winner?
 
       switch_current_player
     end
+  end
+
+  def increment_score
+    find_winner.increment_score unless tie?
+  end
+
+  def display_post_game
+    display_gamestate
+    display_game_result(find_winner)
   end
 
   def set_current_player
@@ -92,10 +108,12 @@ class TTTGame
     self.current_player, self.next_player = next_player, current_player
   end
 
-  def mark_board
-    # (key)
-    square_key = current_player.choose_move(board.unmarked_keys)
-    board[square_key] = current_player.marker
+  def choose_key
+    current_player.choose_move(board.unmarked_keys)
+  end
+
+  def mark_board(key)
+    board[key] = current_player.marker
   end
 
   def find_winner

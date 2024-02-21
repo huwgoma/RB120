@@ -32,14 +32,14 @@ module Displayable
   def display_game_result(winner)
     case winner
     when human    then puts 'You won!'
-    when computer then puts 'Computer won!'
+    when computer then puts 'Computer won!' # CPU name
     else                      puts "It's a tie!"
     end
   end
 
   def display_round_result
     loser, winner = Player.list.minmax_by(&:score)
-    puts "#{winner} wins, #{winner.score}-#{loser.score}"
+    puts "#{winner} wins, #{winner.score}-#{loser.score}!"
   end
 
   def display_goodbye

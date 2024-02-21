@@ -16,7 +16,6 @@ class Player
   end
 
   def initialize(marker)
-    # Possibly re-couple with board?
     @marker = marker
     @name = choose_name
     @score = 0

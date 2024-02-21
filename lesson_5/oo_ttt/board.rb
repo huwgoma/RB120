@@ -6,7 +6,7 @@ require_relative 'displayable'
 class Board
   include Displayable
 
-  GRID_LENGTH = 4
+  GRID_LENGTH = 3
   GRID_AREA = GRID_LENGTH**2
 
   def initialize
