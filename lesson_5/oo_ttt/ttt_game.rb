@@ -57,11 +57,9 @@ class TTTGame
       display_post_game
 
       break if round_over?
-
+      
+      switch_current_player
       board.reset
-
-      # switch_current_player - whoever moved 2nd last round should move first 
-      # this round
       continue
     end
   end
@@ -84,7 +82,7 @@ class TTTGame
       display_gamestate
 
       break if board.full? || board.winner?
-
+      
       switch_current_player
     end
   end
