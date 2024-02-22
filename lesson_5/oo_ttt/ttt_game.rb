@@ -35,12 +35,27 @@ class TTTGame
     display_rules
     @board = Board.new
     @computer = Computer.new(board)
-    @human = Human.new
+    @human = Human.new(computer.marker)
     
   end
 
+  # What do Human and Computer have in common?
+  # - Name, Score, Marker
+  #
+  # Initialize Game Engine
+  # -Initialize Board
+  # - Initialize Computer (computer can set its own name and marker)
+  # - Initialize Human (human can set its own name, and marker, but needs 
+  #   to know which marker it can't use (cpu))
+
+  # Who should be responsible for SETTING the human marker? (should be human class)
+  # Who should be responsible for PROMPTING the 
+
+
   # What marker would you like to use? (Single-character, non-blank, and cannot
   #   be 'R' (computer's marker))
+  # - needs access to the computer's marker; maybe in TTT game? 
+  #   - doesn't make sense for the players to know about each other
 
 
   def play

@@ -31,6 +31,14 @@ module Displayable
     HEREDOC
   end
 
+  def display_marker_choice_prompt(opposing_marker)
+    puts <<~HEREDOC
+      What marker would you like to use?
+      Your marker must be non-blank, exactly 1 character, and
+      cannot be #{opposing_marker} (that's the CPU's marker.)
+    HEREDOC
+  end
+
   def display_gamestate
     clear
     puts "#{human} (#{human.marker}): #{human.score}"

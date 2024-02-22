@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'validatable'
+require_relative 'displayable'
 
 # Player Superclass
 class Player
@@ -18,7 +19,6 @@ class Player
 
   def initialize
     @name = choose_name
-    @marker = choose_marker
     @score = 0
     @@list << self
   end
@@ -43,6 +43,12 @@ end
 # Human Player
 class Human < Player
   include Validatable
+  include Displayable
+
+  def initialize(opposing_marker)
+    super()
+    @marker = choose_marker(opposing_marker)
+  end
   
   def choose_move(valid_choices)
     puts "Choose an empty square (#{valid_choices.joinor(', ')}):"
@@ -51,30 +57,28 @@ class Human < Player
     validate_input(valid_choices.map(&:to_s), error_message).to_i
   end
 
-  def choose_marker
-    'X'
-    # What marker would you like to use? (You cannot use <>, since that's the
-    #   computer's marker)
-    # gets.chomp
-    # Cannot be empty
+  def choose_marker(opposing_marker)
+    puts display_marker_choice_prompt(opposing_marker)
+
+    loop do
+      marker = gets.chomp.strip
+      return marker if valid_marker?(marker, opposing_marker)
+
+      puts "Your marker must be non-empty, exactly 1 character, and cannot be #{opposing_marker}."
+    end
   end
 
-  # Choose marker
-  # Allow any single character (non-empty)
-  # How to determine the CPU marker?
-  # - Maybe the first letter of name?
-
+  def valid_marker?(marker, other_marker)
+    !marker.empty? && marker.size == 1 && marker != other_marker
+  end
 end
 
 # CPU Player
 class Computer < Player
   def initialize(board)
     super()
+    @marker = name[0]
     @board = board
-  end
-
-  def choose_marker
-    self.marker = name[0]
   end
 
   def choose_name
