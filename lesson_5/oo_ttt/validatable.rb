@@ -6,26 +6,28 @@ module Validatable
       # criteria is simply `unless name.empty?`.
       # (But I'm not sure how to do this)
 
-  def validate_input(criteria, error_message)
-    loop do
-      input = gets.chomp.downcase
-      return input if criteria.include?(input)
+  # def validate_input(criteria, error_message)
+  #   loop do
+  #     input = gets.chomp.downcase
+  #     return input if criteria.include?(input)
 
-      puts "Invalid input - #{error_message}"
-    end
-  end
+  #     puts "Invalid input - #{error_message}"
+  #   end
+  # end
 
   def validate_non_empty_input
     # Ensures input is not empty?
   end
 
-  def choose_name
-    puts "What's your name?"
+  def validate_input(criteria, error_message)
     loop do
-      name = gets.chomp.strip
-      return name unless name.empty?
-
-      puts "You can't have an empty name!"
+      input = gets.chomp
+      return input if criteria.call(input)
+      puts error_message
     end
+  end
+
+  def valid_name?(name)
+    !(name.strip.empty?)
   end
 end

@@ -19,6 +19,7 @@ class Player
 
   def initialize
     @name = choose_name
+    @marker = choose_marker
     @score = 0
     @@list << self
   end
@@ -47,7 +48,15 @@ class Human < Player
 
   def initialize(opposing_marker)
     super()
-    @marker = choose_marker(opposing_marker)
+    #@marker = choose_marker(opposing_marker)
+  end
+
+  def choose_name
+    puts "What's your name?"
+
+    criteria = -> (name) { valid_name?(name) }
+    
+    validate_input(criteria, "Name can't be empty!")
   end
   
   def choose_move(valid_choices)
@@ -58,7 +67,7 @@ class Human < Player
   end
 
   def choose_marker(opposing_marker)
-    puts display_marker_choice_prompt(opposing_marker)
+    display_marker_choice_prompt(opposing_marker)
 
     loop do
       marker = gets.chomp.strip
@@ -77,13 +86,18 @@ end
 class Computer < Player
   def initialize(board)
     super()
-    @marker = name[0]
     @board = board
   end
 
   def choose_name
     ['R2D2', 'Hal', 'Wall-E'].sample
   end
+
+  def choose_marker
+    name[0]
+  end
+
+  
 
   def choose_move(valid_choices)
     priority_keys = board.priority_keys(marker)
