@@ -23,3 +23,5 @@ module Validatable
 
 
 end
+
+# validate_input(validator, )

@@ -164,8 +164,13 @@ class TTTGame
 
   # CHOOSE (kinda)
   def play_again?
-    puts 'Would you like to play again? (y/n)'
-    validate_input(%w(y n), 'Please enter y or n!') == 'y'
+    puts 'Would you like to play again? (Y/N)'
+
+    validator = -> (choice, options) { valid_member?(choice, options) }
+    error_message = 'Please enter Y or N!'
+    valid_choices = %w(y n Y N)
+    
+    validate_input(validator, error_message, valid_choices).downcase == 'y'
   end
   
 end
