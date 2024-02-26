@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'displayable'
-
 # Represents TTT Board
 class Board
   include Displayable

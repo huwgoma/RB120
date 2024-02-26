@@ -2,20 +2,19 @@
 
 require 'pry'
 require 'io/console'
-require_relative 'board'
-require_relative 'displayable'
 require_relative 'validatable'
+require_relative 'displayable'
+require_relative 'promptable'
+
+require_relative 'board'
 require_relative 'player'
 require_relative 'square'
 
+
 # To do:
 
-# 
-# Reorganize methods
-# - Promptable? For any methods that require user input
-# 'Set' vs. 'Choose'
+# Rubocop
 
-# Re-examine TTTGame initialize
 
 # Pad cells with '-' if part of winning row?
 
