@@ -24,8 +24,7 @@ require_relative 'square'
 
 # Orchestration Engine for TTT Game
 class TTTGame
-  include Displayable
-  include Validatable
+  include Promptable
 
   attr_reader :board, :human, :computer
 
@@ -85,16 +84,6 @@ class TTTGame
     self.score_limit = choose_score_limit
   end
 
-  # CHOOSE = DONE
-  def choose_score_limit
-    puts 'How many wins would you like to play up to? (1-10)'
-
-    validator = -> (limit, range) { valid_member?(limit, range) }
-    error_message = 'Please enter a number between 1 and 10!'
-
-    validate_input(validator, error_message, ('1'..'10')).to_i
-  end
-
   def increment_score
     find_winner.increment_score unless tie?
   end
@@ -107,17 +96,6 @@ class TTTGame
                       end
   end
 
-  # CHOOSE = DONE
-  def choose_first_player
-    display_player_order_prompt
-
-    valid_options = %w(1 2 3)
-    validator = -> (choice, options) { valid_member?(choice, options) }
-    error_message = "Please enter #{valid_options.joinor(', ')}!"
-
-    validate_input(validator, error_message, valid_options).to_i
-  end
-
   def other_player(player)
     player == human ? computer : human
   end
@@ -126,7 +104,6 @@ class TTTGame
     self.current_player = other_player(current_player)
   end
 
-  # RENAME CHOOSE
   def request_key
     current_player.choose_move(board.unmarked_keys)
   end
@@ -151,23 +128,6 @@ class TTTGame
     board.reset
     [human, computer].each(&:reset_score)
   end
-
-  def continue
-    puts 'Press any key to continue:'
-    STDIN.getch
-  end
-
-  # CHOOSE (kinda)
-  def play_again?
-    puts 'Would you like to play again? (Y/N)'
-
-    validator = -> (choice, options) { valid_member?(choice, options) }
-    error_message = 'Please enter Y or N!'
-    valid_choices = %w(y n Y N)
-    
-    validate_input(validator, error_message, valid_choices).downcase == 'y'
-  end
-  
 end
 
 TTTGame.new.play

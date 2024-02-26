@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'validatable'
-require_relative 'displayable'
+require_relative 'promptable'
 
 # Player Superclass
 class Player
@@ -42,43 +41,11 @@ end
 
 # Human Player
 class Human < Player
-  include Validatable
-  include Displayable
+  include Promptable
 
   def initialize(other_marker)
     super()
     @marker = choose_marker(other_marker)
-  end
-
-  # CHOOSE = DONE
-  def choose_name
-    puts "What's your name?"
-
-    validator = -> (name) { valid_name?(name) }
-    error_message = "Your name can't be empty!"
-    
-    validate_input(validator, error_message)
-  end
-
-  # CHOOSE = DONE
-  def choose_marker(other_marker)
-    display_marker_choice_prompt(other_marker)
-
-    validator = -> (marker, other_marker) { valid_marker?(marker, other_marker) }
-    error_message = "Your marker must be exactly 1 non-empty character, and cannot
-    be #{other_marker} (that's the CPU's marker.)"
-
-    validate_input(validator, error_message, other_marker).strip
-  end
-  
-  # CHOOSE = DONE
-  def choose_move(empty_keys)
-    puts "Choose an empty square (#{empty_keys.joinor(', ')}):"
-
-    validator = -> (key, empty_keys) { valid_member?(key, empty_keys)}
-    error_message = "That isn't an empty square!"
-
-    validate_input(validator, error_message, empty_keys.map(&:to_s)).to_i
   end
 end
 
