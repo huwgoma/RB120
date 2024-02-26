@@ -50,6 +50,7 @@ class Human < Player
     @marker = choose_marker(other_marker)
   end
 
+  # CHOOSE
   def choose_name
     puts "What's your name?"
 
@@ -59,6 +60,7 @@ class Human < Player
     validate_input(validator, error_message)
   end
 
+  # CHOOSE
   def choose_marker(other_marker)
     display_marker_choice_prompt(other_marker)
 

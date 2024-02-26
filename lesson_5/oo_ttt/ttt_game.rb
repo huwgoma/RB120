@@ -59,7 +59,7 @@ class TTTGame
   attr_accessor :current_player, :score_limit
 
   def match_loop
-    set_player_order
+    set_first_player
     loop do
       game_loop
       increment_score
@@ -89,10 +89,11 @@ class TTTGame
     self.score_limit = choose_score_limit
   end
 
+  # CHOOSE
   def choose_score_limit
     puts 'How many wins would you like to play up to? (1-10)'
 
-    validator = -> (limit, range) { valid_score_limit?(limit, range) }
+    validator = -> (limit, range) { valid_member?(limit, range) }
     error_message = 'Please enter a number between 1 and 10!'
 
     validate_input(validator, error_message, ('1'..'10')).to_i
@@ -102,7 +103,7 @@ class TTTGame
     find_winner.increment_score unless tie?
   end
 
-  def set_player_order
+  def set_first_player
     @current_player = case choose_first_player
                       when 1 then human
                       when 2 then computer
@@ -110,12 +111,15 @@ class TTTGame
                       end
   end
 
+  # CHOOSE
   def choose_first_player
     display_player_order_prompt
+
     valid_options = %w(1 2 3)
+    validator = -> (choice, options) { valid_member?(choice, options) }
     error_message = "Please enter #{valid_options.joinor(', ')}!"
 
-    validate_input(valid_options, error_message).to_i
+    validate_input(validator, error_message, valid_options).to_i
   end
 
   def other_player(player)
@@ -126,6 +130,7 @@ class TTTGame
     self.current_player = other_player(current_player)
   end
 
+  # RENAME CHOOSE
   def choose_key
     current_player.choose_move(board.unmarked_keys)
   end
@@ -156,6 +161,7 @@ class TTTGame
     STDIN.getch
   end
 
+  # CHOOSE (kinda)
   def play_again?
     puts 'Would you like to play again? (y/n)'
     validate_input(%w(y n), 'Please enter y or n!') == 'y'

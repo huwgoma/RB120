@@ -23,6 +23,11 @@ module Validatable
     end
   end
 
+  # Generic validator for checking if an input is included in a collection
+  def valid_member?(input, options)
+    options.include?(input)
+  end
+
   def valid_name?(name)
     !(name.strip.empty?)
   end
@@ -31,7 +36,5 @@ module Validatable
     marker.strip.size == 1 && marker != other_marker
   end
 
-  def valid_score_limit?(limit, range)
-    range.include?(limit)
-  end
+
 end
