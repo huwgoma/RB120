@@ -18,6 +18,7 @@ require_relative 'square'
 
 # Re-examine TTTGame initialize
 
+# Pad cells with '-' if part of winning row?
 
 
 
@@ -89,7 +90,7 @@ class TTTGame
     self.score_limit = choose_score_limit
   end
 
-  # CHOOSE
+  # CHOOSE = DONE
   def choose_score_limit
     puts 'How many wins would you like to play up to? (1-10)'
 
@@ -111,7 +112,7 @@ class TTTGame
                       end
   end
 
-  # CHOOSE
+  # CHOOSE = DONE
   def choose_first_player
     display_player_order_prompt
 

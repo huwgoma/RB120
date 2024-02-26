@@ -50,7 +50,7 @@ class Human < Player
     @marker = choose_marker(other_marker)
   end
 
-  # CHOOSE
+  # CHOOSE = DONE
   def choose_name
     puts "What's your name?"
 
@@ -60,7 +60,7 @@ class Human < Player
     validate_input(validator, error_message)
   end
 
-  # CHOOSE
+  # CHOOSE = DONE
   def choose_marker(other_marker)
     display_marker_choice_prompt(other_marker)
 
@@ -71,27 +71,15 @@ be #{other_marker} (that's the CPU's marker.)"
     validate_input(validator, error_message, other_marker).strip
   end
   
-  def choose_move(valid_choices)
-    puts "Choose an empty square (#{valid_choices.joinor(', ')}):"
+  # CHOOSE = DONE
+  def choose_move(empty_keys)
+    puts "Choose an empty square (#{empty_keys.joinor(', ')}):"
+
+    validator = -> (key, empty_keys) { valid_member?(key, empty_keys)}
     error_message = "That isn't an empty square!"
 
-    validate_input(valid_choices.map(&:to_s), error_message).to_i
+    validate_input(validator, error_message, empty_keys.map(&:to_s)).to_i
   end
-
-  # def choose_marker(opposing_marker)
-  #   display_marker_choice_prompt(opposing_marker)
-
-  #   loop do
-  #     marker = gets.chomp.strip
-  #     return marker if valid_marker?(marker, opposing_marker)
-
-  #     puts "Your marker must be non-empty, exactly 1 character, and cannot be #{opposing_marker}."
-  #   end
-  # end
-
-  # def valid_marker?(marker, other_marker)
-  #   !marker.empty? && marker.size == 1 && marker != other_marker
-  # end
 end
 
 # CPU Player

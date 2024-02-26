@@ -23,7 +23,7 @@ module Validatable
     end
   end
 
-  # Generic validator for checking if an input is included in a collection
+  # Generic check to see if an input is in a collection of 'valid' options
   def valid_member?(input, options)
     options.include?(input)
   end
