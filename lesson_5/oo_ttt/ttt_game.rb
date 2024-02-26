@@ -10,7 +10,6 @@ require_relative 'square'
 
 # To do:
 
-# Allow player to pick any marker; what should the computer use?
 # 
 # Reorganize methods
 # - Promptable? For any methods that require user input
@@ -28,8 +27,6 @@ class TTTGame
   include Displayable
   include Validatable
 
-  #MARKERS = %w[X O].freeze
-
   attr_reader :board, :human, :computer
 
   def initialize
@@ -38,14 +35,13 @@ class TTTGame
     @board = Board.new
     @computer = Computer.new(board)
     @human = Human.new(computer.marker)
-    
   end
-
 
   def play
     # Program Loop
     loop do
       set_score_limit
+      set_first_player
       match_loop
       display_round_result
       break unless play_again?
@@ -60,7 +56,6 @@ class TTTGame
   attr_accessor :current_player, :score_limit
 
   def match_loop
-    set_first_player
     loop do
       game_loop
       increment_score

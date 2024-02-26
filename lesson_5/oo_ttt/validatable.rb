@@ -20,8 +20,4 @@ module Validatable
   def valid_marker?(marker, other_marker)
     marker.strip.size == 1 && marker != other_marker
   end
-
-
 end
-
-# validate_input(validator, )
