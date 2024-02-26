@@ -66,7 +66,7 @@ class Human < Player
 
     validator = -> (marker, other_marker) { valid_marker?(marker, other_marker) }
     error_message = "Your marker must be exactly 1 non-empty character, and cannot
-be #{other_marker} (that's the CPU's marker.)"
+    be #{other_marker} (that's the CPU's marker.)"
 
     validate_input(validator, error_message, other_marker).strip
   end
@@ -97,8 +97,6 @@ class Computer < Player
   def choose_marker
     name[0]
   end
-
-  
 
   def choose_move(valid_choices)
     priority_keys = board.priority_keys(marker)

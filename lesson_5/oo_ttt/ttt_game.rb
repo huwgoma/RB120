@@ -77,7 +77,7 @@ class TTTGame
   def game_loop
     loop do
       display_gamestate
-      mark_board(choose_key)
+      mark_board(request_key)
       display_gamestate
 
       break if board.full? || board.winner?
@@ -132,7 +132,7 @@ class TTTGame
   end
 
   # RENAME CHOOSE
-  def choose_key
+  def request_key
     current_player.choose_move(board.unmarked_keys)
   end
 
