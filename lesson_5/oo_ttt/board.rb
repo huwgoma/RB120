@@ -28,11 +28,6 @@ class Board
     puts "\n"
   end
 
-  def clear_and_draw
-    clear
-    draw
-  end
-
   def []=(key, value)
     squares[key].mark(value)
   end
