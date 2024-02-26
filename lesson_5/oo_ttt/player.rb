@@ -19,7 +19,6 @@ class Player
 
   def initialize
     @name = choose_name
-    @marker = choose_marker
     @score = 0
     @@list << self
   end
@@ -46,17 +45,28 @@ class Human < Player
   include Validatable
   include Displayable
 
-  def initialize(opposing_marker)
+  def initialize(other_marker)
     super()
-    #@marker = choose_marker(opposing_marker)
+    @marker = choose_marker(other_marker)
   end
 
   def choose_name
     puts "What's your name?"
 
-    criteria = -> (name) { valid_name?(name) }
+    validator = -> (name) { valid_name?(name) }
+    error_message = "Your name can't be empty!"
     
-    validate_input(criteria, "Name can't be empty!")
+    validate_input(validator, error_message)
+  end
+
+  def choose_marker(other_marker)
+    display_marker_choice_prompt(other_marker)
+
+    validator = -> (marker, other_marker) { valid_marker?(marker, other_marker) }
+    error_message = "Your marker must be exactly 1 non-empty character, and cannot
+be #{other_marker} (that's the CPU's marker.)"
+
+    validate_input(validator, error_message, other_marker).strip
   end
   
   def choose_move(valid_choices)
@@ -66,26 +76,27 @@ class Human < Player
     validate_input(valid_choices.map(&:to_s), error_message).to_i
   end
 
-  def choose_marker(opposing_marker)
-    display_marker_choice_prompt(opposing_marker)
+  # def choose_marker(opposing_marker)
+  #   display_marker_choice_prompt(opposing_marker)
 
-    loop do
-      marker = gets.chomp.strip
-      return marker if valid_marker?(marker, opposing_marker)
+  #   loop do
+  #     marker = gets.chomp.strip
+  #     return marker if valid_marker?(marker, opposing_marker)
 
-      puts "Your marker must be non-empty, exactly 1 character, and cannot be #{opposing_marker}."
-    end
-  end
+  #     puts "Your marker must be non-empty, exactly 1 character, and cannot be #{opposing_marker}."
+  #   end
+  # end
 
-  def valid_marker?(marker, other_marker)
-    !marker.empty? && marker.size == 1 && marker != other_marker
-  end
+  # def valid_marker?(marker, other_marker)
+  #   !marker.empty? && marker.size == 1 && marker != other_marker
+  # end
 end
 
 # CPU Player
 class Computer < Player
   def initialize(board)
     super()
+    @marker = choose_marker
     @board = board
   end
 

@@ -21,6 +21,7 @@ require_relative 'square'
 
 
 
+
 # Orchestration Engine for TTT Game
 class TTTGame
   include Displayable
@@ -91,7 +92,10 @@ class TTTGame
   def choose_score_limit
     puts 'How many wins would you like to play up to? (1-10)'
 
-    validate_input(('1'..'10'), 'Please enter a number between 1 and 10!').to_i
+    validator = -> (limit, range) { valid_score_limit?(limit, range) }
+    error_message = 'Please enter a number between 1 and 10!'
+
+    validate_input(validator, error_message, ('1'..'10')).to_i
   end
 
   def increment_score
