@@ -12,20 +12,6 @@ class Board
     @win_conditions = calculate_win_conditions
   end
 
-  def draw
-    cell_size = calculate_cell_size
-    row_partition = create_row_partition
-    column_partition = '|'
-
-    squares.each do |key, square|
-      partition = (key % GRID_LENGTH).zero? ? row_partition : column_partition
-      cell_value = square.empty? ? key.to_s : square.value
-      print cell_value.center(cell_size, ' ')
-      print partition unless key >= GRID_AREA
-    end
-    puts "\n"
-  end
-
   def []=(key, value)
     squares[key].mark(value)
   end
@@ -110,7 +96,7 @@ class Board
   end
 
   # Select rows that have 1 empty + 2 same marked
-  #
+  # board.priority_rows
   def calculate_priority_keys(marker)
     priorities = { offense: [], defense: [] }
 
@@ -156,10 +142,6 @@ class Board
   # Accessory Methods for #draw
   def calculate_cell_size
     [3, squares.keys.max.to_s.size].max
-  end
-
-  def create_row_partition
-    "\n#{('---+' * GRID_LENGTH).chop}\n"
   end
 
   def all_in_a_row?(row)

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Namespace for display-related methods of TTTGame
-# TTTGame Prompts / Display
+# Namespace for display-related methods
 module Displayable
   def clear
     system('clear')
@@ -37,6 +36,26 @@ module Displayable
       Your marker must be non-blank, exactly 1 character, and
       cannot be #{opposing_marker} (that's the CPU's marker.)
     HEREDOC
+  end
+
+  # Board Display
+  def draw
+    grid_length = Board::GRID_LENGTH
+    cell_size = calculate_cell_size
+    row_partition = "\n#{('---+' * grid_length).chop}\n"
+    column_partition = '|'
+
+    squares.each_slice(grid_length).with_index do |row, row_index|
+      row.each do |key, square|
+        cell_value = square.empty? ? key.to_s : square.value
+
+        print cell_value.center(cell_size, ' ')
+        print column_partition unless (key % grid_length).zero?
+      end
+      print row_partition unless row_index >= grid_length - 1
+    end
+
+    puts "\n\n"
   end
 
   def display_gamestate
