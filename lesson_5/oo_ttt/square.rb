@@ -21,7 +21,7 @@ class Square
   def empty?
     value == INITIAL_VALUE
   end
-  
+
   def marked?
     value != INITIAL_VALUE
   end

@@ -108,22 +108,24 @@ class Board
       diagonal
     end
   end
-  
-  # Calculating Priority Keys
+
+  # Select rows that have 1 empty + 2 same marked
+  #
   def calculate_priority_keys(marker)
     priorities = { offense: [], defense: [] }
 
-    win_conditions.each_with_object(priorities) do |row, priorities|
+    win_conditions.each do |row|
       next unless priority_row?(row)
 
       empty_squares, marked_squares = partition_empty_squares(row)
-
       empty_key = squares.key(empty_squares.first)
       row_marker = marked_squares.first.value
       priority_type = row_marker == marker ? :offense : :defense
 
       priorities[priority_type] << empty_key
     end
+
+    priorities
   end
 
   def calculate_middle_keys

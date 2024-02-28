@@ -10,16 +10,11 @@ require_relative 'board'
 require_relative 'player'
 require_relative 'square'
 
-
 # To do:
 
 # Rubocop
 
-
 # Pad cells with '-' if part of winning row?
-
-
-
 
 # Orchestration Engine for TTT Game
 class TTTGame
@@ -43,7 +38,7 @@ class TTTGame
       match_loop
       display_round_result
       break unless play_again?
-      
+
       reset_round
     end
     display_goodbye
@@ -60,7 +55,7 @@ class TTTGame
       display_post_game
 
       break if round_over?
-      
+
       switch_current_player
       board.reset
       continue
@@ -74,7 +69,7 @@ class TTTGame
       display_gamestate
 
       break if board.full? || board.winner?
-      
+
       switch_current_player
     end
   end
@@ -117,7 +112,7 @@ class TTTGame
 
   def tie?
     board.full? && !board.winner?
-  end 
+  end
 
   def round_over?
     [human, computer].any? { |player| player.score >= score_limit }

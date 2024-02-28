@@ -23,7 +23,7 @@ module Displayable
   end
 
   def display_player_order_prompt
-    puts <<~HEREDOC 
+    puts <<~HEREDOC
       Who should move first?
       [1]: You
       [2]: CPU
@@ -73,7 +73,7 @@ end
 # Add #joinor method to Array
 class Array
   def joinor(separator = '', last_separator = 'or ')
-    array = self.dup # Avoid caller mutation
+    array = dup # Avoid caller mutation
     case array.size
     when 0..2 then array.join(last_separator)
     when (3..)

@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 # Module for validating input
 module Validatable
   def validate_input(validator, error_message, *criteria)
     loop do
       input = gets.chomp
       return input if validator.call(input, *criteria)
+
       puts "Invalid Input - #{error_message}"
     end
   end
@@ -14,7 +17,7 @@ module Validatable
   end
 
   def valid_name?(name)
-    !(name.strip.empty?)
+    !name.strip.empty?
   end
 
   def valid_marker?(marker, other_marker)

@@ -4,7 +4,11 @@
 class Player
   attr_reader :marker, :name, :score
 
+  # Choosing to disable this cop, since we haven't learned about class
+  # instance variables yet.
+  # rubocop:disable Style/ClassVars
   @@list = []
+  # rubocop:enable Style/ClassVars
 
   def self.list
     @@list
@@ -17,6 +21,7 @@ class Player
   def initialize
     @name = choose_name
     @score = 0
+
     @@list << self
   end
 
@@ -32,9 +37,9 @@ class Player
     self.score = 0
   end
 
-  private 
+  private
 
-  attr_writer :marker, :score 
+  attr_writer :marker, :score
 end
 
 # Human Player
@@ -56,7 +61,7 @@ class Computer < Player
   end
 
   def choose_name
-    ['R2D2', 'Hal', 'Wall-E'].sample
+    %w[R2D2 Hal Wall-E].sample
   end
 
   def choose_marker
