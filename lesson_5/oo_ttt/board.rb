@@ -50,9 +50,12 @@ class Board
     calculate_priority_keys(marker)
   end
 
-  # Return the key(s) representing the middle of the board
+  def middle_keys
+    calculate_middle_keys
+  end
+
   def unmarked_middle_keys
-    calculate_middle_keys - marked_keys
+    middle_keys - marked_keys
   end
 
   private
@@ -95,8 +98,6 @@ class Board
     end
   end
 
-  # Select rows that have 1 empty + 2 same marked
-  # board.priority_rows
   def calculate_priority_keys(marker)
     priorities = { offense: [], defense: [] }
 

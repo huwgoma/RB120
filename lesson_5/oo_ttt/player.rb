@@ -60,14 +60,6 @@ class Computer < Player
     @board = board
   end
 
-  def choose_name
-    %w[R2D2 Hal Wall-E].sample
-  end
-
-  def choose_marker
-    name[0]
-  end
-
   def choose_move(valid_choices)
     priority_keys = board.priority_keys(marker)
     middle_keys = board.unmarked_middle_keys
@@ -81,4 +73,12 @@ class Computer < Player
   private
 
   attr_reader :board
+
+  def choose_name
+    %w[R2D2 Hal Wall-E].sample
+  end
+
+  def choose_marker
+    name[0]
+  end
 end
