@@ -47,15 +47,12 @@ class Board
   end
 
   def priority_keys(marker)
-    calculate_priority_keys(marker)
+    priority_rows = find_priority_rows
+    partition_priority_keys(priority_rows, marker)
   end
 
-  def middle_keys
-    calculate_middle_keys
-  end
-
-  def unmarked_middle_keys
-    middle_keys - marked_keys
+  def unmarked_center_keys
+    find_center_keys - marked_keys
   end
 
   private
@@ -98,24 +95,33 @@ class Board
     end
   end
 
-  def calculate_priority_keys(marker)
-    priorities = { offense: [], defense: [] }
-
-    win_conditions.each do |row|
-      next unless priority_row?(row)
-
-      empty_squares, marked_squares = partition_empty_squares(row)
-      empty_key = squares.key(empty_squares.first)
-      row_marker = marked_squares.first.value
-      priority_type = row_marker == marker ? :offense : :defense
-
-      priorities[priority_type] << empty_key
-    end
-
-    priorities
+  def all_in_a_row?(row)
+    squares_at(row).map(&:value).uniq.one?
   end
 
-  def calculate_middle_keys
+  # 'Priority' means the row has 1 empty square and 2 marked squares w/ the same value.
+  def find_priority_rows
+    win_conditions.select { |row| priority_row?(row) }
+  end
+
+  def partition_priority_keys(priority_rows, marker)
+    priority_rows.each_with_object({ offense: [], defense: [] }) do |row, priorities|
+      row_squares = row.zip(squares_at(row)).to_h
+      empty_key = row_squares.key(row_squares.values.find(&:empty?))
+      row_mark = row_squares.values.find(&:marked?).value
+
+      type = marker == row_mark ? :offense : :defense
+      priorities[type] << empty_key
+    end
+  end
+
+  def priority_row?(row)
+    empty_squares, marked_squares = squares_at(row).partition(&:empty?)
+
+    empty_squares.one? && marked_squares.map(&:value).uniq.one?
+  end
+
+  def find_center_keys
     if GRID_LENGTH.odd?
       [(GRID_AREA / 2) + 1]
     else
@@ -129,23 +135,7 @@ class Board
     squares.values_at(*row)
   end
 
-  # Partition the squares in a row based on whether they are empty/marked
-  def partition_empty_squares(row)
-    squares_at(row).partition(&:empty?)
-  end
-
-  def priority_row?(row)
-    empty_squares, marked_squares = partition_empty_squares(row)
-
-    empty_squares.one? && marked_squares.map(&:value).uniq.one?
-  end
-
-  # Accessory Methods for #draw
   def calculate_cell_size
     [3, squares.keys.max.to_s.size].max
-  end
-
-  def all_in_a_row?(row)
-    squares_at(row).map(&:value).uniq.one?
   end
 end

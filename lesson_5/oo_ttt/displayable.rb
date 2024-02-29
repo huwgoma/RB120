@@ -38,26 +38,37 @@ module Displayable
     HEREDOC
   end
 
-  # Board Display
+  # Board Display Methods
   def draw
     grid_length = Board::GRID_LENGTH
-    cell_size = calculate_cell_size
-    row_partition = "\n#{('---+' * grid_length).chop}\n"
-    column_partition = '|'
 
     squares.each_slice(grid_length).with_index do |row, row_index|
       row.each do |key, square|
-        cell_value = square.empty? ? key.to_s : square.value
-
-        print cell_value.center(cell_size, ' ')
-        print column_partition unless (key % grid_length).zero?
+        draw_cell(key, square)
+        draw_column_partition unless (key % grid_length).zero?
       end
-      print row_partition unless row_index >= grid_length - 1
+      draw_row_partition(grid_length) unless row_index >= grid_length - 1
     end
 
     puts "\n\n"
   end
 
+  def draw_cell(key, square)
+    cell_size = calculate_cell_size
+    cell_value = square.empty? ? key.to_s : square.value
+
+    print cell_value.center(cell_size, ' ')
+  end
+
+  def draw_column_partition
+    print '|'
+  end
+
+  def draw_row_partition(grid_length)
+    print "\n#{('---+' * grid_length).chop}\n"
+  end
+
+  # Game State Displays
   def display_gamestate
     clear
     puts "#{human} (#{human.marker}): #{human.score}"

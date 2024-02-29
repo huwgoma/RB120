@@ -62,11 +62,11 @@ class Computer < Player
 
   def choose_move(valid_choices)
     priority_keys = board.priority_keys(marker)
-    middle_keys = board.unmarked_middle_keys
+    center_keys = board.unmarked_center_keys
 
     priority_keys[:offense].sample ||
       priority_keys[:defense].sample ||
-      middle_keys.sample ||
+      center_keys.sample ||
       valid_choices.sample
   end
 

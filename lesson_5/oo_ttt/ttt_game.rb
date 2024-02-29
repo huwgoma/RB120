@@ -10,11 +10,6 @@ require_relative 'board'
 require_relative 'player'
 require_relative 'square'
 
-# To do:
-
-# Rubocop
-
-
 # Orchestration Engine for TTT Game
 class TTTGame
   include Promptable
