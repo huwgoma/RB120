@@ -16,6 +16,10 @@ class Board
     squares[key].mark(value)
   end
 
+  def [](key)
+    squares[key]
+  end
+
   def unmarked_keys
     squares.keys.select { |key| squares[key].empty? }
   end
@@ -33,13 +37,10 @@ class Board
   end
 
   def winning_marker
-    win_conditions.each do |row|
-      first_square = squares[row.first]
-      next if first_square.empty?
+    winning_row = win_conditions.find { |row| winning_row?(row) }
+    return if winning_row.nil?
 
-      return first_square.value if all_in_a_row?(row)
-    end
-    nil
+    self[winning_row.first].value
   end
 
   def reset
@@ -95,8 +96,9 @@ class Board
     end
   end
 
-  def all_in_a_row?(row)
-    squares_at(row).map(&:value).uniq.one?
+  def winning_row?(row)
+    row_squares = squares_at(row)
+    row_squares.all?(&:marked?) && row_squares.map(&:value).uniq.one?
   end
 
   # 'Priority' means the row has 1 empty square and 2 marked squares w/ the same value.
