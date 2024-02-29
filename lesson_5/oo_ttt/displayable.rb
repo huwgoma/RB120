@@ -41,10 +41,11 @@ module Displayable
   # Board Display Methods
   def draw
     grid_length = Board::GRID_LENGTH
+    cell_size = calculate_cell_size
 
     squares.each_slice(grid_length).with_index do |row, row_index|
       row.each do |key, square|
-        draw_cell(key, square)
+        draw_cell(key, square, cell_size)
         draw_column_partition unless (key % grid_length).zero?
       end
       draw_row_partition(grid_length) unless row_index >= grid_length - 1
@@ -53,8 +54,7 @@ module Displayable
     puts "\n\n"
   end
 
-  def draw_cell(key, square)
-    cell_size = calculate_cell_size
+  def draw_cell(key, square, cell_size)
     cell_value = square.empty? ? key.to_s : square.value
 
     print cell_value.center(cell_size, ' ')

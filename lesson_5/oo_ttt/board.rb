@@ -127,7 +127,7 @@ class Board
     if GRID_LENGTH.odd?
       [(GRID_AREA / 2) + 1]
     else
-      calculate_winning_diagonals.map do |diagonal|
+      win_conditions.last(2).map do |diagonal|
         diagonal[(GRID_LENGTH / 2 - 1), 2]
       end.flatten
     end
