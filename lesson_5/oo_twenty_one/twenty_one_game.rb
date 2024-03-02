@@ -2,6 +2,7 @@ require 'pry'
 
 require_relative 'deck'
 require_relative 'card'
+require_relative 'player'
 # Twenty One - Rules
 # Card game (52-card deck); 4 suits, 13 values (2-10, j, q, k)
 # - 'Deck'
@@ -60,23 +61,32 @@ require_relative 'card'
 #     - cards need to be Dealed from @cards
 #   - Player => Banker/Punter
 #     - @hand (of cards)
-#     - @hand_total (value of the cards in hand)
-#     - @busted? (if @hand_total > 21)
+#     - hand_total (value of the cards in hand)
+#     - busted? (if @hand_total > 21)
 #     - Hit: Draw a new card from the deck 
 #     - Stay: Pass and do nothing
 
 # 4) Spike
 # Orchestration Engine for 21
 class TwentyOneGame
+  STARTING_CARD_COUNT = 2
+
+  attr_reader :deck, :dealer, :punter
+
+
   def initialize
-    @deck = Deck.new
-    # deck = Deck.new (initializes 52 cards)
-    # dealer = Dealer.new
-    # punter = Punter.new
-    # deal_cards
+    
+    @dealer = Dealer.new
+    @punter = Punter.new
   end
 
   def play
+    @deck = Deck.new
+    deck.shuffle!
+    deal_starting_cards
+
+    binding.pry
+    
     # current_player = punter
     # 
     # 
@@ -95,11 +105,20 @@ class TwentyOneGame
     # current_player.busted?
     # @punter.move
   end
+
+
+  def deal_starting_cards
+    [dealer, punter].each do |player|
+      player.add_to_hand(deck.deal!(STARTING_CARD_COUNT))
+    end
+  end
 end
 
 TwentyOneGame.new.play
 
 
+# Deck 'deal' => Remove the first card from the deck
+# Player 'draw' => Add the given card to the players hand
 
 
 # 

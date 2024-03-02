@@ -7,6 +7,15 @@ class Deck
 
   def initialize
     @cards = generate_cards
+    # shuffle! if shuffle
+  end
+
+  def shuffle!
+    @cards.shuffle!
+  end
+
+  def deal!(count = 1)
+    cards.shift(count)
   end
 
   private 
@@ -17,3 +26,4 @@ class Deck
     end
   end
 end
+
