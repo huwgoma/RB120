@@ -11,12 +11,20 @@ class Player
     hand.push(*cards)
   end
 
-  def hit
-    # Draw a card
+  def busted?
+    hand.size > 3
   end
 
-  def stay
-    # Do nothing, pass
+
+
+
+  def hit
+    # Draw a card
+    add_to_hand(cards)
+  end
+
+  def stayed?
+    # toggle true when player stays, otherwise false
   end
 
   def hand_value
@@ -37,6 +45,7 @@ class Dealer < Player
 
   def choose_move
     # Hit until hand total >= 17
+    'H' # unless hand total >= 17
   end
 end
 
@@ -48,6 +57,12 @@ class Punter < Player
   end
   
   def choose_move
+    puts 'Would you like to (H)it or (S)tay?'
+    loop do
+      choice = gets.chomp.upcase
+      return choice if %w(H S).include?(choice)
+      puts 'Please enter either H or S!'
+    end
     # Prompt for input, either hit or stay
   end
 end

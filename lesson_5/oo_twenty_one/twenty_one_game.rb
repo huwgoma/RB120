@@ -85,10 +85,52 @@ class TwentyOneGame
     deck.shuffle!
     deal_starting_cards
 
+    
+
+    # Game Loop
+    # Punter chooses move.
+    #   Hit -> Hit -> Until Stay or Bust
+    # Dealer chooses move unless punter busted.
+    #   Hit -> Hit -> Until Stay or Bust
+    
+    # Full send 
+    [punter, dealer].each do |player|
+      loop do
+        move = player.choose_move
+
+        player.add_to_hand(deck.deal!) if move == 'H'
+        
+        break if player.busted? || move == 'S'
+      end
+
+      break if player.busted?
+    end
+    
+    # loop do
+    #   current_player.turn
+    #   break if current_player.busted?
+    #   switch_current_player
+    #   break if [dealer, punter].all?(&:stayed?)
+    # end
+
     binding.pry
+    # punter_turn
+    # dealer_turn unless punter.bust?
+    # calculate_game_result
+    # 
+    # winner = if punter.bust? 
+    #             dealer
+    #          elsif dealer.bust?
+    #             punter
+    #          else
+    #             dealer, punter .maxby hand value
     
     # current_player = punter
     # 
+    # current player moves.
+    # If current player busted, break
+    # Otherwise, switch current player.
+    # Break if both players stayed.
     # 
 
     # loop do
@@ -101,17 +143,21 @@ class TwentyOneGame
     # - If either player busted, the other player is the winner
     # - Otherwise, compare hand values to determine winner
     #   
-    # current_player.move
-    # current_player.busted?
-    # @punter.move
-  end
 
+  end
 
   def deal_starting_cards
     [dealer, punter].each do |player|
       player.add_to_hand(deck.deal!(STARTING_CARD_COUNT))
     end
   end
+
+  # def punter_turn
+  #   punter.choose_move # return a string representing move 'h'/'s'
+  #   break if move == 's'
+  #   # how to represent moves? hit/stay?
+  #   # until punter.stayed? || punter.busted?
+  # end
 end
 
 TwentyOneGame.new.play
