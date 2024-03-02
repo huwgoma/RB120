@@ -2,10 +2,6 @@
 
 # Module for methods that prompt user for input
 module Promptable
-  # Some validation/display methods are needed for some Promptable methods to work.
-  # Does it make more sense to include these here, in the module itself? Or should
-  # Displayable and Validatable be included in the classes that will mix in
-  # Promptable? (eg. TTTGame/Player)
   include Displayable
   include Validatable
 
@@ -23,8 +19,8 @@ module Promptable
     display_marker_choice_prompt(other_marker)
 
     validator = ->(marker, cpu_marker) { valid_marker?(marker, cpu_marker) }
-    error_message = "Your marker must be exactly 1 non-empty character, and cannot
-    be #{other_marker} (that's the CPU's marker.)"
+    error_message = "Your marker must be exactly 1 non-empty character, and
+    cannot be #{other_marker} (that's the CPU's marker.)"
 
     validate_input(validator, error_message, other_marker).strip
   end
@@ -51,7 +47,7 @@ module Promptable
   def choose_first_player
     display_player_order_prompt
 
-    valid_options = %w[1 2 3]
+    valid_options = %w(1 2 3)
     validator = ->(choice, options) { valid_member?(choice, options) }
     error_message = "Please enter #{valid_options.joinor(', ')}!"
 
@@ -68,7 +64,7 @@ module Promptable
 
     validator = ->(choice, options) { valid_member?(choice, options) }
     error_message = 'Please enter Y or N!'
-    valid_choices = %w[y n Y N]
+    valid_choices = %w(y n Y N)
 
     validate_input(validator, error_message, valid_choices).downcase == 'y'
   end

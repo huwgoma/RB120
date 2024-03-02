@@ -101,13 +101,14 @@ class Board
     row_squares.all?(&:marked?) && row_squares.map(&:value).uniq.one?
   end
 
-  # 'Priority' means the row has 1 empty square and 2 marked squares w/ the same value.
+  # 'Priority' row consists of 1 empty square, 2 identically-marked squares.
   def find_priority_rows
     win_conditions.select { |row| priority_row?(row) }
   end
 
   def partition_priority_keys(priority_rows, marker)
-    priority_rows.each_with_object({ offense: [], defense: [] }) do |row, priorities|
+    priority_rows.each_with_object({ offense: [],
+                                     defense: [] }) do |row, priorities|
       row_squares = row.zip(squares_at(row)).to_h
       empty_key = row_squares.key(row_squares.values.find(&:empty?))
       row_mark = row_squares.values.find(&:marked?).value
@@ -128,7 +129,7 @@ class Board
       [(GRID_AREA / 2) + 1]
     else
       win_conditions.last(2).map do |diagonal|
-        diagonal[(GRID_LENGTH / 2 - 1), 2]
+        diagonal[((GRID_LENGTH / 2) - 1), 2]
       end.flatten
     end
   end

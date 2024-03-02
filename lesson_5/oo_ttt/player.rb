@@ -6,7 +6,6 @@ class Player
 
   # Choosing to disable this cop, since we haven't learned about class
   # instance variables yet.
-  # rubocop:disable Style/ClassVars
   @@list = []
   # rubocop:enable Style/ClassVars
 
@@ -75,7 +74,7 @@ class Computer < Player
   attr_reader :board
 
   def choose_name
-    %w[R2D2 Hal Wall-E].sample
+    %w(R2D2 Hal Wall-E).sample
   end
 
   def choose_marker
