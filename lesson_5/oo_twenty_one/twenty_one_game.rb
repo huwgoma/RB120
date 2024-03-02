@@ -1,3 +1,7 @@
+require 'pry'
+
+require_relative 'deck'
+require_relative 'card'
 # Twenty One - Rules
 # Card game (52-card deck); 4 suits, 13 values (2-10, j, q, k)
 # - 'Deck'
@@ -65,6 +69,7 @@
 # Orchestration Engine for 21
 class TwentyOneGame
   def initialize
+    @deck = Deck.new
     # deck = Deck.new (initializes 52 cards)
     # dealer = Dealer.new
     # punter = Punter.new
@@ -92,25 +97,8 @@ class TwentyOneGame
   end
 end
 
-class Deck
-  def initialize
-    @cards = generate_cards
-  end
+TwentyOneGame.new.play
 
-  def generate_cards
-    # SUITS
-    # FACES
-    # generate 
-    # array of 52 Cards
-  end
-end
-
-class Card
-  # def initialize
-  #   @suit = suit
-  #   @face = face
-  # end
-end
 
 
 
