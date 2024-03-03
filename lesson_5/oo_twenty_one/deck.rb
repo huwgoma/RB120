@@ -23,7 +23,6 @@ class Deck
   def generate_cards
     SUITS.product(FACES).map do |(suit, face)|
       face == 'Ace' ? Ace.new(suit, face) : Card.new(suit, face)
-      # Card.new(suit, face)
     end
   end
 end
