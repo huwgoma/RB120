@@ -39,56 +39,53 @@ class Player
   private
 
   def calculate_hand_value
-    # Input: An array of Card objects with Integer values 
-    # - Aces are the sole exception; their value is either 1 or 11 (repped by array)
-    # Output: An integer (sum of Card values)
-    # Rules:
-    #   - Aces are worth either 1 or 11, depending on the rest of the hand's value.
-    #     - If the 
-    #     - Otherwise it's worth 1
-
-    # Examples:
-    # [King, 7] => 17
-    # [Ace, King] => 21
-    # [Ace, Ace, King] => 12 (10+1+1)
-    # [Ace, Ace, 9] => 21 (9+11+1)
-    # [Ace, Ace, King, 10] => 22 (10 + 10 + 1 + 1)
-
-    # Data: 
-    # Array of cards given as input
-    # - Maybe partition cards into aces/non-aces?
-    # - Sum the non-aces first to obtain the non-ace total
-    # - For each ace, 
-    #   - Add 11 + (1 * number of remaining aces) to non-ace total
-    #     - if the resulting sum exceeds 21, add 1 instead
-
-    # eg. [7, 3, A, A]
-    # non-ace total: 10
-    # [A, A] - Try adding 12 (11+1) to 10 => 22 - greater than 21, so add 1 instead
-
-    # (Total: 10), 2 Aces 1..2
-    # First Ace:
-    #   10 + 11 + 1 (1: 2 - 1)
-    # second Ace:
-    #   11 + 11 (0: 2 - 2)
-
-    # [7, 4, A]
-    # Add 11 to 10 -> 21
-
     aces, other = hand.partition(&:ace?)
     sum = other.sum(&:value)
-
-    1.upto(aces.size) do |n|
-      remaining_aces = aces.size - n
-
-      if sum + (11 + remaining_aces) > BUST_LIMIT
-        sum += 1
+    
+    aces.each_with_index do |ace, index|
+      remaining_aces = aces.size - (index + 1)
+      ace_max = Ace::VALUES.max
+      
+      if sum + ace_max + remaining_aces > BUST_LIMIT
+        ace.set_value(:min)
       else
-        sum += 11
+        ace.set_value(:max)
       end
     end
 
-    sum
+    sum + aces.sum(&:value)
+      # Given an array of aces and a total sum of other card values:
+      # Iterate through each ace, with index. For each ace:
+      #   -> Calculate and set the value of that ace
+      #   Calculate the number of remaining aces:
+      #     - aces.size - (index + 1)
+      #     eg. [A, A] - first ace, index 0
+      #     Remaining aces: 1 (size - index + 1 => 1)
+      #   Add ace's max value, remaining aces (*1), and total sum
+      #   - If the result is greater than the BUST_LIMIT, set current ace value to
+      #     its min
+      #   - Otherwise, set current ace value to its max.
+      # We have to re-calculate this every time, so change ace @value to a constant
+      # 
+      # if sum + ... > LIMIT
+      #   ace.set_value
+      # else
+
+      # end
+      # binding.pry
+    # end
+
+    # 1.upto(aces.size) do |n|
+    #   remaining_aces = aces.size - n
+
+    #   if sum + (11 + remaining_aces) > BUST_LIMIT
+    #     sum += 1
+    #   else
+    #     sum += 11
+    #   end
+    # end
+
+    # sum
     # Algorithm:
     # Given an array of card objects, cards:
     # Partition cards into aces and non-aces. 

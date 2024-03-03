@@ -99,7 +99,7 @@ class TwentyOneGame
         move = player.choose_move
 
         player.add_to_hand(deck.deal!) if move == 'H'
-        player.display_hand
+        player.display_hand # not if dealer ?
         
         break if player.busted? || move == 'S'
       end
