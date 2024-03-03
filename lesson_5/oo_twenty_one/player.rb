@@ -15,10 +15,12 @@ class Player
 
   def add_to_hand(cards)
     hand.push(*cards)
+    # Update @hand_value whenever a new card is added
   end
 
   def busted?
     calculate_hand_value > BUST_LIMIT
+    # Move BUST_LIMIT out of here
   end
 
   def display_hand
@@ -62,7 +64,7 @@ class Dealer < Player
   HIT_LIMIT = 17
 
   def choose_name
-    'House'
+    'Dealer'
   end
 
   def choose_move
@@ -79,8 +81,12 @@ end
 # Punter tries to beat the dealer
 class Punter < Player
   def choose_name
-    # What's your name?  (not empty)
-    'Hugo'
+    puts "What's your name?"
+    loop do
+      name = gets.chomp.strip
+      return name unless name.empty?
+      puts "Your name can't be empty!"
+    end
   end
   
   def choose_move
@@ -90,6 +96,5 @@ class Punter < Player
       return choice if %w(H S).include?(choice)
       puts 'Please enter either H or S!'
     end
-    # Prompt for input, either hit or stay
   end
 end

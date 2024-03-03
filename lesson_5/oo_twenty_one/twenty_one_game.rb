@@ -3,6 +3,14 @@ require 'pry'
 require_relative 'deck'
 require_relative 'card'
 require_relative 'player'
+require_relative 'result'
+
+# TO DO:
+# - Card display logic (full vs hidden dealer)
+# - Full cards (aesthetic)
+# - Scorekeeping (best of ?)
+
+
 # Twenty One - Rules
 # Card game (52-card deck); 4 suits, 13 values (2-10, j, q, k)
 # - 'Deck'
@@ -69,9 +77,10 @@ require_relative 'player'
 # 4) Spike
 # Orchestration Engine for 21
 class TwentyOneGame
+  BUST_LIMIT = 21
   STARTING_CARD_COUNT = 2
 
-  attr_reader :deck, :dealer, :punter
+  attr_reader :deck, :dealer, :punter, :players
 
 
   def initialize
@@ -79,7 +88,7 @@ class TwentyOneGame
     display_rules
     @dealer = Dealer.new
     @punter = Punter.new
-    # players = [dealer, punter]
+    @players = [punter, dealer]
   end
 
   def play
@@ -101,7 +110,7 @@ class TwentyOneGame
 
 
     # Full send 
-    [punter, dealer].each do |player|
+    players.each do |player|
       loop do
         move = player.choose_move
 
@@ -115,6 +124,10 @@ class TwentyOneGame
       break if player.busted?
     end
 
+    result = Result.new(players)
+    puts result
+
+
     # Win Logic
 
     binding.pry
@@ -125,21 +138,8 @@ class TwentyOneGame
     #             punter
     #          else
     #             dealer, punter .maxby hand value
-    
-    # current_player = punter
-    # 
-    # current player moves.
-    # If current player busted, break
-    # Otherwise, switch current player.
-    # Break if both players stayed.
-    # 
 
-    # loop do
-    #   current player move
-    #   break if current player busted?
-    #   switch current player if current player stayed
-    #   break if both players stayed
-    # end
+
     # win logic:
     # - If either player busted, the other player is the winner
     # - Otherwise, compare hand values to determine winner
@@ -153,17 +153,52 @@ class TwentyOneGame
   end
 
   def deal_starting_cards
-    [dealer, punter].each do |player|
+    players.each do |player|
       player.add_to_hand(deck.deal!(STARTING_CARD_COUNT))
     end
   end
 
   def display_hands
-    [dealer, punter].each do |player|
+    players.reverse_each do |player|
       puts "#{player}'s hand:"
       player.display_hand
     end
   end
+
+  # Calculate outcome
+  # - 2 possible end-of-game outcomes:
+  # - Busted vs normal (max by value)
+  # If busted, 
+
+  # def calculate_winner
+  #   # Input: Array of 2 player objects
+  #   # Output: The player object that 'won'
+  #   # Rules:
+  #   #   If either of the player objects busted, the other player automatically wins.
+  #   #   Otherwise, the player with the higher hand value wins.
+
+  #   # Examples: 
+  #   # calculate_winner(Dealer 22, Player 16) => Player (Dealer busted)
+  #   busted = players.find(&:busted?)
+
+  #   if busted
+  #     other_player(busted)
+  #   else
+  #     [dealer, punter].max_by(&:hand_value)
+  #   end
+  #   binding.pry
+  # end
+
+  # def other_player(player)
+  #   # Input: Player object or nil
+  #   # Output: The other player or nil (if nil)
+
+  #   # Examples 
+  #   # other_player(dealer) => punter
+  #   # other_player(punter) => dealer
+  #   # other_player(nil) => nil
+  #   player == dealer ? punter : dealer
+  # end
 
   def display_rules
     puts 'Welcome to Twenty One!'
@@ -184,13 +219,3 @@ class TwentyOneGame
 end
 
 TwentyOneGame.new.play
-
-
-# Deck 'deal' => Remove the first card from the deck
-# Player 'draw' => Add the given card to the players hand
-
-
-# 
-# Loop until punter either stays or busts
-# - If punter stays, switch the player to dealer
-# - If punter busts, skip the dealer's turn and go straight to calculating end of game  
