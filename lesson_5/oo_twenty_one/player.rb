@@ -71,8 +71,7 @@ class Dealer < Player
   end
 
   def choose_move
-    # Hit until hand total >= 17
-    'H' # unless hand total >= 17
+    hand_value >= HIT_LIMIT ? 'S' : 'H'
   end
 end
 
