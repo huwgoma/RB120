@@ -8,6 +8,10 @@ class Card
     @value = calculate_value
   end
 
+  def ace?
+    face == 'Ace'
+  end
+
   private
 
   def calculate_value

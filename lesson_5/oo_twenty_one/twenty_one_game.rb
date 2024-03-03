@@ -99,19 +99,14 @@ class TwentyOneGame
         move = player.choose_move
 
         player.add_to_hand(deck.deal!) if move == 'H'
+        player.display_hand
         
         break if player.busted? || move == 'S'
       end
 
       break if player.busted?
     end
-    
-    # loop do
-    #   current_player.turn
-    #   break if current_player.busted?
-    #   switch_current_player
-    #   break if [dealer, punter].all?(&:stayed?)
-    # end
+
 
     binding.pry
     # punter_turn
