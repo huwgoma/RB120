@@ -9,6 +9,10 @@ class Player
     @hand = []
   end
 
+  def to_s
+    name
+  end
+
   def add_to_hand(cards)
     hand.push(*cards)
   end
@@ -21,19 +25,10 @@ class Player
     puts hand
   end
 
-
-  # def hit
-  #   # Draw a card
-  #   add_to_hand(cards)
-  # end
-
-  # def stayed?
-  #   # toggle true when player stays, otherwise false
-  # end
-
   def hand_value
     calculate_hand_value
   end
+
 
   private
 
@@ -74,6 +69,12 @@ class Dealer < Player
     # Hit until hand total >= 17
     'H' # unless hand total >= 17
   end
+
+  def display_hand(hidden: true)
+    puts hand.first
+    puts "#{(hand.size - 1)} hidden card."
+  end
+
 end
 
 # Punter tries to beat the dealer

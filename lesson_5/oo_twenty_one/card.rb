@@ -12,6 +12,10 @@ class Card
     self.class == Ace
   end
 
+  def to_s
+    "#{face} of #{suit}"
+  end
+
   private
 
   def calculate_value

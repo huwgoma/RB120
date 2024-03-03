@@ -78,28 +78,38 @@ class TwentyOneGame
     
     @dealer = Dealer.new
     @punter = Punter.new
+    # players = [dealer, punter]
   end
 
   def play
+    system 'clear'
     @deck = Deck.new
     deck.shuffle!
     deal_starting_cards
 
-    
+    display_hands
+    # Display work
+    # Welcome to Twenty One!
+    # Rules are blah blah blah,....
+    # What's your name? -> Prompt for name
+    # How many rounds would you like to play? 
 
-    # Game Loop
-    # Punter chooses move.
-    #   Hit -> Hit -> Until Stay or Bust
-    # Dealer chooses move unless punter busted.
-    #   Hit -> Hit -> Until Stay or Bust
-    
+    # Display your hand and display the first card of the dealer
+    # Hit or stay 
+    #   Hit -> Display your hand again
+    # Stay -> Dealer turn
+    #   - Display full dealer hand 
+    #   Hit -> Update and display hand again
+
+
     # Full send 
     [punter, dealer].each do |player|
       loop do
         move = player.choose_move
 
         player.add_to_hand(deck.deal!) if move == 'H'
-        player.display_hand # not if dealer ?
+        system 'clear'
+        display_hands # full display if dealer
         
         break if player.busted? || move == 'S'
       end
@@ -107,12 +117,10 @@ class TwentyOneGame
       break if player.busted?
     end
 
+    # Win Logic
 
     binding.pry
-    # punter_turn
-    # dealer_turn unless punter.bust?
-    # calculate_game_result
-    # 
+
     # winner = if punter.bust? 
     #             dealer
     #          elsif dealer.bust?
@@ -147,12 +155,12 @@ class TwentyOneGame
     end
   end
 
-  # def punter_turn
-  #   punter.choose_move # return a string representing move 'h'/'s'
-  #   break if move == 's'
-  #   # how to represent moves? hit/stay?
-  #   # until punter.stayed? || punter.busted?
-  # end
+  def display_hands
+    [dealer, punter].each do |player|
+      puts "#{player}'s hand:"
+      player.display_hand
+    end
+  end
 end
 
 TwentyOneGame.new.play
