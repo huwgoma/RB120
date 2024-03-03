@@ -75,18 +75,16 @@ class TwentyOneGame
 
 
   def initialize
-    
+    system 'clear'
+    display_rules
     @dealer = Dealer.new
     @punter = Punter.new
     # players = [dealer, punter]
   end
 
   def play
-    system 'clear'
-    @deck = Deck.new
-    deck.shuffle!
+    initialize_deck
     deal_starting_cards
-
     display_hands
     # Display work
     # Welcome to Twenty One!
@@ -149,6 +147,11 @@ class TwentyOneGame
 
   end
 
+  def initialize_deck
+    @deck = Deck.new
+    deck.shuffle!
+  end
+
   def deal_starting_cards
     [dealer, punter].each do |player|
       player.add_to_hand(deck.deal!(STARTING_CARD_COUNT))
@@ -160,6 +163,23 @@ class TwentyOneGame
       puts "#{player}'s hand:"
       player.display_hand
     end
+  end
+
+  def display_rules
+    puts 'Welcome to Twenty One!'
+    puts <<~HEREDOC
+      The rules of this game are as follows:
+      1) You and the CPU ('Dealer') will both start with 2 cards. You will
+         see all of your cards, but only 1 of the Dealer's cards.
+      2) The goal is to get your hand's value as close to 21 as possible without
+         going over.
+      3) On your turn, you may either 'Hit' (Draw a card) or 'Stay' (Pass).
+      4) When you choose to Stay, the Dealer will take his turn. The Dealer must
+         Hit until their hand's value reaches at least 17, after which they must
+         Stay.
+      5) If either player's hand exceeds 21, they bust and immediately lose. If 
+         nobody busted, the player with the higher hand value wins.
+    HEREDOC
   end
 end
 
