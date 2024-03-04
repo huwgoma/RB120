@@ -52,10 +52,11 @@ class TwentyOneGame
 
   def play_game
     initialize_shuffled_deck
-    deal_starting_cards
     announce_deal
-    display_hands
-
+    deal_starting_cards
+    
+    update_display
+    # binding.pry
     player_turns
     announce_result(players)
   end

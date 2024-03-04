@@ -31,13 +31,12 @@ class Player
     calculate_hand_value
   end
 
-
   private
 
   def calculate_hand_value
     aces, other = hand.partition(&:ace?)
     other_sum = other.sum(&:value)
-    
+
     set_ace_values(aces, other_sum)
     
     other_sum + aces.sum(&:value)
@@ -55,6 +54,8 @@ class Player
       else
         ace.set_value(:max)
       end
+
+      other_sum += ace.value
     end
   end
 end
