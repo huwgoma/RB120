@@ -71,14 +71,17 @@ class Dealer < Player
     hand_value >= HIT_LIMIT ? 'S' : 'H'
   end
 
-  def display_hand(hidden: true)
-    puts hand.first
-    puts "#{(hand.size - 1)} hidden card."
+  def display_hand(full: false)
+    if full
+      puts hand
+    else
+      puts "#{hand.first} + #{hand.size - 1} hidden card(s)."
+    end
   end
 
 end
 
-# Punter tries to beat the dealer
+# Punter tries to beat the dealer without going over 21
 class Punter < Player
   def choose_name
     puts "What's your name?"
