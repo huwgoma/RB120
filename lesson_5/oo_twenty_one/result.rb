@@ -26,7 +26,7 @@ class Result
     if bust?
       other_player(players.find(&:busted?))
     else
-      players.max_by(&:hand_value)
+      players.max_by(&:hand_value) # tie? # nil if tie
     end
   end
 

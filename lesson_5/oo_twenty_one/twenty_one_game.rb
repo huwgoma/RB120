@@ -6,6 +6,9 @@ require_relative 'player'
 require_relative 'result'
 
 # TO DO:
+# Implement scorekeeping (how many games would you like to play?)
+
+
 # - Card display logic (full vs hidden dealer)
 # - Full cards (aesthetic)
 # - Scorekeeping (best of ?)
@@ -29,31 +32,35 @@ class TwentyOneGame
   end
 
   def play
+    # Match Loop
+    # How many games would you like to play?
+    # game_limit = gets.chomp
+      # 
+      #
+      # 
+    # after every game, increment score of winner
+    # increment games_played by 1
+    # When games_played == game_limit, break
+    # play again?
+    game_limit = choose_game_limit
+
     system 'clear'
-    initialize_deck
+    
+    play_game
+
+  end
+
+  def play_game
+    initialize_shuffled_deck
     deal_starting_cards
-    # Now Dealing...
+    announce_deal
     display_hands
-    # Display work
-    # Welcome to Twenty One!
-    # Rules are blah blah blah,....
-    # What's your name? -> Prompt for name
-    # How many rounds would you like to play? 
 
-    # Game Display Flow
-    # 1) Would you like to Hit or Stay?
-    #   - If move == 'H', hit: Add a card to the player's hand, then 
-    #     clear the screen and update the display
+    player_turns
+    announce_result(players)
+  end
 
-    # 2) If move == 'S', stay: 
-    #   - prompt 'switching players'....
-    #   - wait 1 second
-    # 3) Then start the dealer's turn
-    #   - If move == 'H', hit: Add a card to the player's hand, wait 1s, then
-    #     clear screen and update display
-
-
-
+  def player_turns
     players.each do |player|
       loop do
         move = player.choose_move
@@ -72,9 +79,15 @@ class TwentyOneGame
 
       break if player.busted?
     end
+  end
 
-    result = Result.new(players)
-    puts result
+  def choose_game_limit
+    puts 'How many games would you like to play? (1-10)'
+    loop do
+      games = gets.chomp
+      return games.to_i if ('1'..'10').include?(games)
+      puts 'Please pick a number between 1 and 10!'
+    end
   end
 
   def announce_hit(player)
@@ -88,13 +101,22 @@ class TwentyOneGame
     pause
   end
 
+  def announce_deal
+    puts 'Now dealing...'
+    pause
+  end
+
+  def announce_result(players)
+    puts Result.new(players)
+  end
+
   def update_display(full: false)
     system 'clear'
     # Display scores
     display_hands(full: full)
   end
 
-  def initialize_deck
+  def initialize_shuffled_deck
     @deck = Deck.new
     deck.shuffle!
   end
