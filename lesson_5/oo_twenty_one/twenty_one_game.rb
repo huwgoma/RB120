@@ -1,4 +1,5 @@
 require 'pry'
+require 'io/console'
 
 require_relative 'deck'
 require_relative 'card'
@@ -7,6 +8,8 @@ require_relative 'result'
 
 # TO DO:
 # Implement scorekeeping (how many games would you like to play?)
+
+# Tie condition
 
 
 # - Card display logic (full vs hidden dealer)
@@ -24,15 +27,45 @@ class TwentyOneGame
 
 
   def initialize
-    system 'clear'
+    clear
     display_rules
+    @deck = Deck.new(shuffle: true)
     @dealer = Dealer.new
     @punter = Punter.new
     @players = [punter, dealer]
   end
 
   def play
-    # Match Loop
+
+    loop do
+      game_limit = choose_game_limit
+      games_played = 0
+      # Match loop
+      loop do
+        
+
+        clear
+        
+        play_game
+        announce_result(players)
+        # Increment score of winner
+        games_played += 1
+
+        break if games_played >= game_limit
+        
+        reset_game_state
+        continue
+      end
+      # Announce result
+
+      # play_again?
+      break unless play_again?
+    end
+
+    # Thanks for palying!
+  end
+
+      # Match Loop
     # How many games would you like to play?
     # game_limit = gets.chomp
       # 
@@ -42,23 +75,19 @@ class TwentyOneGame
     # increment games_played by 1
     # When games_played == game_limit, break
     # play again?
-    game_limit = choose_game_limit
-
-    system 'clear'
-    
-    play_game
-
-  end
 
   def play_game
-    initialize_shuffled_deck
     announce_deal
     deal_starting_cards
     
     update_display
-    # binding.pry
     player_turns
-    announce_result(players)
+  end
+
+  def reset_game_state
+    players.each(&:discard_hand)
+    deck.reset
+    deck.shuffle!
   end
 
   def player_turns
@@ -112,15 +141,15 @@ class TwentyOneGame
   end
 
   def update_display(full: false)
-    system 'clear'
+    clear
     # Display scores
     display_hands(full: full)
   end
 
-  def initialize_shuffled_deck
-    @deck = Deck.new
-    deck.shuffle!
-  end
+  # def initialize_shuffled_deck
+  #   @deck = Deck.new
+  #   deck.shuffle!
+  # end
 
   def deal_starting_cards
     players.each do |player|
@@ -162,6 +191,15 @@ class TwentyOneGame
 
   def pause
     sleep(1)
+  end
+
+  def clear
+    system('clear')
+  end
+
+  def continue
+    puts 'Press any key to continue:'
+    STDIN.getch
   end
 end
 

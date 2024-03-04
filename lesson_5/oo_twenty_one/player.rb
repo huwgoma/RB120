@@ -31,6 +31,10 @@ class Player
     calculate_hand_value
   end
 
+  def discard_hand
+    hand.clear
+  end
+
   private
 
   def calculate_hand_value

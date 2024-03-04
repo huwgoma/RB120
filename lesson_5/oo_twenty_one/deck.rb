@@ -5,20 +5,26 @@ class Deck
 
   attr_reader :cards
 
-  def initialize
+  def initialize(shuffle: false)
     @cards = generate_cards
-    # shuffle! if shuffle
+    shuffle! if shuffle
   end
 
   def shuffle!
-    @cards.shuffle!
+    cards.shuffle!
   end
 
   def deal!(count = 1)
     cards.shift(count)
   end
 
-  private 
+  def reset
+    self.cards = generate_cards
+  end
+
+  private
+
+  attr_writer :cards
 
   def generate_cards
     SUITS.product(FACES).map do |(suit, face)|
