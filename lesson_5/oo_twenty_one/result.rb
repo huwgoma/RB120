@@ -1,4 +1,4 @@
-# Class for calculating/encapsulating the result of a 21 Game
+# Encapsulate the result of a single Twenty-One Game
 class Result
   attr_reader :players, :winner, :loser
 
@@ -43,4 +43,28 @@ class Result
 
     player == players.first ? players.last : players.first
   end
+end
+
+# Encapsulate the result of a Twenty-One 'match' (multiple games)
+class MatchResult < Result
+  def tie?
+    players.map(&:score).uniq.one?
+  end
+
+  def to_s
+    if tie?
+      "It's a tie, #{players.first.score}-#{players.last.score}!"
+    else
+      "#{winner} wins, #{winner.score}-#{loser.score}!"
+    end
+  end
+
+  private
+  
+  def determine_winner
+    return if tie?
+
+    players.max_by(&:score)
+  end
+
 end

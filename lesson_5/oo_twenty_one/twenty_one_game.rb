@@ -9,13 +9,11 @@ require_relative 'result'
 # TO DO:
 # Implement scorekeeping (how many games would you like to play?)
 
-# Tie condition
-
 
 # - Card display logic (full vs hidden dealer)
 # - Full cards (aesthetic)
 # - Scorekeeping (best of ?)
-# - Convert #hand_value to @hand_value (update on add)
+
 
 # 4) Spike
 # Orchestration Engine for 21
@@ -48,17 +46,22 @@ class TwentyOneGame
 
         result = Result.new(players)
         puts result
-        # result.winner.increment_score unless result.tie?
-        binding.pry
+        result.winner.increment_score unless result.tie?
 
-        # Increment score of winner
         games_played += 1
-
         break if games_played >= game_limit
         
         reset_game_state
         continue
       end
+
+      match_result = MatchResult.new(players)
+      puts match_result
+
+      # winner wins, score 2-1!
+      # it's a tie, 1-1!
+      # Match result
+      # 
       # Announce result
 
       # play_again?
