@@ -58,14 +58,10 @@ class TwentyOneGame
       match_result = MatchResult.new(players)
       puts match_result
 
-      # winner wins, score 2-1!
-      # it's a tie, 1-1!
-      # Match result
-      # 
-      # Announce result
 
       # play_again?
-      break #unless play_again?
+      break unless play_again?
+      reset_match_state
       # reset match state - reset game state + reset scores
     end
 
@@ -95,6 +91,11 @@ class TwentyOneGame
     players.each(&:discard_hand)
     deck.reset
     deck.shuffle!
+  end
+
+  def reset_match_state
+    reset_game_state
+    players.each(&:reset_score)
   end
 
   def player_turns
@@ -198,6 +199,16 @@ class TwentyOneGame
   def continue
     puts 'Press any key to continue:'
     STDIN.getch
+  end
+
+  def play_again?
+    puts 'Do you want to play again? (Y/N)'
+
+    loop do
+      choice = gets.chomp.upcase
+      return choice == 'Y' if %w(Y N).include?(choice)
+      puts 'Please enter either Y or N!'
+    end
   end
 end
 

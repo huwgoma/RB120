@@ -66,5 +66,4 @@ class MatchResult < Result
 
     players.max_by(&:score)
   end
-
 end
