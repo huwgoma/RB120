@@ -15,10 +15,9 @@ class Player
     name
   end
 
-  def add_to_hand(cards)
-    hand.push(*cards)
-    self.hand_value = calculate_hand_value
-    # Update @hand_value whenever a new card is added
+  def hit(cards)
+    add_to_hand(cards)
+    update_hand_value
   end
 
   def busted?
@@ -45,6 +44,14 @@ class Player
   private
 
   attr_writer :score, :hand_value
+
+  def add_to_hand(cards)
+    hand.push(*cards)
+  end
+
+  def update_hand_value
+    self.hand_value = calculate_hand_value
+  end
 
   def calculate_hand_value
     aces, other = hand.partition(&:ace?)

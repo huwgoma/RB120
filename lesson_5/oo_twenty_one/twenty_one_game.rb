@@ -101,7 +101,7 @@ class TwentyOneGame
 
         if move == 'H'
           announce_hit(player)
-          player.add_to_hand(deck.deal!)
+          player.hit(deck.deal!)
         else
           announce_stay(player)
         end
@@ -148,7 +148,7 @@ class TwentyOneGame
 
   def deal_starting_cards
     players.each do |player|
-      player.add_to_hand(deck.deal!(STARTING_CARD_COUNT))
+      player.hit(deck.deal!(STARTING_CARD_COUNT))
     end
   end
 
