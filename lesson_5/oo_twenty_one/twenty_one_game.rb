@@ -1,6 +1,7 @@
 require 'pry'
 require 'io/console'
 
+require_relative 'displayable'
 require_relative 'deck'
 require_relative 'card'
 require_relative 'player'
@@ -16,11 +17,12 @@ require_relative 'result'
 # 4) Spike
 # Orchestration Engine for 21
 class TwentyOneGame
+  include Displayable
+  
   BUST_LIMIT = 21
   STARTING_CARD_COUNT = 2
 
   attr_reader :deck, :dealer, :punter, :players
-
 
   def initialize
     clear
@@ -44,7 +46,7 @@ class TwentyOneGame
 
         result = Result.new(players)
         result.winner.increment_score unless result.tie?
-        update_display
+        update_display(full: true)
         puts result
         
 
@@ -67,7 +69,7 @@ class TwentyOneGame
 
   def play_game
     display_scores
-    announce_deal
+    display_deal
     deal_starting_cards
     
     update_display
@@ -91,10 +93,10 @@ class TwentyOneGame
         move = player.choose_move
 
         if move == 'H'
-          announce_hit(player)
+          display_hit(player)
           player.hit(deck.deal!)
         else
-          announce_stay(player)
+          display_stay(player)
         end
 
         update_display(full: player == dealer)
@@ -115,79 +117,10 @@ class TwentyOneGame
     end
   end
 
-  def announce_hit(player)
-    puts "#{player} chose to hit - now drawing..."
-    pause
-  end
-
-  def announce_stay(player)
-    action = player == punter ? 'Switching players' : 'Ending game'
-    puts "#{player} chose to stay. #{action}..."
-    pause
-  end
-
-  def announce_deal
-    puts 'Now dealing...'
-    pause
-  end
-
-  def update_display(full: false)
-    clear
-    display_scores
-    display_hands(full: full)
-  end
-
-  def display_scores
-    players.each do |player|
-      print "#{player}: #{player.score}\t\t"
-    end
-    puts "\n"
-  end
-
   def deal_starting_cards
     players.each do |player|
       player.hit(deck.deal!(STARTING_CARD_COUNT))
     end
-  end
-
-  def display_hands(full: false)
-    puts "#{dealer}'s hand:"
-    dealer.display_hand(full: full)
-    
-    puts "\n"
-
-    puts "#{punter}'s hand:"
-    punter.display_hand
-  end
-
-  def display_player_switch
-    puts 'Switching players...'
-    sleep(1)
-  end
-
-  def display_rules
-    puts 'Welcome to Twenty One!'
-    puts <<~HEREDOC
-      The rules of this game are as follows:
-      1) You and the CPU ('Dealer') will both start with 2 cards. You will
-         see all of your cards, but only 1 of the Dealer's cards.
-      2) The goal is to get your hand's value as close to 21 as possible without
-         going over.
-      3) On your turn, you may either 'Hit' (Draw a card) or 'Stay' (Pass).
-      4) When you choose to Stay, the Dealer will take his turn. The Dealer must
-         Hit until their hand's value reaches at least 17, after which they must
-         Stay.
-      5) If either player's hand exceeds 21, they bust and immediately lose. If 
-         nobody busted, the player with the higher hand value wins.
-    HEREDOC
-  end
-
-  def pause
-    sleep(1)
-  end
-
-  def clear
-    system('clear')
   end
 
   def continue
@@ -203,10 +136,6 @@ class TwentyOneGame
       return choice == 'Y' if %w(Y N).include?(choice)
       puts 'Please enter either Y or N!'
     end
-  end
-
-  def display_goodbye
-    puts 'Thanks for playing Twenty-One!'
   end
 end
 
