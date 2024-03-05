@@ -7,12 +7,10 @@ require_relative 'player'
 require_relative 'result'
 
 # TO DO:
-# Implement scorekeeping (how many games would you like to play?)
-
+# - clean up 
 
 # - Card display logic (full vs hidden dealer)
 # - Full cards (aesthetic)
-# - Scorekeeping (best of ?)
 
 
 # 4) Spike
@@ -45,8 +43,10 @@ class TwentyOneGame
         play_game
 
         result = Result.new(players)
-        puts result
         result.winner.increment_score unless result.tie?
+        update_display
+        puts result
+        
 
         games_played += 1
         break if games_played >= game_limit
@@ -59,26 +59,14 @@ class TwentyOneGame
       puts match_result
 
 
-      # play_again?
       break unless play_again?
       reset_match_state
     end
     display_goodbye
-    # Thanks for palying!
   end
 
-      # Match Loop
-    # How many games would you like to play?
-    # game_limit = gets.chomp
-      # 
-      #
-      # 
-    # after every game, increment score of winner
-    # increment games_played by 1
-    # When games_played == game_limit, break
-    # play again?
-
   def play_game
+    display_scores
     announce_deal
     deal_starting_cards
     
@@ -145,8 +133,15 @@ class TwentyOneGame
 
   def update_display(full: false)
     clear
-    # Display scores
+    display_scores
     display_hands(full: full)
+  end
+
+  def display_scores
+    players.each do |player|
+      print "#{player}: #{player.score}\t\t"
+    end
+    puts "\n"
   end
 
   def deal_starting_cards
