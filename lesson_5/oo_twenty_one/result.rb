@@ -13,29 +13,34 @@ class Result
   end
 
   def tie?
-    #players.map(&:value).uniq.one?
+    players.map(&:hand_value).uniq.one?
   end
 
   def to_s
     if bust?
       "#{loser} went over 21 and busted! #{winner} wins!"
+    elsif tie?
+      "It's a tie, #{players.first.hand_value}-#{players.last.hand_value}!"
     else
       "#{winner} wins, with a hand worth #{winner.hand_value}-#{loser.hand_value}!"
     end
   end
 
-
   private
 
   def determine_winner
+    return if tie?
+    
     if bust?
       other_player(players.find(&:busted?))
     else
-      players.max_by(&:hand_value) # tie? # nil if tie
+      players.max_by(&:hand_value)
     end
   end
 
   def other_player(player)
+    return if player.nil?
+
     player == players.first ? players.last : players.first
   end
 end

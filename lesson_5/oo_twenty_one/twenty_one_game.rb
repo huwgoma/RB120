@@ -49,7 +49,7 @@ class TwentyOneGame
         result = Result.new(players)
         puts result
         # result.winner.increment_score unless result.tie?
-       # binding.pry
+        binding.pry
 
         # Increment score of winner
         games_played += 1
