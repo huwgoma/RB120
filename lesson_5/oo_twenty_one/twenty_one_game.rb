@@ -49,7 +49,7 @@ class TwentyOneGame
         result = Result.new(players)
         puts result
         # result.winner.increment_score unless result.tie?
-        binding.pry
+       # binding.pry
 
         # Increment score of winner
         games_played += 1
@@ -62,7 +62,7 @@ class TwentyOneGame
       # Announce result
 
       # play_again?
-      break unless play_again?
+      break #unless play_again?
       # reset match state - reset game state + reset scores
     end
 

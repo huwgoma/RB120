@@ -12,6 +12,10 @@ class Result
     players.any?(&:busted?)
   end
 
+  def tie?
+    #players.map(&:value).uniq.one?
+  end
+
   def to_s
     if bust?
       "#{loser} went over 21 and busted! #{winner} wins!"
@@ -19,6 +23,7 @@ class Result
       "#{winner} wins, with a hand worth #{winner.hand_value}-#{loser.hand_value}!"
     end
   end
+
 
   private
 

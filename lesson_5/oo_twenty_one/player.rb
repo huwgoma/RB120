@@ -2,11 +2,12 @@
 class Player
   BUST_LIMIT = 21
 
-  attr_reader :name, :hand, :score
+  attr_reader :name, :hand, :hand_value, :score
 
   def initialize
     @name = choose_name
     @hand = []
+    @hand_value = 0
     @score = 0
   end
 
@@ -16,20 +17,17 @@ class Player
 
   def add_to_hand(cards)
     hand.push(*cards)
+    self.hand_value = calculate_hand_value
     # Update @hand_value whenever a new card is added
   end
 
   def busted?
-    calculate_hand_value > BUST_LIMIT
+    hand_value > BUST_LIMIT
     # Move BUST_LIMIT out of here
   end
 
   def display_hand
     puts hand
-  end
-
-  def hand_value
-    calculate_hand_value
   end
 
   def discard_hand
@@ -46,7 +44,7 @@ class Player
 
   private
 
-  attr_writer :score
+  attr_writer :score, :hand_value
 
   def calculate_hand_value
     aces, other = hand.partition(&:ace?)
