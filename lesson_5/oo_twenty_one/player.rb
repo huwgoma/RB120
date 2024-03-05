@@ -2,11 +2,12 @@
 class Player
   BUST_LIMIT = 21
 
-  attr_reader :name, :hand
+  attr_reader :name, :hand, :score
 
   def initialize
     @name = choose_name
     @hand = []
+    @score = 0
   end
 
   def to_s
@@ -35,7 +36,17 @@ class Player
     hand.clear
   end
 
+  def increment_score
+    self.score += 1
+  end
+
+  def reset_score
+    self.score = 0
+  end
+
   private
+
+  attr_writer :score
 
   def calculate_hand_value
     aces, other = hand.partition(&:ace?)

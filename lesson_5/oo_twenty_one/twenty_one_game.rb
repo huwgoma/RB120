@@ -15,7 +15,7 @@ require_relative 'result'
 # - Card display logic (full vs hidden dealer)
 # - Full cards (aesthetic)
 # - Scorekeeping (best of ?)
-
+# - Convert #hand_value to @hand_value (update on add)
 
 # 4) Spike
 # Orchestration Engine for 21
@@ -42,12 +42,15 @@ class TwentyOneGame
       games_played = 0
       # Match loop
       loop do
-        
-
         clear
         
         play_game
-        announce_result(players)
+
+        result = Result.new(players)
+        puts result
+        # result.winner.increment_score unless result.tie?
+        binding.pry
+
         # Increment score of winner
         games_played += 1
 
@@ -60,6 +63,7 @@ class TwentyOneGame
 
       # play_again?
       break unless play_again?
+      # reset match state - reset game state + reset scores
     end
 
     # Thanks for palying!
@@ -136,20 +140,11 @@ class TwentyOneGame
     pause
   end
 
-  def announce_result(players)
-    puts Result.new(players)
-  end
-
   def update_display(full: false)
     clear
     # Display scores
     display_hands(full: full)
   end
-
-  # def initialize_shuffled_deck
-  #   @deck = Deck.new
-  #   deck.shuffle!
-  # end
 
   def deal_starting_cards
     players.each do |player|
