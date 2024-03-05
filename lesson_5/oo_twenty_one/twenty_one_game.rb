@@ -62,9 +62,8 @@ class TwentyOneGame
       # play_again?
       break unless play_again?
       reset_match_state
-      # reset match state - reset game state + reset scores
     end
-
+    display_goodbye
     # Thanks for palying!
   end
 
@@ -209,6 +208,10 @@ class TwentyOneGame
       return choice == 'Y' if %w(Y N).include?(choice)
       puts 'Please enter either Y or N!'
     end
+  end
+
+  def display_goodbye
+    puts 'Thanks for playing Twenty-One!'
   end
 end
 
