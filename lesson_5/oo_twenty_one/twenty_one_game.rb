@@ -34,37 +34,34 @@ class TwentyOneGame
   end
 
   def play
-
     loop do
       game_limit = choose_game_limit
-      games_played = 0
-      # Match loop
-      loop do
-        clear
-        
-        play_game
-
-        result = Result.new(players)
-        result.winner.increment_score unless result.tie?
-        update_display(full: true)
-        puts result
-        
-
-        games_played += 1
-        break if games_played >= game_limit
-        
-        reset_game_state
-        continue
-      end
-
+      
+      match_loop(game_limit)
       match_result = MatchResult.new(players)
       puts match_result
 
-
       break unless play_again?
+      
       reset_match_state
     end
     display_goodbye
+  end
+
+  def match_loop(game_limit)
+    games_played = 0
+
+    loop do
+      clear
+      play_game
+      post_game
+
+      games_played += 1
+      break if games_played >= game_limit
+        
+      reset_game_state
+      continue
+    end
   end
 
   def play_game
@@ -74,6 +71,18 @@ class TwentyOneGame
     
     update_display
     player_turns
+  end
+
+  def post_game
+    result = Result.new(players)
+    increment_score(result.winner) unless result.tie?
+
+    update_display(full: true)
+    puts result
+  end
+
+  def increment_score(winner)
+    winner.increment_score
   end
 
   def reset_game_state

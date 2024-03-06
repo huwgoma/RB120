@@ -46,6 +46,7 @@ module Displayable
   def update_display(full: false)
     clear
     display_scores
+    puts "\n"
     display_hands(full: full)
   end
 
