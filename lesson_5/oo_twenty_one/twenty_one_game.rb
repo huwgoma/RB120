@@ -2,6 +2,7 @@ require 'pry'
 require 'io/console'
 
 require_relative 'displayable'
+require_relative 'promptable'
 require_relative 'deck'
 require_relative 'card'
 require_relative 'player'
