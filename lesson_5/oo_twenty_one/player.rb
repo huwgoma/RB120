@@ -1,7 +1,5 @@
 # Player Superclass
 class Player
-  BUST_LIMIT = 21
-
   attr_reader :name, :hand, :hand_value, :score
 
   def initialize
@@ -21,8 +19,7 @@ class Player
   end
 
   def busted?
-    hand_value > BUST_LIMIT
-    # Move BUST_LIMIT out of here
+    hand_value > TwentyOneGame::BUST_LIMIT
   end
 
   def display_hand
@@ -69,7 +66,7 @@ class Player
       remaining_aces = aces.size - (index + 1)
       ace_max = Ace::VALUES.max
 
-      if other_sum + ace_max + remaining_aces > BUST_LIMIT
+      if other_sum + ace_max + remaining_aces > TwentyOneGame::BUST_LIMIT
         ace.set_value(:min)
       else
         ace.set_value(:max)
