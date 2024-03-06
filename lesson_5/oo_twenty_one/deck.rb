@@ -1,5 +1,6 @@
 # Deck (of Cards)
 class Deck
+  # Should these be in Card? probably
   SUITS = ['♠', '♥', '♦', '♣']
   FACES = Array('2'..'10') + ['Jack', 'Queen', 'King', 'Ace']
 

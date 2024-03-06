@@ -14,7 +14,6 @@ require_relative 'result'
 # - Full cards (aesthetic)
 
 
-# 4) Spike
 # Orchestration Engine for 21
 class TwentyOneGame
   include Displayable
@@ -42,7 +41,8 @@ class TwentyOneGame
       puts match_result
 
       break unless play_again?
-      
+
+      reset_game_state
       reset_match_state
     end
     display_goodbye
@@ -73,27 +73,10 @@ class TwentyOneGame
     player_turns
   end
 
-  def post_game
-    result = Result.new(players)
-    increment_score(result.winner) unless result.tie?
-
-    update_display(full: true)
-    puts result
-  end
-
-  def increment_score(winner)
-    winner.increment_score
-  end
-
-  def reset_game_state
-    players.each(&:discard_hand)
-    deck.reset
-    deck.shuffle!
-  end
-
-  def reset_match_state
-    reset_game_state
-    players.each(&:reset_score)
+  def deal_starting_cards
+    players.each do |player|
+      player.hit(deck.deal!(STARTING_CARD_COUNT))
+    end
   end
 
   def player_turns
@@ -117,34 +100,26 @@ class TwentyOneGame
     end
   end
 
-  def choose_game_limit
-    puts 'How many games would you like to play? (1-10)'
-    loop do
-      games = gets.chomp
-      return games.to_i if ('1'..'10').include?(games)
-      puts 'Please pick a number between 1 and 10!'
-    end
+  def post_game
+    result = Result.new(players)
+    increment_score(result.winner) unless result.tie?
+
+    update_display(full: true)
+    puts result
   end
 
-  def deal_starting_cards
-    players.each do |player|
-      player.hit(deck.deal!(STARTING_CARD_COUNT))
-    end
+  def increment_score(winner)
+    winner.increment_score
   end
 
-  def continue
-    puts 'Press any key to continue:'
-    STDIN.getch
+  def reset_game_state
+    players.each(&:discard_hand)
+    deck.reset
+    deck.shuffle!
   end
 
-  def play_again?
-    puts 'Do you want to play again? (Y/N)'
-
-    loop do
-      choice = gets.chomp.upcase
-      return choice == 'Y' if %w(Y N).include?(choice)
-      puts 'Please enter either Y or N!'
-    end
+  def reset_match_state
+    players.each(&:reset_score)
   end
 end
 

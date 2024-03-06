@@ -22,6 +22,7 @@ class Player
     hand_value > TwentyOneGame::BUST_LIMIT
   end
 
+  # => Displayable?
   def display_hand
     puts hand
   end
@@ -101,21 +102,5 @@ end
 
 # Punter tries to beat the dealer without going over 21
 class Punter < Player
-  def choose_name
-    puts "What's your name?"
-    loop do
-      name = gets.chomp.strip
-      return name unless name.empty?
-      puts "Your name can't be empty!"
-    end
-  end
-  
-  def choose_move
-    puts 'Would you like to (H)it or (S)tay?'
-    loop do
-      choice = gets.chomp.upcase
-      return choice if %w(H S).include?(choice)
-      puts 'Please enter either H or S!'
-    end
-  end
+  include Promptable 
 end
