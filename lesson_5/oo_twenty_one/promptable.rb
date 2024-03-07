@@ -19,31 +19,26 @@ module Promptable
     validate_input(validator, error_message, ('1'..'10')).to_i
   end
 
-
-  
   def choose_move
     puts 'Would you like to (H)it or (S)tay?'
 
     validator =->(choice, moves) { valid_member?(choice.upcase, moves) }
     error_message = 'Please enter either H (hit) or S (stay)!'
 
-    validate_input(validator, error_message, %w(H S))
-  end
-
-  
-
-  def continue
-    puts 'Press any key to continue:'
-    STDIN.getch
+    validate_input(validator, error_message, %w(H S)).upcase
   end
 
   def play_again?
     puts 'Do you want to play again? (Y/N)'
 
-    loop do
-      choice = gets.chomp.upcase
-      return choice == 'Y' if %w(Y N).include?(choice)
-      puts 'Please enter either Y or N!'
-    end
+    validator =->(choice, answers) { valid_member?(choice.upcase, answers) }
+    error_message = 'Please enter either Y or N!'
+
+    validate_input(validator, error_message, %w(Y N)).upcase == 'Y'
+  end
+
+  def continue
+    puts 'Press any key to continue:'
+    STDIN.getch
   end
 end
