@@ -9,7 +9,6 @@ require_relative 'player'
 require_relative 'result'
 
 # TO DO:
-# - clean up 
 
 # - Card display logic (full vs hidden dealer)
 # - Full cards (aesthetic)

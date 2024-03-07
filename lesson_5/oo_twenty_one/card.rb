@@ -1,6 +1,6 @@
 # Card Class
 class Card
-  attr_reader :suit, :face, :value
+  attr_reader :suit, :face, :label, :value
 
   # Custom initializer
   def self.create(suit, face)
@@ -10,6 +10,7 @@ class Card
   def initialize(suit, face)
     @suit = suit
     @face = face
+    @label = calculate_label
     @value = calculate_value
   end
 
@@ -22,6 +23,13 @@ class Card
   end
 
   private
+
+  def calculate_label
+    case face
+    when '10' then face
+    else           face[0]
+    end
+  end
 
   def calculate_value
     case face
