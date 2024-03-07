@@ -1,6 +1,5 @@
 # Deck (of Cards)
 class Deck
-  # Should these be in Card? probably
   SUITS = ['♠', '♥', '♦', '♣']
   FACES = Array('2'..'10') + ['Jack', 'Queen', 'King', 'Ace']
 
@@ -29,7 +28,7 @@ class Deck
 
   def generate_cards
     SUITS.product(FACES).map do |(suit, face)|
-      face == 'Ace' ? Ace.new(suit, face) : Card.new(suit, face)
+      Card.create(suit, face)
     end
   end
 end

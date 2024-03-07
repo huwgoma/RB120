@@ -2,6 +2,11 @@
 class Card
   attr_reader :suit, :face, :value
 
+  # Custom initializer
+  def self.create(suit, face)
+    face == 'Ace' ? Ace.new(suit, face) : Card.new(suit, face)
+  end
+
   def initialize(suit, face)
     @suit = suit
     @face = face
@@ -42,3 +47,9 @@ class Ace < Card
 
   attr_writer :value
 end
+
+# Card.create(suit, face)
+#   if face == 'Ace' then Ace.new(suit, face)
+#   else Card.new(suit, face)
+#   
+# Create Ace instead of Card if face is Ace
