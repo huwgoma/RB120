@@ -18,6 +18,7 @@ require_relative 'result'
 # Orchestration Engine for 21
 class TwentyOneGame
   include Displayable
+  include Promptable
   
   BUST_LIMIT = 21
   STARTING_CARD_COUNT = 2

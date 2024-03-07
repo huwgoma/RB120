@@ -8,4 +8,12 @@ module Validatable
       puts "Invalid input! #{error_message}"
     end
   end
+
+  def valid_name?(name)
+    !name.strip.empty?
+  end
+
+  def valid_member?(input, options)
+    options.include?(input)
+  end
 end

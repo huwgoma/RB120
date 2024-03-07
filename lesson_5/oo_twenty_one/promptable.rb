@@ -1,33 +1,36 @@
+require_relative 'validatable'
 # Module for methods that involve prompting user for input
 module Promptable
   include Validatable
 
   def choose_name
     puts "What's your name?"
-    loop do
-      name = gets.chomp.strip
-      return name unless name.empty?
-      puts "Your name can't be empty!"
-    end
-  end
-  
-  def choose_move
-    puts 'Would you like to (H)it or (S)tay?'
-    loop do
-      choice = gets.chomp.upcase
-      return choice if %w(H S).include?(choice)
-      puts 'Please enter either H or S!'
-    end
+    validator =->(name) { valid_name?(name) }
+    error_message = "Your name can't be empty!"
+
+    validate_input(validator, error_message).strip
   end
 
   def choose_game_limit
     puts 'How many games would you like to play? (1-10)'
-    loop do
-      games = gets.chomp
-      return games.to_i if ('1'..'10').include?(games)
-      puts 'Please pick a number between 1 and 10!'
-    end
+    validator =->(limit, range) { valid_member?(limit, range) }
+    error_message = 'Please pick a number between 1 and 10!'
+
+    validate_input(validator, error_message, ('1'..'10')).to_i
   end
+
+
+  
+  def choose_move
+    puts 'Would you like to (H)it or (S)tay?'
+
+    validator =->(choice, moves) { valid_member?(choice.upcase, moves) }
+    error_message = 'Please enter either H (hit) or S (stay)!'
+
+    validate_input(validator, error_message, %w(H S))
+  end
+
+  
 
   def continue
     puts 'Press any key to continue:'
