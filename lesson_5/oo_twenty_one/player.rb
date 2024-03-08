@@ -24,52 +24,16 @@ class Player
 
   # => Displayable?
   def display_hand
-    lines = hand.each_with_object([]) do |card, lines|
-      binding.pry
-    
-    
+    card_lines = hand.each_with_object(['', '', '', '', '']) do |card, lines|
+      inner_width = card.label.length == 2 ? Card::INNER_WIDTHS.max : Card::INNER_WIDTHS.min
+      lines[0] += "+#{'-' * inner_width}+\s"
+      lines[1] += "|#{card.suit.ljust(inner_width, ' ')}|\s"
+      lines[2] += "|#{card.label.center(inner_width, ' ')}|\s"
+      lines[3] += "|#{card.suit.rjust(inner_width, ' ')}|\s"
+      lines[4] += "+#{'-' * inner_width}+\s"
     end
-      puts hand
+    puts card_lines
   end
-
-  # Display Hand Refactor - Display full hands
-  # +-----+ +------+
-  # |♣    | |♣     |
-  # |  ?  | |  10  |
-  # |    ♣| |     ♣|
-  # +-----+ +------+ 
-  # single  double
-
-  # Input: Array of card objects, @hand
-  # Output: Visual representation of the cards in the hand
-  #   - Need to print line by line
-
-  # Data: 
-  # - The array of card objects (@hand)
-  # - Iterate through each card and determine the:
-  #   - width of the card
-  #   - suit and face (face determines width)
-  #   eg. [Ace(♣, Ace), Card(♣, 9), Card(♣, 10)]
-  #   display_strings = ['', '', '', '', '']
-  
-  # Algorithm eg. [Ace(♣, Ace), Card(♣, 9), Card(♣, 10)]
-  #   display_strings = ['', '', '', '', '']
-  # Iterate through cards. For each card:
-  #   - Ask the card for its display_value => ['A', '9', '10']
-  #   - Calculate the inner_width of the card, based on display_value.
-  #     - If display_value size is 1, i_width is 7; if 2, i_width = 8
-  #   - Update the lines in display_strings:
-  #   1) "+", "-" * inner width, "+"
-  #   2) "|", suit right pad space to inner width, "|"
-  #   3) "|", display value.center space to inner width, "|"
-  #   4) "|", suit left pad space to inner width, "|"
-  #   5) same as 1)
-  # - Update the corresponding string in display_strings 
-
-
-
-  # - Maybe create another array - 5 elements (strings), 1 for each line. 
-
 
   def discard_hand
     hand.clear

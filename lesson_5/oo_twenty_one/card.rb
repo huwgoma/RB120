@@ -1,5 +1,8 @@
 # Card Class
 class Card
+  # Card.display(cards)
+  INNER_WIDTHS = [5, 6]
+
   attr_reader :suit, :face, :label, :value
 
   # Custom initializer

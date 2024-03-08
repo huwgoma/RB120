@@ -19,6 +19,7 @@ module Promptable
     validate_input(validator, error_message, ('1'..'10')).to_i
   end
 
+  # allow spaces, strip
   def choose_move
     puts 'Would you like to (H)it or (S)tay?'
 
