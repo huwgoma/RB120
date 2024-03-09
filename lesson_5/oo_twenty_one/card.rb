@@ -87,9 +87,3 @@ class Ace < Card
 
   attr_writer :value
 end
-
-# Card.create(suit, face)
-#   if face == 'Ace' then Ace.new(suit, face)
-#   else Card.new(suit, face)
-#   
-# Create Ace instead of Card if face is Ace

@@ -37,7 +37,7 @@ module Displayable
   #   super(show_all: show_all) # only show all if specified
 
 
-  def update_display(show_all: false)
+  def display_game_state(show_all: false)
     clear
     display_scores
     puts "\n"
@@ -49,12 +49,7 @@ module Displayable
       puts "#{player}'s hand:"
 
       player.display_hand(show_all: show_all)
-
-      # if player == dealer
-      #   player.display_hand(full: full)
-      # else
-      #   player.display_hand
-      # end
+      
       puts "\n"
     end
   end

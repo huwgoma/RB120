@@ -10,10 +10,6 @@ require_relative 'result'
 
 # TO DO:
 
-# - Card display logic (full vs hidden dealer)
-# - Full cards (aesthetic)
-
-
 # Orchestration Engine for 21
 class TwentyOneGame
   include Displayable
@@ -71,7 +67,7 @@ class TwentyOneGame
     display_deal
     deal_starting_cards
     
-    update_display # display_game_state (dcards hidden)
+    display_game_state # display_game_state (dcards hidden)
     player_turns
   end
 
@@ -96,7 +92,7 @@ class TwentyOneGame
 
         # update display in player turns; 
         # - show all only if the current player is the dealer
-        update_display(show_all: player == dealer)
+        display_game_state(show_all: player == dealer)
 
         break if player.busted? || move == 'S'
       end
@@ -109,7 +105,7 @@ class TwentyOneGame
     result = Result.new(players)
     increment_score(result.winner) unless result.tie?
 
-    update_display(show_all: !punter.busted?)
+    display_game_state(show_all: !punter.busted?)
     # show all unless punter busted
     puts result
   end
