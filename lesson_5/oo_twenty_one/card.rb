@@ -22,23 +22,21 @@ class Card
   end
 
   def ace?
-    self.class == Ace
+    instance_of?(Ace)
   end
 
   def to_s
     "#{face} of #{suit}"
   end
 
-  private
-
   # Card Display Logic
   # "\t" question? space with 10s
   def self.build_display_strings(cards, show_all: false)
-    first_card = cards.first
-
     cards.each_with_object(['', '', '', '', '']) do |card, strings|
-      suit, label, inner_width = calculate_display_info(first_card, card, show_all: show_all)
-      
+      suit, label, inner_width = calculate_display_info(cards.first,
+                                                        card,
+                                                        show_all: show_all)
+
       strings[0] += "+#{'-' * inner_width}+\s"
       strings[1] += "|#{suit.ljust(inner_width, ' ')}|\s"
       strings[2] += "|#{label.center(inner_width, ' ')}|\s"
@@ -55,6 +53,8 @@ class Card
       ['?', '?', INNER_WIDTH_ADDEND + 1]
     end
   end
+
+  private
 
   def calculate_label
     case face
@@ -76,14 +76,20 @@ end
 class Ace < Card
   VALUES = [1, 11]
 
-  def set_value(minmax)
-    self.value = case minmax
-                 when :min then VALUES.min
-                 when :max then VALUES.max
+  def assign_value(sum, remaining_ace_count) 
+    hypothetical_sum = sum + VALUES.max + remaining_ace_count
+    
+    self.value = if hypothetical_sum > TwentyOneGame::BUST_LIMIT
+                   VALUES.min
+                 else
+                   VALUES.max
                  end
   end
 
-  private 
+  private
 
   attr_writer :value
 end
+
+# tell ace to set value to either min or max?
+# Toggle value?

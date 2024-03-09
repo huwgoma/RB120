@@ -22,7 +22,7 @@ class Result
     elsif tie?
       "It's a tie, #{players.first.hand_value}-#{players.last.hand_value}!"
     else
-      "#{winner} wins, with a hand worth #{winner.hand_value}-#{loser.hand_value}!"
+      "#{winner} wins, with a hand of #{winner.hand_value}-#{loser.hand_value}!"
     end
   end
 
@@ -30,7 +30,7 @@ class Result
 
   def determine_winner
     return if tie?
-    
+
     if bust?
       other_player(players.find(&:busted?))
     else
@@ -60,7 +60,7 @@ class MatchResult < Result
   end
 
   private
-  
+
   def determine_winner
     return if tie?
 

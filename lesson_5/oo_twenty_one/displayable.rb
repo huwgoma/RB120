@@ -20,22 +20,10 @@ module Displayable
       4) When you choose to Stay, the Dealer will take his turn. The Dealer must
          Hit until their hand's value reaches at least 17, after which they must
          Stay.
-      5) If either player's hand exceeds 21, they bust and immediately lose. If 
+      5) If either player's hand exceeds 21, they bust and immediately lose. If#{' '}
          nobody busted, the player with the higher hand value wins.
     HEREDOC
   end
-
-  # Should cards be all showed by default?
-
-  # Dealer's cards should be hidden by default; only show if it is the dealer's turn
-  # Punter's cards should be visible at all times. 
-
-  # Punter#display_hand
-  #   super(show_all: true) # always show all 
-
-  # Dealer#display_hand
-  #   super(show_all: show_all) # only show all if specified
-
 
   def display_game_state(show_all: false)
     clear
@@ -49,7 +37,7 @@ module Displayable
       puts "#{player}'s hand:"
 
       player.display_hand(show_all: show_all)
-      
+
       puts "\n"
     end
   end
@@ -58,7 +46,6 @@ module Displayable
     puts 'Switching players...'
     sleep(1)
   end
-
 
   def display_scores
     players.each do |player|

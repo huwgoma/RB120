@@ -8,13 +8,13 @@ require_relative 'card'
 require_relative 'player'
 require_relative 'result'
 
-# TO DO:
+# EnforcedShorthandSyntax: either
 
-# Orchestration Engine for 21
+# Orchestration Engine
 class TwentyOneGame
   include Displayable
   include Promptable
-  
+
   BUST_LIMIT = 21
   STARTING_CARD_COUNT = 2
 
@@ -32,7 +32,7 @@ class TwentyOneGame
   def play
     loop do
       game_limit = choose_game_limit
-      
+
       match_loop(game_limit)
       match_result = MatchResult.new(players)
       puts match_result
@@ -55,7 +55,7 @@ class TwentyOneGame
 
       games_played += 1
       break if games_played >= game_limit
-        
+
       reset_game_state
       continue
     end
@@ -66,8 +66,8 @@ class TwentyOneGame
     display_scores
     display_deal
     deal_starting_cards
-    
-    display_game_state # display_game_state (dcards hidden)
+
+    display_game_state
     player_turns
   end
 
@@ -77,7 +77,6 @@ class TwentyOneGame
     end
   end
 
-  # and here
   def player_turns
     players.each do |player|
       loop do
@@ -90,16 +89,15 @@ class TwentyOneGame
           display_stay(player)
         end
 
-        # update display in player turns; 
-        # - show all only if the current player is the dealer
         display_game_state(show_all: player == dealer)
-
         break if player.busted? || move == 'S'
       end
 
       break if player.busted?
     end
   end
+
+  # turn loop
 
   def post_game
     result = Result.new(players)

@@ -51,26 +51,20 @@ class Player
   end
 
   def calculate_hand_value
-    aces, other = hand.partition(&:ace?)
-    other_sum = other.sum(&:value)
+    aces, non_aces = hand.partition(&:ace?)
+    sum = non_aces.sum(&:value)
 
-    set_ace_values(aces, other_sum)
-    
-    other_sum + aces.sum(&:value)
+    set_ace_values(aces, sum)
+
+    sum + aces.sum(&:value)
   end
 
-  def set_ace_values(aces, other_sum)
+  def set_ace_values(aces, sum)
     aces.each_with_index do |ace, index|
-      remaining_aces = aces.size - (index + 1)
-      ace_max = Ace::VALUES.max
+      remaining_ace_count = aces.size - (index + 1)
 
-      if other_sum + ace_max + remaining_aces > TwentyOneGame::BUST_LIMIT
-        ace.set_value(:min)
-      else
-        ace.set_value(:max)
-      end
-
-      other_sum += ace.value
+      ace.assign_value(sum, remaining_ace_count)
+      sum += ace.value
     end
   end
 end
@@ -89,15 +83,15 @@ class Dealer < Player
 
   def display_hand(show_all: false)
     # Hide dealer cards by default, but allow them to be optionally displayed
-    super(show_all: show_all) 
+    super(show_all: show_all)
   end
 end
 
-# Punter tries to beat the dealer without going over 21
+# Punter - Player PoV
 class Punter < Player
-  include Promptable 
+  include Promptable
 
-  def display_hand(show_all: true)
+  def display_hand(*)
     # Always show punter cards
     super(show_all: true)
   end
