@@ -22,13 +22,8 @@ class Player
     hand_value > TwentyOneGame::BUST_LIMIT
   end
 
-  # => Move to Card.display when done
-  # "\t" question? space with 10s
   def display_hand(show_all: false)
     Card.display(hand, show_all: show_all)
-
-    # card_lines = build_card_strings(show_all: show_all)
-    # puts card_lines
   end
 
   def discard_hand
@@ -64,53 +59,6 @@ class Player
     other_sum + aces.sum(&:value)
   end
 
-  # def build_card_strings(show_all: false)
-  #   # if card == hand.first
-  #   hand.each_with_object(['', '', '', '', '']) do |card, strings|
-  #     suit, label, inner_width = calculate_card_parameters(card, show_all: show_all)
-      
-  #     strings[0] += "+#{'-' * inner_width}+\s"
-  #     strings[1] += "|#{suit.ljust(inner_width, ' ')}|\s"
-  #     strings[2] += "|#{label.center(inner_width, ' ')}|\s"
-  #     strings[3] += "|#{suit.rjust(inner_width, ' ')}|\s"
-  #     strings[4] += "+#{'-' * inner_width}+\s"
-  #   end
-  # end
-
-  # extract here
-      # if card == hand.first || hide is not true, show normal card
-    # else hide card
-  def calculate_card_parameters(card, show_all: false)
-    if show_all || card == hand.first
-      full_card_parameters(card)
-    else
-      hidden_card_parameters(card)
-    end
-
-    # if show_all || card == hand.first
-    #   suit = card.suit
-    #   label = card.label
-    #   inner_width = label.length == 1 ? Card::INNER_WIDTHS.min : Card::INNER_WIDTHS.max
-    # else
-    #   suit = '?'
-    #   label = '?'
-    #   inner_width = Card::INNER_WIDTHS.min
-    # end
-
-    # [suit, label, inner_width]
-  end
-
-  def full_card_parameters(card)
-    suit = card.suit
-    label = card.label
-    inner_width = label.length + 4 # WIDTH_MODIFIER (add)
-    [suit, label, inner_width]
-  end
-
-  def hidden_card_parameters(card)
-    ['?', '?', 5]
-  end
-
   def set_ace_values(aces, other_sum)
     aces.each_with_index do |ace, index|
       remaining_aces = aces.size - (index + 1)
@@ -142,15 +90,7 @@ class Dealer < Player
   def display_hand(show_all: false)
     # Hide dealer cards by default, but allow them to be optionally displayed
     super(show_all: show_all) 
-    
-
-    # if full
-    #   puts hand
-    # else
-    #   puts "#{hand.first} + #{hand.size - 1} hidden card(s)."
-    # end
   end
-
 end
 
 # Punter tries to beat the dealer without going over 21

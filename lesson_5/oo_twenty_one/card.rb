@@ -1,7 +1,6 @@
 # Card Class
 class Card
-  # Card.display(cards)
-  INNER_WIDTH_MODIFIER = 4
+  INNER_WIDTH_ADDEND = 4
 
   attr_reader :suit, :face, :label, :value
 
@@ -11,9 +10,8 @@ class Card
   end
 
   def self.display(cards, show_all: false)
-    card_strings = build_display_strings(cards, show_all: show_all)
-    puts card_strings
-    # Take an array of Card objects and display (some of) them
+    strings = build_display_strings(cards, show_all: show_all)
+    puts strings
   end
 
   def initialize(suit, face)
@@ -33,9 +31,13 @@ class Card
 
   private
 
+  # Card Display Logic
+  # "\t" question? space with 10s
   def self.build_display_strings(cards, show_all: false)
+    first_card = cards.first
+
     cards.each_with_object(['', '', '', '', '']) do |card, strings|
-      suit, label, inner_width = calculate_display_parameters(cards, card, show_all: show_all)
+      suit, label, inner_width = calculate_display_info(first_card, card, show_all: show_all)
       
       strings[0] += "+#{'-' * inner_width}+\s"
       strings[1] += "|#{suit.ljust(inner_width, ' ')}|\s"
@@ -45,23 +47,13 @@ class Card
     end
   end
 
-  def self.calculate_display_parameters(cards, card, show_all: false)
-    if show_all || card == cards.first
-      full_display_parameters(card)
+  # Suit, Label, and Card Inner Width
+  def self.calculate_display_info(first_card, card, show_all: false)
+    if show_all || card == first_card
+      [card.suit, card.label, card.label.length + INNER_WIDTH_ADDEND]
     else
-      hidden_display_parameters(card)
+      ['?', '?', INNER_WIDTH_ADDEND + 1]
     end
-  end
-
-  def self.full_display_parameters(card)
-    suit = card.suit
-    label = card.label
-    inner_width = label.length + INNER_WIDTH_MODIFIER # WIDTH_MODIFIER (add)
-    [suit, label, inner_width]
-  end
-
-  def self.hidden_display_parameters(card)
-    ['?', '?', INNER_WIDTH_MODIFIER + 1]
   end
 
   def calculate_label
