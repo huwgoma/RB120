@@ -109,7 +109,8 @@ class TwentyOneGame
     result = Result.new(players)
     increment_score(result.winner) unless result.tie?
 
-    update_display(show_all: true)
+    update_display(show_all: !punter.busted?)
+    # show all unless punter busted
     puts result
   end
 

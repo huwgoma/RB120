@@ -1,13 +1,19 @@
 # Card Class
 class Card
   # Card.display(cards)
-  INNER_WIDTHS = [5, 6]
+  INNER_WIDTH_MODIFIER = 4
 
   attr_reader :suit, :face, :label, :value
 
   # Custom initializer
   def self.create(suit, face)
     face == 'Ace' ? Ace.new(suit, face) : Card.new(suit, face)
+  end
+
+  def self.display(cards, show_all: false)
+    card_strings = build_display_strings(cards, show_all: show_all)
+    puts card_strings
+    # Take an array of Card objects and display (some of) them
   end
 
   def initialize(suit, face)
@@ -26,6 +32,37 @@ class Card
   end
 
   private
+
+  def self.build_display_strings(cards, show_all: false)
+    cards.each_with_object(['', '', '', '', '']) do |card, strings|
+      suit, label, inner_width = calculate_display_parameters(cards, card, show_all: show_all)
+      
+      strings[0] += "+#{'-' * inner_width}+\s"
+      strings[1] += "|#{suit.ljust(inner_width, ' ')}|\s"
+      strings[2] += "|#{label.center(inner_width, ' ')}|\s"
+      strings[3] += "|#{suit.rjust(inner_width, ' ')}|\s"
+      strings[4] += "+#{'-' * inner_width}+\s"
+    end
+  end
+
+  def self.calculate_display_parameters(cards, card, show_all: false)
+    if show_all || card == cards.first
+      full_display_parameters(card)
+    else
+      hidden_display_parameters(card)
+    end
+  end
+
+  def self.full_display_parameters(card)
+    suit = card.suit
+    label = card.label
+    inner_width = label.length + INNER_WIDTH_MODIFIER # WIDTH_MODIFIER (add)
+    [suit, label, inner_width]
+  end
+
+  def self.hidden_display_parameters(card)
+    ['?', '?', INNER_WIDTH_MODIFIER + 1]
+  end
 
   def calculate_label
     case face

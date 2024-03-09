@@ -25,17 +25,11 @@ class Player
   # => Move to Card.display when done
   # "\t" question? space with 10s
   def display_hand(show_all: false)
-    card_lines = build_card_strings(show_all: show_all)
-    puts card_lines
-  end
+    Card.display(hand, show_all: show_all)
 
-  # full: true by default (so by default, display all cards)
-  # dealer - override -> super (full: false)
-  # When building card strings, 
-  #   If full is FALSE, hide all cards after the first
-  #   - Set the inner width, card suit, and card labels. If full is false, 
-  #     inner width = min, card suit = ?, card label = ?
-  #   ? ? ? 
+    # card_lines = build_card_strings(show_all: show_all)
+    # puts card_lines
+  end
 
   def discard_hand
     hand.clear
@@ -70,18 +64,18 @@ class Player
     other_sum + aces.sum(&:value)
   end
 
-  def build_card_strings(show_all: false)
-    # if card == hand.first
-    hand.each_with_object(['', '', '', '', '']) do |card, strings|
-      suit, label, inner_width = calculate_card_parameters(card, show_all: show_all)
+  # def build_card_strings(show_all: false)
+  #   # if card == hand.first
+  #   hand.each_with_object(['', '', '', '', '']) do |card, strings|
+  #     suit, label, inner_width = calculate_card_parameters(card, show_all: show_all)
       
-      strings[0] += "+#{'-' * inner_width}+\s"
-      strings[1] += "|#{suit.ljust(inner_width, ' ')}|\s"
-      strings[2] += "|#{label.center(inner_width, ' ')}|\s"
-      strings[3] += "|#{suit.rjust(inner_width, ' ')}|\s"
-      strings[4] += "+#{'-' * inner_width}+\s"
-    end
-  end
+  #     strings[0] += "+#{'-' * inner_width}+\s"
+  #     strings[1] += "|#{suit.ljust(inner_width, ' ')}|\s"
+  #     strings[2] += "|#{label.center(inner_width, ' ')}|\s"
+  #     strings[3] += "|#{suit.rjust(inner_width, ' ')}|\s"
+  #     strings[4] += "+#{'-' * inner_width}+\s"
+  #   end
+  # end
 
   # extract here
       # if card == hand.first || hide is not true, show normal card
