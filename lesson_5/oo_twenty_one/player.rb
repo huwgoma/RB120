@@ -13,7 +13,7 @@ class Player
     name
   end
 
-  def hit(cards)
+  def draw(cards)
     add_to_hand(cards)
     update_hand_value
   end

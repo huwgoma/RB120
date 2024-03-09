@@ -61,7 +61,6 @@ class TwentyOneGame
     end
   end
 
-  # here
   def play_game
     display_scores
     display_deal
@@ -73,7 +72,7 @@ class TwentyOneGame
 
   def deal_starting_cards
     players.each do |player|
-      player.hit(deck.deal!(STARTING_CARD_COUNT))
+      player.draw(deck.deal!(STARTING_CARD_COUNT))
     end
   end
 
@@ -81,13 +80,7 @@ class TwentyOneGame
     players.each do |player|
       loop do
         move = player.choose_move
-
-        if move == 'H'
-          display_hit(player)
-          player.hit(deck.deal!)
-        else
-          display_stay(player)
-        end
+        move == 'H' ? hit(player) : stay(player)
 
         display_game_state(show_all: player == dealer)
         break if player.busted? || move == 'S'
@@ -97,7 +90,16 @@ class TwentyOneGame
     end
   end
 
-  # turn loop
+  # Player draws
+  def hit(player)
+    display_hit(player)
+    player.draw(deck.deal!)
+  end
+
+  # Player does nothing
+  def stay(player)
+    display_stay(player)
+  end
 
   def post_game
     result = Result.new(players)

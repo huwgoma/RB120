@@ -76,9 +76,9 @@ end
 class Ace < Card
   VALUES = [1, 11]
 
-  def assign_value(sum, remaining_ace_count) 
+  def assign_value(sum, remaining_ace_count)
     hypothetical_sum = sum + VALUES.max + remaining_ace_count
-    
+
     self.value = if hypothetical_sum > TwentyOneGame::BUST_LIMIT
                    VALUES.min
                  else
@@ -90,6 +90,3 @@ class Ace < Card
 
   attr_writer :value
 end
-
-# tell ace to set value to either min or max?
-# Toggle value?
