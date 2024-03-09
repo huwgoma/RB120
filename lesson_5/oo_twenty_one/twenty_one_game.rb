@@ -45,6 +45,8 @@ class TwentyOneGame
     display_goodbye
   end
 
+  private
+
   def match_loop(game_limit)
     games_played = 0
 

@@ -30,7 +30,6 @@ class Card
   end
 
   # Card Display Logic
-  # "\t" question? space with 10s
   def self.build_display_strings(cards, show_all: false)
     cards.each_with_object(['', '', '', '', '']) do |card, strings|
       suit, label, inner_width = calculate_display_info(cards.first,
