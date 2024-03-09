@@ -65,12 +65,13 @@ class TwentyOneGame
     end
   end
 
+  # here
   def play_game
     display_scores
     display_deal
     deal_starting_cards
     
-    update_display
+    update_display # display_game_state (dcards hidden)
     player_turns
   end
 
@@ -80,6 +81,7 @@ class TwentyOneGame
     end
   end
 
+  # and here
   def player_turns
     players.each do |player|
       loop do
@@ -92,7 +94,9 @@ class TwentyOneGame
           display_stay(player)
         end
 
-        update_display(full: player == dealer)
+        # update display in player turns; 
+        # - show all only if the current player is the dealer
+        update_display(show_all: player == dealer)
 
         break if player.busted? || move == 'S'
       end
@@ -105,7 +109,7 @@ class TwentyOneGame
     result = Result.new(players)
     increment_score(result.winner) unless result.tie?
 
-    update_display(full: true)
+    update_display(show_all: true)
     puts result
   end
 

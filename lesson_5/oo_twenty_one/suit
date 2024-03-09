@@ -1,0 +1,31 @@
+
+[1mFrom:[0m /home/hugo/launch_school/RB120/lesson_5/oo_twenty_one/player.rb:77 Player#build_card_strings:
+
+    [1;34m73[0m: [32mdef[0m [1;34mbuild_card_strings[0m([35mhide_others[0m: [1;36mfalse[0m)
+    [1;34m74[0m:   [1;34m# if card == hand.first[0m
+    [1;34m75[0m:   hand.each_with_object([[31m[1;31m'[0m[31m[1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m]) [32mdo[0m |card, strings|
+    [1;34m76[0m:     suit, label, inner_width = calculate_card_parameters(card)
+ => [1;34m77[0m:     binding.pry
+    [1;34m78[0m:     [1;34m# Takes a card and returns the display width, suit, and label[0m
+    [1;34m79[0m:     [1;34m# - If hide_others is true, return min width, ?, and ?[0m
+    [1;34m80[0m:     
+    [1;34m81[0m: 
+    [1;34m82[0m: 
+    [1;34m83[0m: 
+    [1;34m84[0m:     [1;34m# first_only?[0m
+    [1;34m85[0m:     
+    [1;34m86[0m: 
+    [1;34m87[0m: 
+    [1;34m88[0m: 
+    [1;34m89[0m: 
+    [1;34m90[0m: 
+    [1;34m91[0m:     inner_width = card.label.length == [1;34m2[0m ? [1;34;4mCard[0m::[1;34;4mINNER_WIDTHS[0m.max : [1;34;4mCard[0m::[1;34;4mINNER_WIDTHS[0m.min
+    [1;34m92[0m:     
+    [1;34m93[0m:     strings[[1;34m0[0m] += [31m[1;31m"[0m[31m+#{[1;31m'[0m[31m-[1;31m'[0m[31m[0m[31m * inner_width}[0m[31m+[1;35m\s[0m[31m[1;31m"[0m[31m[0m
+    [1;34m94[0m:     strings[[1;34m1[0m] += [31m[1;31m"[0m[31m|#{card.suit.ljust(inner_width, [1;31m'[0m[31m [1;31m'[0m[31m[0m[31m)}[0m[31m|[1;35m\s[0m[31m[1;31m"[0m[31m[0m
+    [1;34m95[0m:     strings[[1;34m2[0m] += [31m[1;31m"[0m[31m|#{card.label.center(inner_width, [1;31m'[0m[31m [1;31m'[0m[31m[0m[31m)}[0m[31m|[1;35m\s[0m[31m[1;31m"[0m[31m[0m
+    [1;34m96[0m:     strings[[1;34m3[0m] += [31m[1;31m"[0m[31m|#{card.suit.rjust(inner_width, [1;31m'[0m[31m [1;31m'[0m[31m[0m[31m)}[0m[31m|[1;35m\s[0m[31m[1;31m"[0m[31m[0m
+    [1;34m97[0m:     strings[[1;34m4[0m] += [31m[1;31m"[0m[31m+#{[1;31m'[0m[31m-[1;31m'[0m[31m[0m[31m * inner_width}[0m[31m+[1;35m\s[0m[31m[1;31m"[0m[31m[0m
+    [1;34m98[0m:   [32mend[0m
+    [1;34m99[0m: [32mend[0m
+

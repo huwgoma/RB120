@@ -25,15 +25,36 @@ module Displayable
     HEREDOC
   end
 
-  def display_hands(full: false)
+  # Should cards be all showed by default?
+
+  # Dealer's cards should be hidden by default; only show if it is the dealer's turn
+  # Punter's cards should be visible at all times. 
+
+  # Punter#display_hand
+  #   super(show_all: true) # always show all 
+
+  # Dealer#display_hand
+  #   super(show_all: show_all) # only show all if specified
+
+
+  def update_display(show_all: false)
+    clear
+    display_scores
+    puts "\n"
+    display_hands(show_all: show_all)
+  end
+
+  def display_hands(show_all: false)
     players.reverse_each do |player|
       puts "#{player}'s hand:"
 
-      if player == dealer
-        player.display_hand(full: full)
-      else
-        player.display_hand
-      end
+      player.display_hand(show_all: show_all)
+
+      # if player == dealer
+      #   player.display_hand(full: full)
+      # else
+      #   player.display_hand
+      # end
       puts "\n"
     end
   end
@@ -43,12 +64,6 @@ module Displayable
     sleep(1)
   end
 
-  def update_display(full: false)
-    clear
-    display_scores
-    puts "\n"
-    display_hands(full: full)
-  end
 
   def display_scores
     players.each do |player|
