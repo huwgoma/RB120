@@ -53,6 +53,8 @@ class Card
     end
   end
 
+  private_class_method :build_display_strings, :calculate_display_info
+
   private
 
   def calculate_label
