@@ -8,8 +8,6 @@ require_relative 'card'
 require_relative 'player'
 require_relative 'result'
 
-# EnforcedShorthandSyntax: either
-
 # Orchestration Engine
 class TwentyOneGame
   include Displayable
